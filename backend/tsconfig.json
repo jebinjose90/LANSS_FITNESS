@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "CommonJS",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,                     // Skips type checks for node_modules
+    "resolveJsonModule": true,                // Allows importing JSON files
+    "strictPropertyInitialization": true,     // Ensures proper class initialization
+    "baseUrl": ".",                           // Base URL for module resolution
+    "paths": {                                // Optional: Aliases for cleaner imports
+      "@core/*": ["src/core/*"],
+      "@modules/*": ["src/modules/*"]
+    }
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}
