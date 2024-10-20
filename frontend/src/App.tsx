@@ -8,7 +8,8 @@ const App = () => {
   useEffect(() => {
     axios.get('http://localhost:3000/api/theme')
       .then((response) => {
-        setData(response.data);
+        console.log(response);  // Log the entire response to check its structure
+        setData(response.data); // Assuming the data you need is in response.data
       })
       .catch((error) => {
         console.error('There was an error fetching the data!', error);
@@ -17,11 +18,12 @@ const App = () => {
 
   return (
     <div>
+    <Navbar />
+    <div className="p-4 bg-blue-500 text-white">
       <h1>API Data</h1>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
-      <Navbar/>
-      <div className="p-4 bg-blue-500 text-white">Hello Tailwind!</div>
+      
     </div>
+  </div>
   );
 };
 

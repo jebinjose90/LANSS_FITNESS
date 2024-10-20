@@ -1,3 +1,4 @@
+import cors from 'cors';
 import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
@@ -17,7 +18,7 @@ const UserSchema = new mongoose.Schema({
 });
 
 const UserModel = mongoose.model('User', UserSchema, 'user');
-
+app.use(cors());
 // Route to get users
 app.get('/getUsers', async (req: Request, res: Response) => {
   console.log('GET /getUsers called');  // Log when the route is called
