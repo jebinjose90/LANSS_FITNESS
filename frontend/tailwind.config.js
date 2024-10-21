@@ -7,6 +7,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        oswald: ['Oswald', 'sans-serif'], // Add Oswald as a custom font
+      },
       colors: {
         color1: 'var(--color1)',
         color2: 'var(--color2)',

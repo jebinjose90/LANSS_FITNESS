@@ -14,7 +14,7 @@ const Navbar: React.FC = () => {
     return <div>Loading...</div>;
   }
   return (
-    <nav className="bg-color1 text-color3  h-30 px-1">
+    <nav className="bg-color1 text-color3 h-30 px-1">
       <div className="container mx-auto flex justify-between items-center">
         <div className="flex flex-col justify-center items-center -space-y-2">
           <Logo logoUrl={theme.logoUrl} />
@@ -29,9 +29,9 @@ const Navbar: React.FC = () => {
           <a href="/" className="hover:text-gray-300">DietPlans</a>
           <a href="/" className="hover:text-gray-300">Reports</a>
           <div className="w-10 h-10 bg-color3 rounded-md flex items-center justify-center hover:bg-gray-300 transition duration-200">
-            <Icon name="logout-icon" width="30" height="34" className="custom-class" />
+            <Icon name="logout-icon" width="30" height="34" className="custom-class text-color3" />
           </div>
-          <Icon name="user-icon" width="40" height="39" className="custom-class" />
+          <Icon name="user-icon" width="40" height="39" className="custom-class text-color3" />
         </div>
 
         {/* Mobile Menu Button */}
@@ -57,7 +57,7 @@ const Navbar: React.FC = () => {
           <a href="/" className="hover:text-gray-300 mr-4">Logout</a>
         </div>
       )}
-      <div className="w-full h-[0.5px] bg-gray-300"></div>
+      <div className="w-screen h-[0.5px] bg-gray-300"></div>
     </nav>
   );
 };
