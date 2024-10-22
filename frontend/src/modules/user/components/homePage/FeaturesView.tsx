@@ -4,6 +4,7 @@ import Icon from '../../../common/Icon'
 
 const FeaturesView = () => {
     return (
+        <>
         <div className='flex-col items-center justify-center bg-color2 h-[588px] text-color1 w-full'>
             <SubHeading subHeading='FEATURES' />
             <div className='flex justify-center'>
@@ -36,6 +37,9 @@ const FeaturesView = () => {
                 </div>
             </div>
         </div>
+        <div className="w-screen h-[1px] bg-gray-300"></div>
+        </>
+        
     )
 }
 
