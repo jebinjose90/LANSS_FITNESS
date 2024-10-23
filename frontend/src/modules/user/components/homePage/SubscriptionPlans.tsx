@@ -4,9 +4,9 @@ import SubHeading from '../../../common/SubHeading'
 const SubscriptionPlans = () => {
     return (
         <>
-            <div className='bg-color2 text-color1 w-full '>
+            <div className='bg-color2 text-color1 w-full p-20'>
                 <SubHeading subHeading='SUBSCRIPTION PLANS' />
-                <div className='flex justify-center'>
+                <div className='flex justify-center pt-10'>
                     {/* <!-- component --> */}
                         <div className="flex flex-col lg:flex-row gap-8 w-full max-w-7xl">
                             {/* <!-- Basic Plan --> */}

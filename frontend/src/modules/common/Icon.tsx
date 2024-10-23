@@ -31,5 +31,7 @@ export default Icon;
 <Icon name="logout-icon" width="30" height="34" className="custom-class" />
 <Icon name="dumbell-icon" width="40" height="23" className="custom-class" />
 <Icon name="food-icon" width="33" height="28" className="custom-class" />
-<Icon name="progress-icon" width="35" height="28" className="custom-class" />*/}
+<Icon name="progress-icon" width="35" height="28" className="custom-class" />
+<Icon name="google-paly-icon" width="258" height="78" className="custom-class" /> 
+<Icon name="app-store-icon" width="258" height="78" className="custom-class" />"*/}
 
