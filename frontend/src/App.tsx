@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import Home from './modules/user/pages/Home';
 import Landing from './modules/user/pages/Landing';
+import UserLogin from './modules/user/pages/UserLogin';
+
 
 
 const App = () => {
@@ -9,7 +11,9 @@ const App = () => {
 
   return (
     <div>
-        <Landing/>
+        {/* <Home/> */}
+        {/* <Landing/> */}
+        {/* <UserLogin/> */}
     </div>
   );
 };
