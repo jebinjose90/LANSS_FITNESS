@@ -1,21 +1,36 @@
 import { useTheme } from '../../core/usecases/useTheme';
 import Logo from './Logo';
 import CompanyName from './CompanyName';
-import Icon from './Icon';
-import { Children } from 'react';
 
 
 interface UserType {
     imageUrl: string;
-    userType: string;
-    newUserType: string;
-    createUserHref: string;
-    signinWithGoogleHref: string;
+    heading: string;
+    showSubHeading?: boolean;
+    showUserSignup?: boolean;
+    userSigupText?: string;
+    userSignupHref?: string;
+    showUserSignin?: boolean;
+    userSiginText?: string;
+    userSigninHref?: string;
     onSubmit: (event: React.FormEvent) => void;
     children?: React.ReactNode; // This allows passing in custom input fields
 }
 
-const AuthenticationUISkin: React.FC<UserType> = ({ imageUrl, userType, newUserType, createUserHref,children,onSubmit}) => {
+const AuthenticationUISkin: React.FC<UserType> =
+    ({
+        imageUrl,
+        heading,
+        showSubHeading = false,
+        children,
+        onSubmit,
+        showUserSignup = false,
+        userSigupText ='New User',
+        userSignupHref = "",
+        showUserSignin = false,
+        userSiginText ='Already a User',
+        userSigninHref ="",
+    }) => {
     const theme = useTheme()
 
     if (!theme) {
@@ -36,17 +51,26 @@ const AuthenticationUISkin: React.FC<UserType> = ({ imageUrl, userType, newUserT
                     <Logo logoUrl={theme.logoUrl} />
                     <CompanyName companyName={theme.companyName} />
                 </div>
-                <div className="md:flex space-x-4 text-color3">
-                    <p>{newUserType} <a className="font-bold pl-2" href={createUserHref}>SIGN UP</a></p>
-                </div>
+                {showUserSignup &&
+                    <div className="md:flex space-x-4 text-color3">
+                        <p>{userSigupText} <a className="font-bold pl-2" href={userSignupHref}>SIGN UP</a></p>
+                    </div>
+                }
+                {showUserSignin &&
+                    <div className="md:flex space-x-4 text-color3">
+                        <p>{userSiginText} <a className="font-bold pl-2" href={userSigninHref}>SIGN IN</a></p>
+                    </div>
+                }
+
             </div>
             <div className='absolute h-5/6 w-2/6 top-28 right-52 opacity-95 '>
-                <h1 className="text-left text-color3 font-oswald text-3xl mt-4">{userType}</h1>
-                <p className="text-color3 text-left font-sans my-[10px]">login to continue</p>
+                <h1 className="text-left text-color3 font-oswald text-3xl mt-4">{heading}</h1>
+                {showSubHeading &&
+                    <p className="text-color3 text-left font-sans my-[10px]">login to continue</p>}
                 <form onSubmit={onSubmit} className='space-y-7 bg-transparent py-10' method="POST">
                     {children}
                 </form>
-                
+
             </div>
         </div>
     )

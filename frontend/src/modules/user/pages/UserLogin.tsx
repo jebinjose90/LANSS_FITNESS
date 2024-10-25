@@ -1,31 +1,19 @@
 import React from 'react'
 import AuthenticationUISkin from '../../common/AuthenticationUISkin';
-import Login from '../../common/pages/Login';
+import Login from '../../common/authenticationComponents/Login';
 
-interface UserType {
-    imageUrl: string;
-    userType: string;
-    newUserType: string;
-    createUserHref: string;
-    onSubmit: (event: React.FormEvent) => void;
-    children?: React.ReactNode; // This allows passing in custom input fields
-}
-
-const UserLogin: React.FC<UserType> = () => {
-    const handleSubmit = (event: React.FormEvent) => {
-        event.preventDefault();
-        // Handle login logic
-    };
+const UserLogin: React.FC = () => {
     return (
         <AuthenticationUISkin
-            imageUrl='https://i.imgur.com/9MJtr4G.jpeg'
-            userType='Welcome Back!'
-            createUserHref=''
-            newUserType='New User?'
-            onSubmit={handleSubmit}>
-                <Login/>
+        imageUrl="https://i.imgur.com/9MJtr4G.jpeg"
+        heading="Welcome Back!"
+        showSubHeading = {true}
+        showUserSignup = {true}
+        userSigupText = 'New User?'
+        userSignupHref = ''
+        onSubmit={() => console.log('Submitted')}>
+            <Login />
         </AuthenticationUISkin>
-
     )
 }
 
