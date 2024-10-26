@@ -4,11 +4,11 @@ import AuthenticationUISkin from '../../common/AuthenticationUISkin'
 const UserResetPassword = () => {
   return (
     <AuthenticationUISkin
-            imageUrl="https://i.imgur.com/SExGsnl.jpeg"
-            heading="Reset Password"
-            onSubmit={() => console.log('Submitted')}>
-            <ResetPassword/>
-        </AuthenticationUISkin>
+      imageUrl="https://i.imgur.com/SExGsnl.jpeg"
+      heading="Reset User Password"
+      onSubmit={() => console.log('Submitted')}>
+      <ResetPassword />
+    </AuthenticationUISkin>
   )
 }
 

@@ -1,4 +1,3 @@
-import React from 'react'
 import AuthenticationUISkin from '../../common/AuthenticationUISkin'
 import Signup from '../../common/authenticationComponents/Signup'
 

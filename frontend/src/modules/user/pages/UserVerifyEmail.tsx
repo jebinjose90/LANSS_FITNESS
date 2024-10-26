@@ -4,11 +4,11 @@ import AuthenticationUISkin from "../../common/AuthenticationUISkin"
 const UserVerifyEmail = () => {
   return (
     <AuthenticationUISkin
-            imageUrl="https://i.imgur.com/SExGsnl.jpeg"
-            heading="Verify Email"
-            onSubmit={() => console.log('Submitted')}>
-            <VerifyEmail/>
-        </AuthenticationUISkin>
+      imageUrl="https://i.imgur.com/SExGsnl.jpeg"
+      heading="Verify User Email"
+      onSubmit={() => console.log('Submitted')}>
+      <VerifyEmail />
+    </AuthenticationUISkin>
   )
 }
 
