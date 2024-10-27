@@ -1,37 +1,21 @@
 import cors from 'cors';
 import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
-import mongoose from 'mongoose';
-
-dotenv.config({ path: './backend/.env' });  // Load environment variables
+import morgan from 'morgan';
 import connectToDatabase from './infrastructure/database/connection';
 import themeRoutes from './modules/theme/routes/themeRoutes';
+import userRoutes from './modules/user/routes/userRoutes'
 
+
+dotenv.config({ path: './backend/.env' });  // Load environment variables
 const app = express();
 
 // Connect to MongoDB
 connectToDatabase(); // Call the connection function
-
-const UserSchema = new mongoose.Schema({
-  name: String,
-  age: String
-});
-
-const UserModel = mongoose.model('User', UserSchema, 'user');
 app.use(cors());
-// Route to get users
-app.get('/getUsers', async (req: Request, res: Response) => {
-  console.log('GET /getUsers called');  // Log when the route is called
-  try {
-    const users = await UserModel.find({});
-    console.log('Users found:', users);  // Log the users from the database
-    res.json(users);
-  } catch (error) {
-    console.error('Error retrieving users:', error);  // Log any errors
-    res.status(500).json({ message: 'Error retrieving users', error });
-  }
-});
+app.use(morgan('dev'));
 
+app.use('/', userRoutes);
 app.use('/api', themeRoutes);
 
 
