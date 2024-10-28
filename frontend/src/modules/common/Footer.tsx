@@ -10,8 +10,8 @@ const Footer = () => {
                         <div className="w-full lg:w-4/12 px-4">
                             <h5 className="text-3xl font-sans-semibold text-color3">NEED THE MOBILE APP?</h5>
                             <div className="mt-6 lg:mb-0 mb-6">
-                                <Icon name="google-play-icon" width="258" height="78" className="custom-class pt-5" />
-                                <Icon name="app-store-icon" width="258" height="78" className="custom-class pt-5" />
+                                <Icon svgName="google-play-icon" width="258" height="78" className="custom-class pt-5" />
+                                <Icon svgName="app-store-icon" width="258" height="78" className="custom-class pt-5" />
                             </div>
                         </div>
                         <div className="w-full lg:w-4/12 px-4">
@@ -113,10 +113,10 @@ const Footer = () => {
                     </div>
                     <hr className="my-6 border-blueGray-300" />
                     <div className="flex flex-row justify-center ">
-                            <Icon name="x-icon" width="40" height="40" className="mx-4 text-color1" />
-                            <Icon name="instagram-icon" width="40" height="40" className="mx-4 text-color1" />
-                            <Icon name="facebook-icon" width="40" height="40" className="mx-4 text-color1" />
-                            <Icon name="whatsapp-icon" width="40" height="40" className="mx-4 text-color1" />
+                            <Icon svgName="x-icon" width="40" height="40" className="mx-4 text-color1" />
+                            <Icon svgName="instagram-icon" width="40" height="40" className="mx-4 text-color1" />
+                            <Icon svgName="facebook-icon" width="40" height="40" className="mx-4 text-color1" />
+                            <Icon svgName="whatsapp-icon" width="40" height="40" className="mx-4 text-color1" />
                     </div>
                 </div>
             </footer>

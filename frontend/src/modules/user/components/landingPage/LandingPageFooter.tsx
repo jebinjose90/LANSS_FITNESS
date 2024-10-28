@@ -21,10 +21,10 @@ const LandingPageFooter: React.FC = () => {
                     <p className="text-color3 text-center font-sans md:w-1/2 lg:w-1/2 mt-7">Dumbbells, kettlebells and resistance bands are key tools for strength training, helping to build muscle, improve flexibility, and boost overall physical performance.</p>
 
                     <div className="flex flex-row justify-center mt-4">
-                            <Icon name="x-icon" width="40" height="40" className="mx-4 text-color1" />
-                            <Icon name="instagram-icon" width="40" height="40" className="mx-4 text-color1" />
-                            <Icon name="facebook-icon" width="40" height="40" className="mx-4 text-color1" />
-                            <Icon name="whatsapp-icon" width="40" height="40" className="mx-4 text-color1" />
+                            <Icon svgName="x-icon" width="40" height="40" className="mx-4 text-color1" />
+                            <Icon svgName="instagram-icon" width="40" height="40" className="mx-4 text-color1" />
+                            <Icon svgName="facebook-icon" width="40" height="40" className="mx-4 text-color1" />
+                            <Icon svgName="whatsapp-icon" width="40" height="40" className="mx-4 text-color1" />
                     </div>
                 </div>
             </div>

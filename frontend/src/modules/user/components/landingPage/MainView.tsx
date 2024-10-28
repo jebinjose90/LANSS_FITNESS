@@ -1,6 +1,5 @@
 import { useTheme } from "../../../../core/usecases/useTheme";
 import CompanyName from "../../../common/CompanyName"
-import Icon from "../../../common/Icon";
 import Logo from "../../../common/Logo"
 
 

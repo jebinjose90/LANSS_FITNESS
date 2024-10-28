@@ -6,15 +6,16 @@ import { Schema, model } from 'mongoose';
 
 // Create a User schema
 const userSchema = new Schema<User>({
-    id: { type: String, required: true, unique: true },
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    email: { type: String, required: true, unique: true }
+    email: { type: String, required: true, unique: true },
+    phone: { type: Number, required: true, unique: true }
+
 }, {
     timestamps: true // Automatically manage createdAt and updatedAt fields
 });
 
 // Create a User model
-const UserModel = model<User>('User', userSchema);
+const UserModel = model<User>('User', userSchema, 'user');
 
 export default UserModel;

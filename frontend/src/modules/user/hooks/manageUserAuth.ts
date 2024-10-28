@@ -21,11 +21,11 @@ export const useUserAuth = () => {
     }
   };
 
-  const signup = async (name: string, email: string, password: string) => {
+  const signup = async (username: string, email: string, password: string, phone: number) => {
     setLoading(true);
     setError(null);
     try {
-      const data = await userApi.signup(name, email, password);
+      const data = await userApi.signup(username, email, password, phone);
       setUserData(data);
       // Handle post-signup actions
     } catch (err) {

@@ -9,8 +9,7 @@ const UserSignup: React.FC = () => {
             heading="Sign Up"
             showUserSignin={true}
             userSiginText='Already User?'
-            userSigninHref=''
-            onSubmit={() => console.log('Submitted')}>
+            userSigninHref=''>
             <Signup
                 showUplaodCertificate={false} />
         </AuthenticationUISkin>

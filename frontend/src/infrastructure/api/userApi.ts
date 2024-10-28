@@ -4,11 +4,13 @@ const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
 export const userApi = {
   login: async (email: string, password: string) => {
-    const response = await axios.post(`${apiUrl}/login`, { email, password });
+    console.log(`${apiUrl}/sigin`)
+    console.log(email, password)
+    const response = await axios.post(`${apiUrl}/signin`, { email, password });
     return response.data;
   },
-  signup: async (name: string, email: string, password: string) => {
-    const response = await axios.post(`${apiUrl}/signup`, { name, email, password });
+  signup: async (username: string, email: string, password: string, phone: number) => {
+    const response = await axios.post(`${apiUrl}/signup`, { username, email, password, phone});
     return response.data;
   },
   resetPassword: async (email: string) => {

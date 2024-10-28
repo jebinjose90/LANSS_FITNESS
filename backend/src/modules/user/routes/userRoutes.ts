@@ -6,8 +6,8 @@ import { getUser, getUserByUsernameController, registerUser, userLogin } from '.
 
 const router = Router();
 
-router.post('/register', registerUser);
-router.post('/login', userLogin);
+router.post('/signup', registerUser);
+router.post('/signin', userLogin);
 router.get('/:id', getUser);
 router.get('/username/:username', getUserByUsernameController);
 
