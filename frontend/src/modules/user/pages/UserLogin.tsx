@@ -11,7 +11,7 @@ const UserLogin: React.FC = () => {
             showSubHeading={true}
             showUserSignup={true}
             userSigupText='New User?'
-            userSignupHref=''>
+            userSignupHref='/userSignup'>
             <Login />
         </AuthenticationUISkin>
     )

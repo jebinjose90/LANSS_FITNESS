@@ -3,7 +3,7 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { createUser, getUserById, getUserByUsername, loginUser } from '../usecases/getUserUsecases';
+import { createUser, findExistingUser, getUserById, getUserByUsername, loginUser } from '../usecases/getUserUsecases';
 
 // Constants for error and success messages
 const USER_NOT_FOUND_MSG = 'User not found';
@@ -13,13 +13,29 @@ const FETCH_USER_ERROR_MSG = 'Error fetching user';
 const LOGIN_ERROR_MSG = 'Error logging in';
 
 // Controller function to create a new user
-export const registerUser = async (req: Request, res: Response): Promise<void> => {
+export const userSignupRequestOtp = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { username, password, email ,phone} = req.body;
+        console.log(req.body);
+        
+        const { username, email, phone ,password} = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = await createUser(username, hashedPassword, email, phone);
-        res.status(201).json({ message: 'User created successfully', user: newUser });
+        await findExistingUser( username, email, hashedPassword ,phone);
+        res.status(201).json({ message: 'OTP sent to email. Please verify to complete signup.' });
     } catch (error: unknown) {
+        console.log(error);
+        
+        const errorMessage = error instanceof Error ? error.message : CREATE_USER_ERROR_MSG;
+        res.status(500).json({ message: errorMessage });
+    }
+};
+
+// Verify OTP and Create User
+export const userSignupVerifyOtp = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { email, otp } = req.body;
+        const newUser = await createUser(email, otp);
+        res.status(201).json({ message: 'User created successfully', user: newUser });
+    } catch (error) {
         const errorMessage = error instanceof Error ? error.message : CREATE_USER_ERROR_MSG;
         res.status(500).json({ message: errorMessage });
     }

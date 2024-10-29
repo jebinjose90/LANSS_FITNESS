@@ -5,11 +5,11 @@ import Signup from '../../common/authenticationComponents/Signup'
 const UserSignup: React.FC = () => {
     return (
         <AuthenticationUISkin
-            imageUrl="https://i.imgur.com/SExGsnl.jpeg"
+            imageUrl="https://i.imgur.com/678tyUR.jpeg"
             heading="Sign Up"
             showUserSignin={true}
             userSiginText='Already User?'
-            userSigninHref=''>
+            userSigninHref='/userSignin'>
             <Signup
                 showUplaodCertificate={false} />
         </AuthenticationUISkin>

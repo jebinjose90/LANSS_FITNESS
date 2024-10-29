@@ -45,8 +45,8 @@ const Signup: React.FC<SignupModel> = ({ showUplaodCertificate = false }) => {
         <>
             <form onSubmit={handleSubmit} className='space-y-7 bg-transparent py-10' method="POST">
                 <InputField svgName="login-user-icon" svgWidth="23" svgHeight="23" placeholder="ENTER YOUR USERNAME" name="username" inputValue={formValues.username} onChange={handleInputChange} />
-                <InputField svgName="login-password-icon" svgWidth="28" svgHeight="24" placeholder="ENTER YOUR EMAIL" name="email" inputValue={formValues.email} onChange={handleInputChange} />
-                <InputField svgName="login-user-icon" svgWidth="23" svgHeight="23" placeholder="ENTER PHONE" name="phone" inputValue={formValues.phone} onChange={handleInputChange} type='tel'/>
+                <InputField svgName="login-email-icon" svgWidth="30" svgHeight="23"  placeholder="ENTER YOUR EMAIL" name="email" inputValue={formValues.email} onChange={handleInputChange} />
+                <InputField svgName="login-phone-icon" svgWidth="30" svgHeight="30" placeholder="ENTER PHONE" name="phone" inputValue={formValues.phone} onChange={handleInputChange} type='tel'/>
                 <InputField svgName="login-password-icon" svgWidth="28" svgHeight="24" placeholder="ENTER PASSWORD" name="password" inputValue={formValues.password} onChange={handleInputChange} type='password'/>
                 {showUplaodCertificate &&
                     <div className="flex items-center space-x-6 bg-transparent border-2 border-color3 text-color3 px-4 w-full">
