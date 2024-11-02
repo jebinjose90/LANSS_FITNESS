@@ -2,7 +2,8 @@
 const MainView = () => {
     return (
         <>
-        <div className="h-[857px] w-screen bg-color1 relative">
+        
+        <div className="h-[857px] w-full bg-color1 relative">
             <div className="absolute top-0 right-0 w-1/2 h-full">
                 <img className="object-cover w-full h-full opacity-50 transform scale-x-[-1]" src="https://i.imgur.com/F6iBfkA.jpeg" alt="Image" />
             </div>
@@ -20,7 +21,7 @@ const MainView = () => {
             </div>
             
         </div>
-        <div className="w-screen h-[1px] bg-gray-300"></div>
+        <div className="w-full h-[1px] bg-gray-300"></div>
         </>
         
 

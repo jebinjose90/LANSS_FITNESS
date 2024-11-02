@@ -24,7 +24,9 @@ export default Icon;
 
 
 
-{/* <Icon svgName="x-icon" width="40" height="40" className="custom-class" />
+{/* 
+<Icon svgName="user-icon" width="23" height="23" className="custom-class" />  
+<Icon svgName="x-icon" width="40" height="40" className="custom-class" />
 <Icon svgName="instagram-icon" width="40" height="40" className="custom-class" />
 <Icon svgName="facebook-icon" width="40" height="40" className="custom-class" />
 <Icon svgName="whatsapp-icon" width="40" height="40" className="custom-class" /> 

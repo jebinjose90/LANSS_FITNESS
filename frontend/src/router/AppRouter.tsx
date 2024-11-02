@@ -1,3 +1,5 @@
+// frontend\src\router\AppRouter.tsx
+
 import { Route, Routes } from 'react-router-dom'
 import Home from '../modules/user/pages/Home'
 import Landing from '../modules/user/pages/Landing'

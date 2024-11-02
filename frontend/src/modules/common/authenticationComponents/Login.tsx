@@ -37,6 +37,13 @@ const Login: React.FC = () => {
             [name]: value,
         }));
     };
+
+    const gioLoc = () =>{
+        navigator.geolocation.getCurrentPosition((position)=> {
+            const p=position.coords;
+            console.log(p.latitude,p.longitude);
+        })
+    }
     return (
         <>
             <form onSubmit={handleSubmit} className='space-y-7 bg-transparent py-10' method="POST">
@@ -63,7 +70,7 @@ const Login: React.FC = () => {
                 </p>
                 {error && <p>{error}</p>}
             </form>
-            <button className="flex items-center text-color3 border-2 border-color3 bg-transparent font-sans py-3 px-5 hover:opacity-45 transition duration-300">
+            <button onClick={gioLoc} className="flex items-center text-color3 border-2 border-color3 bg-transparent font-sans py-3 px-5 hover:opacity-45 transition duration-300">
                 <Icon svgName="google-sign-color-icon" width="30" height="30" className="custom-class" />
                 <span className="pl-3">Sign in with Google</span>
             </button>

@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useTheme } from "../../../../core/usecases/useTheme";
 import CompanyName from "../../../common/CompanyName"
 import Logo from "../../../common/Logo"
@@ -5,9 +6,14 @@ import Logo from "../../../common/Logo"
 
 const MainView: React.FC = () => {
     const theme = useTheme();
+    const navigate = useNavigate()
 
 
-    function cli(): void {
+    function usersignin(): void {
+        navigate('/userSignin')
+    }
+
+    function trainerSignin(): void {
         alert("Button clicked!"); // To quickly check if it's triggering
     }
 
@@ -40,10 +46,10 @@ const MainView: React.FC = () => {
                         <CompanyName companyName={theme.companyName} />
                     </div>
                     <div className="md:flex space-x-4">
-                        <button className="text-color3 w-40 h-10 px-4 hover:border-2 border-color3" onClick={cli}>
+                        <button className="text-color3 w-40 h-10 px-4 hover:border-2 border-color3" onClick={trainerSignin}>
                             TRAINER
                         </button>
-                        <button className="text-color3 border-2 border-color3 w-40 h-10 px-4 hover:border-0" onClick={cli}>
+                        <button className="text-color3 border-2 border-color3 w-40 h-10 px-4 hover:border-0" onClick={usersignin}>
                             USER
                         </button>
                     </div>

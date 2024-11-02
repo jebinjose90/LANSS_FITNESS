@@ -1,3 +1,5 @@
+// \backend\src\app.ts
+
 import cors from 'cors';
 import express from 'express';
 import dotenv from 'dotenv';
@@ -6,6 +8,11 @@ import morgan from 'morgan';
 import connectToDatabase from './infrastructure/database/connection';
 import themeRoutes from './modules/theme/routes/themeRoutes';
 import userRoutes from './modules/user/routes/userRoutes'
+import passport from 'passport';
+import session from 'express-session';
+
+// Import Passport Strategies
+import './modules/user/security/userPassport'; 
 
 const PORT = process.env.PORT || 3000;
 
@@ -21,6 +28,16 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(cors());
 app.use(morgan('dev'));
+
+// Middleware for sessions
+app.use(session({
+  secret: process.env.JWT_SECRET || "default_secret_key", // Replace with a secure key in production
+  resave: false,
+  saveUninitialized: true,
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/', userRoutes);
 app.use('/api', themeRoutes);

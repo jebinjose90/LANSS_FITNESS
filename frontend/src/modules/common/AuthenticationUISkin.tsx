@@ -1,3 +1,5 @@
+// frontend\src\modules\common\AuthenticationUISkin.tsx
+
 import { useTheme } from '../../core/usecases/useTheme';
 import Logo from './Logo';
 import CompanyName from './CompanyName';
@@ -19,7 +21,7 @@ interface UserType {
 
 const AuthenticationUISkin: React.FC<UserType> =
     ({
-        imageUrl, heading, showSubHeading = false, children, showUserSignup = false, userSigupText = 'New User', userSignupHref = "", showUserSignin = false, userSiginText = 'Already a User', userSigninHref = "",
+        imageUrl, heading, showSubHeading = false, children, showUserSignup = false, userSigupText = 'New User', userSignupHref = "", showUserSignin = false, userSigninHref = "",
     }) => {
         const theme = useTheme()
 
@@ -40,10 +42,10 @@ const AuthenticationUISkin: React.FC<UserType> =
                     </div>
 
                     <div className="w-[600px] h-full bg-color1 absolute skew-x-[5deg] left-[850px]"></div>
-                    <div className="h-4/5 w-1/5 bg-gradient-to-b from-color2 to-color3 opacity-20 skew-x-[-40deg] absolute bottom-0 right-[350px]"></div>
-                    <div className="h-4/5 w-1/5 bg-gradient-to-b from-color2 to-color3 opacity-20 skew-x-[-40deg] absolute botttom-10 right-[400px] "></div>
+                    <div className="h-4/5 w-4/12 bg-gradient-to-b from-color2 to-color3 opacity-20 skew-x-[-40deg] absolute bottom-0 right-[350px]"></div>
+                    <div className="h-4/5 w-4/12 bg-gradient-to-b from-color2 to-color3 opacity-20 skew-x-[-40deg] absolute botttom-10 right-[400px] "></div>
 
-                    <div className="w-full p-10 lg:w-1/2 z-10">
+                    <div className="w-full p-10 lg:w-1/2 z-10  overflow-y-auto">
                         {showUserSignup && (
                             <div className="md:flex justify-end space-x-4 text-color3 mb-10">
                                 <p className="text-end ml-auto">
@@ -63,6 +65,7 @@ const AuthenticationUISkin: React.FC<UserType> =
                         <h1 className="text-left text-color3 font-oswald text-3xl mt-4">{heading}</h1>
                         {showSubHeading &&
                             <p className="text-color3 text-left font-sans my-[10px]">login to continue</p>}
+                        {/* FORM CHILD */}
                         {children}
                     </div>
                 </div>

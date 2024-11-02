@@ -1,3 +1,5 @@
+// frontend\src\modules\user\hooks\manageUserAuth.ts
+
 import { useState } from 'react';
 import { userApi } from '../../../infrastructure/api/userApi';
 
@@ -35,5 +37,11 @@ export const useUserAuth = () => {
     }
   };
 
-  return { loading, error, userData, login, signup };
+  const signinWithGoogle = async () => {
+    console.log("CALLED");
+    
+    await userApi.loginWithGoogle(); // Calls the loginWithGoogle method from userApi
+  };
+
+  return { loading, error, userData, login, signup, signinWithGoogle };
 };

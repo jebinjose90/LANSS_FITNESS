@@ -11,25 +11,25 @@ import TempUserModel from '../models/TempUserModel';
 // Function to login user
 export const findExistingUser = async (username: string, email: string, hashedPassword: string, phone: number): Promise<void> => {
     try {
-        console.log("email", email, "password", hashedPassword, "username",username);
-        
+        console.log("email", email, "password", hashedPassword, "username", username);
+
         let password = hashedPassword
         // Check if email or username already exists in the User database
         const existingUser = await UserModel.findOne({ $or: [{ email }, { username }] });
         if (existingUser) {
-            throw new Error('Email or username already in use.'); 
+            throw new Error('Email or username already in use.');
         }
-         // Generate OTP and save user info temporarily
-         const otp = generateOtp();
-         console.log(otp);
-         
-         await TempUserModel.create({ email, password, username, phone, otp, otpExpiresAt: new Date(Date.now() + 10 * 60 * 1000) }); // OTP expires in 10 minutes
- 
-         // Send OTP email
-         await sendOtpEmail(email, otp);
+        // Generate OTP and save user info temporarily
+        const otp = generateOtp();
+        console.log(otp);
+
+        await TempUserModel.create({ email, password, username, phone, otp, otpExpiresAt: new Date(Date.now() + 10 * 60 * 1000) }); // OTP expires in 10 minutes
+
+        // Send OTP email
+        await sendOtpEmail(email, otp);
     } catch (error: any) {  // Type the error as 'any'
-        console.log("ERROR",error.message);
-        
+        console.log("ERROR", error.message);
+
         throw new Error(`Error sending OTP: ${error.message}`);
     }
 };
@@ -37,10 +37,10 @@ export const findExistingUser = async (username: string, email: string, hashedPa
 // Function to create a new user
 export const createUser = async (email: string, otp: string): Promise<User> => {
     try {
-        const tempUser = await TempUserModel.findOne({email, otp });
+        const tempUser = await TempUserModel.findOne({ email, otp });
         // Find the TempUser record
         if (!tempUser) {
-            throw new Error('Invalid OTP or email.'); 
+            throw new Error('Invalid OTP or email.');
         }
         // Check OTP expiration
         if (tempUser.otpExpiresAt < new Date()) {
@@ -88,13 +88,17 @@ export const loginUser = async (email: string, password: string): Promise<User> 
         console.log("USER", user);
 
         if (!user) {
-            throw new Error("User not found"); 
+            throw new Error("User not found");
+        }
+
+        if (!user.password) {
+            throw new Error("Password is not set for this user");
         }
 
         // Compare password
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            throw new Error("Incorrect password"); 
+            throw new Error("Incorrect password");
         }
 
         return user; // Return user object if credentials are valid

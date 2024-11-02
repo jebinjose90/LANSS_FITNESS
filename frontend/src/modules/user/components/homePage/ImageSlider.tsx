@@ -38,7 +38,7 @@ const Carousel: React.FC = () => {
                 </div>
             </div>
         </div>
-        <div className="w-screen h-[1px] bg-gray-300"></div>
+        <div className="w-full h-[1px] bg-gray-300"></div>
         </>
 
     );
