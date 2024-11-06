@@ -13,7 +13,6 @@ router.post('/signin', userLogin);
 router.get('/:id', getUser);
 router.get('/username/:username', getUserByUsernameController);
 router.get('/signin/failed', signinFailed)
-
 router.get('/auth/user/google', passport.authenticate('user-google', { scope: ['profile', 'email'] }));
 router.get('/auth/user/google/callback', passport.authenticate('user-google', 
     {failureRedirect: '/signin/failed' }), googleCallbackController);

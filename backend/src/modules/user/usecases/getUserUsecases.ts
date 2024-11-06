@@ -49,7 +49,8 @@ export const createUser = async (email: string, otp: string): Promise<User> => {
         }
         // Create the User and delete the TempUser
         const { username, password } = tempUser;
-        const newUser = new UserModel({ email, username, password });
+        const isGoogleAuth = false
+        const newUser = new UserModel({ email, username, password, isGoogleAuth});
         await newUser.save();
         await TempUserModel.deleteOne({ email });
         return newUser; // Return the created user object

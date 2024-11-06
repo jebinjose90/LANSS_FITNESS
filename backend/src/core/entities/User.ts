@@ -8,7 +8,7 @@ export interface User extends Document {
     username: string;
     email: string;
     phone?: number;
-    googleId: string; // Required for Google authentication
+    googleId?: string; // Required for Google authentication
     isGoogleAuth: boolean; // Indicates if the user authenticated via Google
     profilePictureUrl?: string; // Optional for Google-auth users
 }

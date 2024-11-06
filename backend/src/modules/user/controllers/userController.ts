@@ -32,8 +32,20 @@ export const userSignupRequestOtp = async (req: Request, res: Response): Promise
 export const userSignupVerifyOtp = async (req: Request, res: Response): Promise<void> => {
     try {
         const { email, otp } = req.body;
-        const newUser = await createUser(email, otp);
-        res.status(201).json({ message: 'User created successfully', user: newUser });
+        const user = await createUser(email, otp);
+        const username = user.username
+        const imageUrl = user.profilePictureUrl || ""
+        const token = jwt.sign(
+            {
+                id: user._id,
+                username: user.username,
+                email: user.email
+            },
+            process.env.JWT_SECRET as string,
+            { expiresIn: '1h' }
+        );
+        const redirectUrl = `/home?token=${token}&username=${username}&imageUrl=${imageUrl}`
+        res.json({redirectUrl})
     } catch (error) {
         const errorMessage = error instanceof Error ? error.message : CREATE_USER_ERROR_MSG;
         res.status(500).json({ message: errorMessage });

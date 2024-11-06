@@ -1,4 +1,8 @@
+// frontend\src\modules\common\authenticationComponents\Otp.tsx
+
 import { useEffect, useRef, useState } from "react";
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useUserAuth } from "../../user/hooks/manageUserAuth";
 
 interface OtpState {
     digitOne: string;
@@ -8,6 +12,11 @@ interface OtpState {
 }
 
 export const Otp: React.FC = () => {
+    const location = useLocation();
+    const params = new URLSearchParams(location.search);
+    const email = params.get('email')
+    const navigate = useNavigate();
+    const {verifyOtp } = useUserAuth();
     const inputRef = useRef<(HTMLInputElement | null)[]>([]);
     const [otp, setOtp] = useState<OtpState>({
         digitOne: "",
@@ -71,8 +80,28 @@ export const Otp: React.FC = () => {
         ));
     }
 
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!email) {
+            console.error("Email is missing");
+            return;
+        }
+        // Concatenate the OTP digits into a single string
+        const otpValue = `${otp.digitOne}${otp.digitTwo}${otp.digitThree}${otp.digitFour}`;
+        try {
+            const data = await verifyOtp(email!, otpValue);
+            if (data) {
+              const { username, imageUrl } = data; // Destructure only if data is not null
+              // After successful OTP verification, navigate to the home page with user details
+              navigate('/home', { state: { username, imageUrl } });
+            }
+          } catch (error) {
+            console.error("OTP verification failed", error);
+          }
+    }
+
     return (
-        <>
+        <form onSubmit={handleSubmit}>
             <p className="text-color3 text-left font-sans my-[10px]">Send to Email</p>
             <div className="space-x-1">
                 {renderInput()}
@@ -84,6 +113,7 @@ export const Otp: React.FC = () => {
                 </button>
             </div>
             <p className="text-color3 text-left font-sans my-[10px]">Having trouble logging in? <a className='opacity-80' href="">Get Help</a></p>
-        </>
+        </form>
+
     );
 };

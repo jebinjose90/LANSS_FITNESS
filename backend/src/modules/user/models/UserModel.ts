@@ -10,7 +10,7 @@ const userSchema = new Schema<User>({
     email: { type: String, required: true, unique: true },
     phone: { type: Number, required: false, unique: true }, // Optional
     id: { type: String, required: false, unique: true }, // Optional
-    googleId: { type: String, required: true, unique: true }, // Required
+    googleId: { type: String, required: false, unique: true }, // Required
     isGoogleAuth: { type: Boolean, required: true }, // Required
     profilePictureUrl: { type: String, required: false } // Optional
 }, {
