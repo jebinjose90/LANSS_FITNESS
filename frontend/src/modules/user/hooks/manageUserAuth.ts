@@ -20,7 +20,6 @@ export const useUserAuth = () => {
     try {
       const data = await userApi.login(email, password);
       setUserData(data);
-      // Save token or user data to local storage if needed
     }
     catch (err) {
       setError('Login failed. Please check your credentials.');
@@ -30,11 +29,11 @@ export const useUserAuth = () => {
     }
   };
 
-  const signup = async (username: string, email: string, password: string, phone: number) => {
+  const signup = async (username: string, email: string, password: string, phone: number, imageUrl: string) => {
     setLoading(true);
     setError(null);
     try {
-      const data = await userApi.signup(username, email, password, phone);
+      const data = await userApi.signup(username, email, password, phone, imageUrl);
       setUserData(data);
       // Handle post-signup actions
     }
@@ -46,7 +45,7 @@ export const useUserAuth = () => {
     }
   };
 
-  const verifyOtp = async (email: string, otp: string) => {  
+  const verifyOtp = async (email: string, otp: string) => {
     setLoading(true);
     setError(null);
     try {
@@ -67,5 +66,5 @@ export const useUserAuth = () => {
     await userApi.loginWithGoogle(); // Calls the loginWithGoogle method from userApi
   };
 
-  return { loading, error, userData, otpData,login, signup, signinWithGoogle , verifyOtp};
+  return { loading, error, userData, otpData, login, signup, signinWithGoogle, verifyOtp };
 };

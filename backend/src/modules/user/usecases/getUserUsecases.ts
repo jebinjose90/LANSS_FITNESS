@@ -9,11 +9,12 @@ import TempUserModel from '../models/TempUserModel';
 
 
 // Function to login user
-export const findExistingUser = async (username: string, email: string, hashedPassword: string, phone: number): Promise<void> => {
+export const findExistingUser = async (username: string, email: string, hashedPassword: string, phone: number, imageUrl: string): Promise<void> => {
     try {
         console.log("email", email, "password", hashedPassword, "username", username);
 
         let password = hashedPassword
+        let profilePictureUrl = imageUrl
         // Check if email or username already exists in the User database
         const existingUser = await UserModel.findOne({ $or: [{ email }, { username }] });
         if (existingUser) {
@@ -23,7 +24,7 @@ export const findExistingUser = async (username: string, email: string, hashedPa
         const otp = generateOtp();
         console.log(otp);
 
-        await TempUserModel.create({ email, password, username, phone, otp, otpExpiresAt: new Date(Date.now() + 10 * 60 * 1000) }); // OTP expires in 10 minutes
+        await TempUserModel.create({ email, password, username, phone, otp, profilePictureUrl ,otpExpiresAt: new Date(Date.now() + 10 * 60 * 1000) }); // OTP expires in 10 minutes
 
         // Send OTP email
         await sendOtpEmail(email, otp);
@@ -48,9 +49,9 @@ export const createUser = async (email: string, otp: string): Promise<User> => {
             throw new Error('OTP expired. Please request a new one.');
         }
         // Create the User and delete the TempUser
-        const { username, password } = tempUser;
+        const { username, password ,profilePictureUrl} = tempUser;
         const isGoogleAuth = false
-        const newUser = new UserModel({ email, username, password, isGoogleAuth});
+        const newUser = new UserModel({ email, username, password, isGoogleAuth, profilePictureUrl});
         await newUser.save();
         await TempUserModel.deleteOne({ email });
         return newUser; // Return the created user object

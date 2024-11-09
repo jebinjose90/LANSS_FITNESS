@@ -1,9 +1,14 @@
 ///backend/src/modules/user/routes/userRoutes.ts
 
 import { Router } from 'express';
-import { getUser, getUserByUsernameController, userSignupRequestOtp, userSignupVerifyOtp, userLogin, googleCallbackController, signinFailed } from '../controllers/userController';
+import { getUser, getUserByUsernameController, userSignupRequestOtp, userSignupVerifyOtp, userLogin, googleCallbackController, signinFailed} from '../controllers/userController';
 import passport from 'passport';
+import { uploadImage } from '../controllers/imageController';
+import multer from "multer";
 
+// Set up multer storage configuration
+const storage = multer.memoryStorage();  // Store files in memory
+const upload = multer({ storage }); // Use multer middleware
 
 const router = Router();
 
@@ -16,4 +21,5 @@ router.get('/signin/failed', signinFailed)
 router.get('/auth/user/google', passport.authenticate('user-google', { scope: ['profile', 'email'] }));
 router.get('/auth/user/google/callback', passport.authenticate('user-google', 
     {failureRedirect: '/signin/failed' }), googleCallbackController);
+router.post("/upload", upload.single("file"), uploadImage);
 export default router;

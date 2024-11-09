@@ -10,7 +10,8 @@ const tempUserSchema = new Schema<TempUser>({
     phone: { type: Number, required: true },
     username: { type: String, required: true },
     otp: { type: String, required: true },
-    otpExpiresAt: { type: Date, required: true }
+    otpExpiresAt: { type: Date, required: true },
+    profilePictureUrl: { type: String, required: false } // Optional
 });
 // Create a User model
 const TempUserModel = model<TempUser>('TempUser', tempUserSchema, "temp-user");

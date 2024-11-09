@@ -1,11 +1,13 @@
 // frontend\src\modules\common\authenticationComponents\Signup.tsx
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useUserAuth } from '../../user/hooks/manageUserAuth';
+import { uploadImage } from "../../../infrastructure/api/fileApi";
 import { useNavigate } from 'react-router-dom';
 import useCustomAlert from '../../../core/usecases/useCustomAlert';
 import useValidation from '../../../core/usecases/useValidation';
 import Icon from '../Icon'
+import Modal from '../../../core/usecases/imageCrop/Modal';
 
 interface SignupModel {
     showUplaodCertificate?: boolean
@@ -31,7 +33,7 @@ const InputField: React.FC<InputFieldProps> = ({ svgName, svgWidth, svgHeight, p
 );
 
 const Signup: React.FC<SignupModel> = ({ showUplaodCertificate = false }) => {
-    const [formValues, setFormValues] = useState({ username: '', email: '', password: '', phone: '' });
+    const [formValues, setFormValues] = useState({ username: '', email: '', password: '', phone: '' ,imageUrl: ''});
     const { loading, error, signup } = useUserAuth();
     const navigate = useNavigate(); // Set up navigation
     const { validateAll } = useValidation();
@@ -41,19 +43,29 @@ const Signup: React.FC<SignupModel> = ({ showUplaodCertificate = false }) => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-    
+
         // Get all errors as an array
-        const allErrors = validateAll(formValues.username, formValues.email, formValues.password);
-    
+        const allErrors = validateAll({ username: formValues.username, email: formValues.email, password: formValues.password, phone: formValues.phone });
+
         console.log("ERR", allErrors);
-    
+        console.log("URL", avatarUrl.current);
+        let imageUrl = ''
+        if (formValues.imageUrl) {
+            imageUrl = formValues.imageUrl
+        }else{
+            imageUrl = avatarUrl.current
+        }
+
+        console.log("IMGGGG URLLLL",imageUrl);
+        
+
         if (allErrors.length > 0) {
             // Pass the array of errors directly to showAlert
-            showAlert({ title: "Validation Failed", listItems: allErrors });
+            showAlert({ title: "Login Failed", listItems: allErrors });
         } else {
             try {
                 // Attempt signup and navigate on success
-                await signup(formValues.username, formValues.email, formValues.password, Number(formValues.phone));
+                await signup(formValues.username, formValues.email, formValues.password, Number(formValues.phone), imageUrl);
                 navigate(`/userOtp?email=${encodeURIComponent(formValues.email)}`); // Pass email as a URL parameter;
             } catch (signUpError) {
                 console.error(signUpError);
@@ -71,8 +83,44 @@ const Signup: React.FC<SignupModel> = ({ showUplaodCertificate = false }) => {
 
     const { signinWithGoogle } = useUserAuth();
 
+    const avatarUrl = useRef(
+        "https://cdn-icons-png.flaticon.com/512/149/149071.png"
+    );
+    const [modalOpen, setModalOpen] = useState(false);
+
+    const updateAvatar = async (imgSrc: any) => {
+        try {
+            const result = await uploadImage(imgSrc);
+            avatarUrl.current = imgSrc;
+            setFormValues((prevState) => ({
+                ...prevState,
+                imageUrl: result.imageUrl, // Set the imageUrl in the state
+              }));
+            
+          } catch (error) {
+            console.error("Error uploading image:", error);
+          }
+    };
+
+    useEffect(() => {
+        console.log("Updated form image URL:", formValues.imageUrl);
+    }, [formValues.imageUrl]);
+
     return (
         <>
+            <div className='relative top-8'>
+                <img src={avatarUrl.current} alt="Avatar" className="w-[70px] h-[70px] rounded-full border-2 border-color3 mt-2" />
+                <button className="absolute -bottom-2 left-9 p-1.5 rounded-full bg-color1 hover:bg-color2 border border-color3" title="Change photo" onClick={() => setModalOpen(true)}>
+                    <Icon svgName="pencil-icon" className="w-4 h-4 stroke-color3" />
+                </button>
+
+                {modalOpen && (
+                    <Modal
+                        updateAvatar={updateAvatar}
+                        closeModal={() => setModalOpen(false)}
+                    />
+                )}
+            </div>
             <form onSubmit={handleSubmit} className='space-y-7 bg-transparent py-10' method="POST">
                 <InputField svgName="login-user-icon" svgWidth="23" svgHeight="23" placeholder="ENTER YOUR USERNAME" name="username" inputValue={formValues.username} onChange={handleInputChange} />
                 <InputField svgName="login-email-icon" svgWidth="30" svgHeight="23" placeholder="ENTER YOUR EMAIL" name="email" inputValue={formValues.email} onChange={handleInputChange} />

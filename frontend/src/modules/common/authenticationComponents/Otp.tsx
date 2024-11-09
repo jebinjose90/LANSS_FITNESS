@@ -91,6 +91,8 @@ export const Otp: React.FC = () => {
         try {
             const data = await verifyOtp(email!, otpValue);
             if (data) {
+                console.log("DTATA",data);
+                
               const { username, imageUrl } = data; // Destructure only if data is not null
               // After successful OTP verification, navigate to the home page with user details
               navigate('/home', { state: { username, imageUrl } });

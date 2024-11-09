@@ -17,10 +17,10 @@ const AUTH_ERROR_MSG = 'Not Authorized';
 export const userSignupRequestOtp = async (req: Request, res: Response): Promise<void> => {
     try {
         console.log(req.body);
-
-        const { username, email, phone, password } = req.body;
+        // const serverAddress = `${req.protocol}://${req.get('host')}`;
+        const { username, email, phone, password ,imageUrl} = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
-        await findExistingUser(username, email, hashedPassword, phone);
+        await findExistingUser(username, email, hashedPassword, phone, imageUrl);
         res.status(201).json({ message: 'OTP sent to email. Please verify to complete signup.' });
     } catch (error: unknown) {
         const errorMessage = error instanceof Error ? error.message : CREATE_USER_ERROR_MSG;
@@ -35,6 +35,7 @@ export const userSignupVerifyOtp = async (req: Request, res: Response): Promise<
         const user = await createUser(email, otp);
         const username = user.username
         const imageUrl = user.profilePictureUrl || ""
+
         const token = jwt.sign(
             {
                 id: user._id,
@@ -98,6 +99,8 @@ export const userLogin = async (req: Request, res: Response): Promise<void> => {
         }
         const username = user.username
         const imageUrl = user.profilePictureUrl || ""
+        console.log("KSDAAASASAS",imageUrl);
+        
         const token = jwt.sign(
             {
                 id: user._id,
@@ -107,7 +110,8 @@ export const userLogin = async (req: Request, res: Response): Promise<void> => {
             process.env.JWT_SECRET as string,
             { expiresIn: '1h' }
         );
-        res.redirect(`${process.env.CLIENT_URL}/home?token=${token}&username=${username}&imageUrl=${imageUrl}`);
+        const redirectUrl = `/home?token=${token}&username=${username}&imageUrl=${imageUrl}`
+        res.json({redirectUrl})
     } catch (error: unknown) {
         const errorMessage = error instanceof Error ? error.message : LOGIN_ERROR_MSG;
         console.log("error", errorMessage);
@@ -144,3 +148,13 @@ export const googleCallbackController = (req: Request, res: Response) => {
         res.redirect(`${process.env.CLIENT_URL}/userSignin`);
     }
 };
+
+export const uploadProfileImage = (req: Request, res: Response): void => {
+    console.log("HI",req.file);
+    
+    if (!req.file) {
+      res.status(400).send('No file uploaded.');
+      return 
+    }
+    res.send(`File uploaded: ${req.file.path}`);
+  };

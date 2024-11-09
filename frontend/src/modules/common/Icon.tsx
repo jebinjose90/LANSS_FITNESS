@@ -40,5 +40,8 @@ export default Icon;
 <Icon svgName="login-password-icon" width="28" height="24" className="custom-class"/>
 <Icon svgName="google-sign-color-icon"  width="30" height="30" className="custom-class"/>
 <Icon svgName="login-email-icon" width="30" height="23" className="custom-class"/>
-<Icon svgName="login-phone-icon" width="30" height="30" className="custom-class"/>"*/}
+<Icon svgName="login-phone-icon" width="30" height="30" className="custom-class"/>"
+<Icon svgName="info-icon" className="flex-shrink-0 inline w-5 h-5 mr-3"/>
+<Icon svgName="pencil-icon" className="w-4 h-4"/>"
+<Icon svgName="close-icon" className="h-4 w-4"/>*/}
 

@@ -36,13 +36,13 @@ export const userApi = {
   loginWithGoogle: async () => {
     window.location.href = `${apiUrl}/auth/user/google`; // Adjust path based on user module
   },
-  signup: async (username: string, email: string, password: string, phone: number) => {
-    const response = await axios.post(`${apiUrl}/signup/request-otp`, { username, email, password, phone });
+  signup: async (username: string, email: string, password: string, phone: number, imageUrl: string) => {
+    const response = await axios.post(`${apiUrl}/signup/request-otp`, { username, email, password, phone ,imageUrl});
     return response.data;
   },
   verifyOtp: async (email: string, otp: string): Promise<VerifyOtpResponse> => {
     const response = await axios.post(`${apiUrl}/signup/verify-otp`, { email, otp });
-    return response.data as VerifyOtpResponse; // Ensure the response has the expected shape
+    return response.data ; // Ensure the response has the expected shape
   },
   resetPassword: async (email: string) => {
     const response = await axios.post(`${apiUrl}/reset-password`, { email });
