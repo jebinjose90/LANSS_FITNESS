@@ -16,16 +16,32 @@ export const useUserAuth = () => {
     try {
       const data = await userApi.login(email, password);
       // Access token, username, and imageUrl from response data
-      const { token, username, imageUrl } = data.data;
+      const { token} = data.data;
       // Save token, username, and imageUrl to localStorage
       localStorage.setItem('token', token);
-      localStorage.setItem('username', username);
-      localStorage.setItem('imageUrl', imageUrl);
-
       navigate('/home');
     }
     catch (err) {
       setError('Login failed. Please check your credentials.');
+    }
+    finally {
+      setLoading(false);
+    }
+  };
+
+  const home = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await userApi.homeData();
+      // Access token, username, and imageUrl from response data
+      const { username, imageUrl } = data.data;
+      // Save token, username, and imageUrl to localStorage
+      localStorage.setItem('username', username);
+      localStorage.setItem('imageUrl', imageUrl);
+    }
+    catch (err) {
+      setError('Home data fetching failed. Please check your credentials.');
     }
     finally {
       setLoading(false);
@@ -87,5 +103,5 @@ export const useUserAuth = () => {
     await userApi.loginWithGoogle(); // Calls the loginWithGoogle method from userApi
   };
 
-  return { loading, error, userData, login, signup, signinWithGoogle, verifyOtp, logout };
+  return { loading, error, userData, login, signup, signinWithGoogle, verifyOtp, logout, home};
 };

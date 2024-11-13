@@ -2,8 +2,9 @@
 
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 import { createUser, findExistingUser, getUserById, getUserByUsername, loginUser } from '../usecases/getUserUsecases';
+import { generateToken } from '../../../infrastructure/security/jwtService';
+
 
 // Constants for error and success messages
 const USER_NOT_FOUND_MSG = 'User not found';
@@ -18,7 +19,7 @@ export const userSignupRequestOtp = async (req: Request, res: Response): Promise
     try {
         console.log(req.body);
         // const serverAddress = `${req.protocol}://${req.get('host')}`;
-        const { username, email, phone, password ,imageUrl} = req.body;
+        const { username, email, phone, password, imageUrl } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
         await findExistingUser(username, email, hashedPassword, phone, imageUrl);
         res.status(201).json({ message: 'OTP sent to email. Please verify to complete signup.' });
@@ -36,21 +37,16 @@ export const userSignupVerifyOtp = async (req: Request, res: Response): Promise<
         const username = user.username
         const imageUrl = user.profilePictureUrl || ""
 
-        const token = jwt.sign(
-            {
-                id: user._id,
-                username: user.username,
-                email: user.email
-            },
-            process.env.JWT_SECRET as string,
-            { expiresIn: '1h' }
-        );
-        res.json({message: "Login Success", 
+        // Generate JWT token
+        const token = generateToken({ id: user._id, username: user.username, email: user.email });
+        res.json({
+            message: "Login Success",
             data: {
                 token,
                 username,
                 imageUrl,
-            }})
+            }
+        })
     } catch (error) {
         const errorMessage = error instanceof Error ? error.message : CREATE_USER_ERROR_MSG;
         res.status(500).json({ message: errorMessage });
@@ -103,23 +99,16 @@ export const userLogin = async (req: Request, res: Response): Promise<void> => {
         }
         const username = user.username
         const imageUrl = user.profilePictureUrl || ""
-        
-        const token = jwt.sign(
-            {
-                id: user._id,
-                username: user.username,
-                email: user.email
-            },
-            process.env.JWT_SECRET as string,
-            { expiresIn: '1h' }
-        );
-        
-        res.json({message: "Login Success", 
+        // Generate JWT token
+        const token = generateToken({ id: user._id, username: user.username, email: user.email });
+        res.json({
+            message: "Login Success",
             data: {
                 token,
                 username,
                 imageUrl,
-            }})
+            }
+        })
     } catch (error: unknown) {
         const errorMessage = error instanceof Error ? error.message : LOGIN_ERROR_MSG;
         console.log("error", errorMessage);
@@ -141,17 +130,10 @@ export const googleCallbackController = (req: Request, res: Response) => {
         const imageUrl = user.profilePictureUrl;
 
         // Generate JWT token
-        const token = jwt.sign(
-            {
-                id: user._id,
-                username: user.username,
-                email: user.email
-            },
-            process.env.JWT_SECRET as string,
-            { expiresIn: '1h' });
-
+        const token = generateToken({ id: user._id, username: user.username, email: user.email });
         // Redirect to frontend with token, username, and image URL as query parameters
-        res.redirect(`${process.env.CLIENT_URL}/home?token=${token}&username=${firstName}&imageUrl=${imageUrl}`);
+        res.redirect(`${process.env.CLIENT_URL}/home`);
+        //?token=${token}&username=${firstName}&imageUrl=${imageUrl}
     } else {
         res.redirect(`${process.env.CLIENT_URL}/userSignin`);
     }
@@ -163,11 +145,38 @@ export const logout = (req: Request, res: Response) => {
 };
 
 export const uploadProfileImage = (req: Request, res: Response): void => {
-    console.log("HI",req.file);
-    
     if (!req.file) {
-      res.status(400).send('No file uploaded.');
-      return 
+        res.status(400).send('No file uploaded.');
+        return
     }
     res.send(`File uploaded: ${req.file.path}`);
-  };
+};
+
+export const getHomeData = async (req: Request, res: Response) => {
+    try {
+        // `req.user` contains decoded token data if token verification was successful
+        const user = req.user; // Assuming `id` was part of the token payload
+        if (user) {
+            const { id } = user as { id: string; }; // Cast to expected structure
+            // Fetch user data based on `userId`
+            const tokenUser = await getUserById(id);
+            if (!tokenUser) {
+                res.status(404).json({ message: USER_NOT_FOUND_MSG });
+            }
+
+            // Send the data needed for the home page
+            res.json({
+                message: 'Home Data',
+                data: {
+                    username: tokenUser?.username,
+                    imageUrl: tokenUser?.profilePictureUrl,
+                    // Add any other relevant data here, such as recent activities or stats
+                },
+            });
+        } else {
+            res.status(403).json({ message: 'User data not found in token' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching home data' });
+    }
+};

@@ -47,7 +47,7 @@ export const userApi = {
   },
   // Example of an authenticated request
   homeData: async () => {
-    const response = await apiClient.get(`${apiUrl}/home`);
+    const response = await apiClient.post(`${apiUrl}/home`);
     return response.data;
   },
 

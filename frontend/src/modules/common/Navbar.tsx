@@ -12,19 +12,19 @@ const Navbar: React.FC = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const theme = useTheme();
-  const { logout } = useUserAuth();
+  const { logout , home} = useUserAuth();
   // Retrieve values from localStorage to use in the component
   const [username, setUsername] = useState<string | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   useEffect(() => {
+    home()
     // Fetch from localStorage and set state variables
     const storedUsername = localStorage.getItem('username');
     const storedImageUrl = localStorage.getItem('imageUrl');
     setUsername(storedUsername);
     setImageUrl(storedImageUrl);
   }, []);
-
 
   if (!theme) {
     return <div>Loading...</div>;

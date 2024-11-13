@@ -21,3 +21,14 @@ export const useTheme = () => {
 
   return theme;
 };
+
+export const homeData = () => {
+  useEffect(() => {
+    const fetchHomeData = async () => {
+      await getTheme();
+    };
+    fetchHomeData();
+  }, []);
+
+  return;
+};
