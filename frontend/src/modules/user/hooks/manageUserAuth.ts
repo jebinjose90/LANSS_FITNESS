@@ -1,25 +1,28 @@
 // frontend\src\modules\user\hooks\manageUserAuth.ts
 
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { userApi } from '../../../infrastructure/api/userApi';
-
-interface OtpUserData {
-  username: string;
-  imageUrl: string;
-}
+import { useNavigate } from 'react-router-dom';
 
 export const useUserAuth = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [userData, setUserData] = useState<any>(null); // Adjust type as needed
-  const [otpData, setOtpData] = useState<OtpUserData | null>(null); // Adjust type as needed
+  const navigate = useNavigate();
 
   const login = async (email: string, password: string) => {
     setLoading(true);
     setError(null);
     try {
       const data = await userApi.login(email, password);
-      setUserData(data);
+      // Access token, username, and imageUrl from response data
+      const { token, username, imageUrl } = data.data;
+      // Save token, username, and imageUrl to localStorage
+      localStorage.setItem('token', token);
+      localStorage.setItem('username', username);
+      localStorage.setItem('imageUrl', imageUrl);
+
+      navigate('/home');
     }
     catch (err) {
       setError('Login failed. Please check your credentials.');
@@ -45,14 +48,32 @@ export const useUserAuth = () => {
     }
   };
 
+  const logout = useCallback(async () => {
+    try {
+      await userApi.logout();
+      localStorage.removeItem('token');
+      localStorage.removeItem('username');
+      localStorage.removeItem('imageUrl');
+      navigate('/userSignin');
+    } catch (error) {
+      console.error('Error during logout', error);
+    }
+  }, [navigate]);
+
   const verifyOtp = async (email: string, otp: string) => {
     setLoading(true);
     setError(null);
     try {
       // Call verifyOtp and expect a response with username and imageUrl
       const data = await userApi.verifyOtp(email, otp);
-      setOtpData(data);  // Store the user data after OTP verification
-      return data;  // Optionally return the data if needed for further use
+      // Access token, username, and imageUrl from response data
+      const { token, username, imageUrl } = data.data;
+      // Save token, username, and imageUrl to localStorage
+      localStorage.setItem('token', token);
+      localStorage.setItem('username', username);
+      localStorage.setItem('imageUrl', imageUrl);
+
+      navigate('/home');
     }
     catch (err) {
       setError('OTP verification failed. Please try again.');
@@ -66,5 +87,5 @@ export const useUserAuth = () => {
     await userApi.loginWithGoogle(); // Calls the loginWithGoogle method from userApi
   };
 
-  return { loading, error, userData, otpData, login, signup, signinWithGoogle, verifyOtp };
+  return { loading, error, userData, login, signup, signinWithGoogle, verifyOtp, logout };
 };

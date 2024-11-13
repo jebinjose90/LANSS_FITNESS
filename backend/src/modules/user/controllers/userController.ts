@@ -45,8 +45,12 @@ export const userSignupVerifyOtp = async (req: Request, res: Response): Promise<
             process.env.JWT_SECRET as string,
             { expiresIn: '1h' }
         );
-        const redirectUrl = `/home?token=${token}&username=${username}&imageUrl=${imageUrl}`
-        res.json({redirectUrl})
+        res.json({message: "Login Success", 
+            data: {
+                token,
+                username,
+                imageUrl,
+            }})
     } catch (error) {
         const errorMessage = error instanceof Error ? error.message : CREATE_USER_ERROR_MSG;
         res.status(500).json({ message: errorMessage });
@@ -99,7 +103,6 @@ export const userLogin = async (req: Request, res: Response): Promise<void> => {
         }
         const username = user.username
         const imageUrl = user.profilePictureUrl || ""
-        console.log("KSDAAASASAS",imageUrl);
         
         const token = jwt.sign(
             {
@@ -110,8 +113,13 @@ export const userLogin = async (req: Request, res: Response): Promise<void> => {
             process.env.JWT_SECRET as string,
             { expiresIn: '1h' }
         );
-        const redirectUrl = `/home?token=${token}&username=${username}&imageUrl=${imageUrl}`
-        res.json({redirectUrl})
+        
+        res.json({message: "Login Success", 
+            data: {
+                token,
+                username,
+                imageUrl,
+            }})
     } catch (error: unknown) {
         const errorMessage = error instanceof Error ? error.message : LOGIN_ERROR_MSG;
         console.log("error", errorMessage);
@@ -147,6 +155,11 @@ export const googleCallbackController = (req: Request, res: Response) => {
     } else {
         res.redirect(`${process.env.CLIENT_URL}/userSignin`);
     }
+};
+
+export const logout = (req: Request, res: Response) => {
+    res.clearCookie('token'); // Clears cookie if JWT is stored in cookies
+    res.status(200).json({ message: 'Logged out successfully' });
 };
 
 export const uploadProfileImage = (req: Request, res: Response): void => {

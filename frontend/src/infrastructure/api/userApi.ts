@@ -18,31 +18,24 @@ apiClient.interceptors.request.use((config) => {
   return config;
 });
 
-interface VerifyOtpResponse {
-  username: string;
-  imageUrl: string;
-}
-
 export const userApi = {
   login: async (email: string, password: string) => {
-    console.log(`${apiUrl}/sigin`)
-    console.log(email, password)
     const response = await axios.post(`${apiUrl}/signin`, { email, password });
-    const { token, user } = response.data;
-    // Store JWT token in localStorage
-    localStorage.setItem('token', token);
-    return user;
+    return response.data
   },
   loginWithGoogle: async () => {
     window.location.href = `${apiUrl}/auth/user/google`; // Adjust path based on user module
   },
   signup: async (username: string, email: string, password: string, phone: number, imageUrl: string) => {
-    const response = await axios.post(`${apiUrl}/signup/request-otp`, { username, email, password, phone ,imageUrl});
+    const response = await axios.post(`${apiUrl}/signup/request-otp`, { username, email, password, phone, imageUrl });
     return response.data;
   },
-  verifyOtp: async (email: string, otp: string): Promise<VerifyOtpResponse> => {
+  logout: async () => {
+    await axios.post(`${apiUrl}/logout`);
+  },
+  verifyOtp: async (email: string, otp: string) => {
     const response = await axios.post(`${apiUrl}/signup/verify-otp`, { email, otp });
-    return response.data ; // Ensure the response has the expected shape
+    return response.data; // Ensure the response has the expected shape
   },
   resetPassword: async (email: string) => {
     const response = await axios.post(`${apiUrl}/reset-password`, { email });
@@ -57,4 +50,5 @@ export const userApi = {
     const response = await apiClient.get(`/user/profile`);
     return response.data;
   },
+
 };

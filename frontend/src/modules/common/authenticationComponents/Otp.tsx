@@ -89,14 +89,7 @@ export const Otp: React.FC = () => {
         // Concatenate the OTP digits into a single string
         const otpValue = `${otp.digitOne}${otp.digitTwo}${otp.digitThree}${otp.digitFour}`;
         try {
-            const data = await verifyOtp(email!, otpValue);
-            if (data) {
-                console.log("DTATA",data);
-                
-              const { username, imageUrl } = data; // Destructure only if data is not null
-              // After successful OTP verification, navigate to the home page with user details
-              navigate('/home', { state: { username, imageUrl } });
-            }
+            await verifyOtp(email!, otpValue);
           } catch (error) {
             console.error("OTP verification failed", error);
           }

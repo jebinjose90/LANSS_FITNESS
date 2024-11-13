@@ -48,17 +48,12 @@ const Signup: React.FC<SignupModel> = ({ showUplaodCertificate = false }) => {
         const allErrors = validateAll({ username: formValues.username, email: formValues.email, password: formValues.password, phone: formValues.phone });
 
         console.log("ERR", allErrors);
-        console.log("URL", avatarUrl.current);
         let imageUrl = ''
         if (formValues.imageUrl) {
             imageUrl = formValues.imageUrl
         }else{
             imageUrl = avatarUrl.current
         }
-
-        console.log("IMGGGG URLLLL",imageUrl);
-        
-
         if (allErrors.length > 0) {
             // Pass the array of errors directly to showAlert
             showAlert({ title: "Login Failed", listItems: allErrors });
