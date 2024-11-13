@@ -46,8 +46,8 @@ export const userApi = {
     return response.data;
   },
   // Example of an authenticated request
-  fetchUserProfile: async () => {
-    const response = await apiClient.get(`/user/profile`);
+  homeData: async () => {
+    const response = await apiClient.get(`${apiUrl}/home`);
     return response.data;
   },
 
