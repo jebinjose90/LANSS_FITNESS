@@ -4,14 +4,12 @@ import Logo from "./Logo";
 import CompanyName from "./CompanyName";
 import Icon from './Icon';
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useUserAuth } from "../user/hooks/manageUserAuth";
 
 
 
 const Navbar: React.FC = () => {
 
-  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const theme = useTheme();
   const { logout } = useUserAuth();
