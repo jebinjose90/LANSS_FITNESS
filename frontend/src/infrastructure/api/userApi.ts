@@ -51,4 +51,8 @@ export const userApi = {
     return response.data;
   },
 
+  submitBMI: async (weight: string, heightCm: string, age: string, gender: string) => {
+    const response = await apiClient.post(`${apiUrl}/calculate-bmi`,{weight, heightCm, age, gender});
+    return response.data;
+  },
 };

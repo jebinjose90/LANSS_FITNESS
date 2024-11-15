@@ -24,7 +24,7 @@ export const findExistingUser = async (username: string, email: string, hashedPa
         const otp = generateOtp();
         console.log(otp);
 
-        await TempUserModel.create({ email, password, username, phone, otp, profilePictureUrl ,otpExpiresAt: new Date(Date.now() + 10 * 60 * 1000) }); // OTP expires in 10 minutes
+        await TempUserModel.create({ email, password, username, phone, otp, profilePictureUrl, otpExpiresAt: new Date(Date.now() + 10 * 60 * 1000) }); // OTP expires in 10 minutes
 
         // Send OTP email
         await sendOtpEmail(email, otp);
@@ -49,9 +49,9 @@ export const createUser = async (email: string, otp: string): Promise<User> => {
             throw new Error('OTP expired. Please request a new one.');
         }
         // Create the User and delete the TempUser
-        const { username, password ,profilePictureUrl} = tempUser;
+        const { username, password, profilePictureUrl } = tempUser;
         const isGoogleAuth = false
-        const newUser = new UserModel({ email, username, password, isGoogleAuth, profilePictureUrl});
+        const newUser = new UserModel({ email, username, password, isGoogleAuth, profilePictureUrl });
         await newUser.save();
         await TempUserModel.deleteOne({ email });
         return newUser; // Return the created user object
@@ -108,4 +108,14 @@ export const loginUser = async (email: string, password: string): Promise<User> 
         throw new Error(`Login failed: ${error.message}`);
     }
 };
+
+export const calculateBMI = async (weight: number, heightCm: number, age: number, gender: string): Promise<void> => {
+    try {
+        
+
+
+    } catch (error: any) {
+        throw new Error(`Failed to calculate BMI, please try again.`)
+    }
+}
 

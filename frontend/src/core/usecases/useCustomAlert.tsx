@@ -19,7 +19,7 @@ const useCustomAlert = () => {
 
     MySwal.fire({
       html: (
-        <div className="text-sm rounded-3xl bg-color1 text-color3 flex items-start justify-center text-left p-4">
+        <div className="text-sm bg-color1 text-color3 border-2 border-color2 flex items-start justify-center text-left p-4">
           <Icon svgName="info-icon" width='20' height='20' className="flex-shrink-0 inline mr-3"/>
           <div>
             <span className="font-semibold">{title}</span>

@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 
-const Dropdown: React.FC = () => {
+interface DropdownProps {
+    onSelect: (selectedOption: string) => void;  // Callback to pass the selected value to the parent
+}
+
+const Dropdown: React.FC<DropdownProps> = ({ onSelect }) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [selectedOption, setSelectedOption] = useState<string>('Sex'); // Default text
 
@@ -10,7 +14,8 @@ const Dropdown: React.FC = () => {
     // Handle selection of an option
     const handleOptionSelect = (option: string) => {
         setSelectedOption(option);
-        setIsOpen(false); // Close the dropdown after selection
+        onSelect(option);  // Pass the selected option to the parent component
+        setIsOpen(false);  // Close the dropdown after selection
     };
 
     return (

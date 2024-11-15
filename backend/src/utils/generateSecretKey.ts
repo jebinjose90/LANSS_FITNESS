@@ -8,7 +8,7 @@ export function generateSecretKey(length = 32): string {
 
 // Run this script once to generate your key, then save it to your .env file
 const secretKey = generateSecretKey();
-console.log("Your JWT Secret Key:", secretKey);
+// console.log("Your JWT Secret Key:", secretKey);
 
 
 /*-----------------to exicute this file----------------*/

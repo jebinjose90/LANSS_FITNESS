@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useTheme } from '../../core/usecases/useTheme';
+import { useLocation } from "react-router-dom";
 import Logo from "./Logo";
 import CompanyName from "./CompanyName";
 import Icon from './Icon';
@@ -12,19 +13,31 @@ const Navbar: React.FC = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const theme = useTheme();
-  const { logout , home} = useUserAuth();
+  const { logout, home } = useUserAuth();
+  const location = useLocation();
   // Retrieve values from localStorage to use in the component
   const [username, setUsername] = useState<string | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    home()
+    
+    if (localStorage.getItem('token')) {
+      home(); // Fetch only if token is available
+    }
     // Fetch from localStorage and set state variables
     const storedUsername = localStorage.getItem('username');
     const storedImageUrl = localStorage.getItem('imageUrl');
     setUsername(storedUsername);
     setImageUrl(storedImageUrl);
-  }, []);
+  }, [localStorage.getItem('token')]);
+
+  const isHomePage = location.pathname === "/home";
+  const isTrainersPage = location.pathname === "/trainers";
+  const isProfilePage = location.pathname === "/profile";
+  const isCoursesPage = location.pathname === "/courses";
+  const isDietPlanPage = location.pathname === "/dietPlans";
+  const isReportsPage = location.pathname === "/reports";
+
 
   if (!theme) {
     return <div>Loading...</div>;
@@ -39,12 +52,12 @@ const Navbar: React.FC = () => {
           </div>
           {/* Navigation Links */}
           <div className="hidden md:flex space-x-4 ">
-            <a href="/" className="hover:text-gray-300">Home</a>
-            <a href="/" className="hover:text-gray-300">Trainers</a>
-            <a href="/" className="hover:text-gray-300">Profile</a>
-            <a href="/" className="hover:text-gray-300">Courses</a>
-            <a href="/" className="hover:text-gray-300">DietPlans</a>
-            <a href="/" className="hover:text-gray-300">Reports</a>
+            <a href="/home" className={`hover:text-gray-300 ${isHomePage ? "font-bold text-gray-500 pointer-events-none" : ""}`}> Home </a>
+            <a href="/trainers" className={`hover:text-gray-300 ${isTrainersPage ? "font-bold text-gray-500 pointer-events-none" : ""}`}> Trainers </a>
+            <a href="/profile" className={`hover:text-gray-300 ${isProfilePage ? "font-bold text-gray-500 pointer-events-none" : ""}`}> Profile </a>
+            <a href="/courses" className={`hover:text-gray-300 ${isCoursesPage ? "font-bold text-gray-500 pointer-events-none" : ""}`}> Courses </a>
+            <a href="/dietPlans" className={`hover:text-gray-300 ${isDietPlanPage ? "font-bold text-gray-500 pointer-events-none" : ""}`}> DietPlans </a>
+            <a href="/reports" className={`hover:text-gray-300 ${isReportsPage ? "font-bold text-gray-500 pointer-events-none" : ""}`}> Reports </a>
             <div className="w-10 h-10 bg-color3 rounded-md flex items-center justify-center hover:bg-gray-300 transition duration-200">
               <button onClick={logout}>
                 <Icon svgName="logout-icon" width="30" height="34" className="custom-class text-color3" />

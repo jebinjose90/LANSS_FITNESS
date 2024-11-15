@@ -2,6 +2,7 @@
 
 import { Route, Routes } from 'react-router-dom'
 import Home from '../modules/user/pages/Home'
+import Trainers from '../modules/user/pages/Trainers'
 import Landing from '../modules/user/pages/Landing'
 import UserLogin from '../modules/user/pages/UserLogin'
 import UserOTP from '../modules/user/pages/UserOTP'
@@ -14,6 +15,7 @@ const AppRouter = () => {
             <Routes>
                 <Route path="/" element={<Landing />} />
                 <Route path="home" element={<Home />} />
+                <Route path="trainers" element={<Trainers />} />
                 <Route path="userSignin" element={<UserLogin />} />
                 <Route path="userOtp" element={<UserOTP />} />
                 <Route path="userResetPassword" element={<UserResetPassword />} />

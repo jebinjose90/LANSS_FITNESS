@@ -45,7 +45,7 @@ const Signup: React.FC<SignupModel> = ({ showUplaodCertificate = false }) => {
         e.preventDefault();
 
         // Get all errors as an array
-        const allErrors = validateAll({ username: formValues.username, email: formValues.email, password: formValues.password, phone: formValues.phone });
+        const allErrors = validateAll({ username: formValues.username, email: formValues.email, password: formValues.password, phone: formValues.phone ,height: "*",weight: "*",age: "*",gender: "*"});
 
         console.log("ERR", allErrors);
         let imageUrl = ''

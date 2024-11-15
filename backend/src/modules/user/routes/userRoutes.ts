@@ -6,6 +6,7 @@ import passport from 'passport';
 import { uploadImage } from '../controllers/imageController';
 import multer from "multer";
 import { authenticateToken } from '../../../infrastructure/security/authMiddleware';
+import { calculateBMIHandler } from '../controllers/bmiController';
 
 
 // Set up multer storage configuration
@@ -25,5 +26,6 @@ router.get('/signin/failed', signinFailed)
 router.get('/auth/user/google', passport.authenticate('user-google', { scope: ['profile', 'email'] }));
 router.get('/auth/user/google/callback', passport.authenticate('user-google', 
     {failureRedirect: '/signin/failed' }), googleCallbackController);
-router.post("/upload", upload.single("file"), uploadImage);
+router.post('/upload', upload.single("file"), uploadImage);
+router.post('/calculate-bmi', calculateBMIHandler);
 export default router;
