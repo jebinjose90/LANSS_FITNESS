@@ -13,7 +13,12 @@ module.exports = {
       colors: {
         color1: 'var(--color1)',
         color2: 'var(--color2)',
-        color3: 'var(--color3)'
+        color3: 'var(--color3)',
+        'scrollbar-thumb': '#edf2f7',
+        'scrollbar-track': '#f7fafc',
+      },
+      spacing: {
+        'scrollbar-width': '0.25rem',
       },
     },
   },
