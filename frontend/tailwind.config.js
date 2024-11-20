@@ -14,13 +14,16 @@ module.exports = {
         color1: 'var(--color1)',
         color2: 'var(--color2)',
         color3: 'var(--color3)',
-        'scrollbar-thumb': '#edf2f7',
-        'scrollbar-track': '#f7fafc',
+        'scrollbar-thumb': 'var(--color3)',
+        'scrollbar-track': 'var(--color3)',
       },
       spacing: {
         'scrollbar-width': '0.25rem',
       },
+      screens: {
+        'xs': '480px',
+      },
     },
   },
-  plugins: [],
+  plugins: [require('tailwind-scrollbar')],
 };

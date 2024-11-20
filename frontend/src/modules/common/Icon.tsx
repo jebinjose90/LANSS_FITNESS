@@ -42,6 +42,11 @@ export default Icon;
 <Icon svgName="login-email-icon" width="30" height="23" className="custom-class"/>
 <Icon svgName="login-phone-icon" width="30" height="30" className="custom-class"/>"
 <Icon svgName="info-icon" className="flex-shrink-0 inline w-5 h-5 mr-3"/>
+<Icon svgName="video-icon" width="40" height="27" className="custom-class"/>
 <Icon svgName="pencil-icon" className="w-4 h-4"/>"
-<Icon svgName="close-icon" className="h-4 w-4"/>*/}
+<Icon svgName="close-icon" className="h-4 w-4"/>
+<Icon svgName="chat-icon" className="h-4 w-4"/>
+<Icon svgName="time-icon" className="h-4 w-4"/>
+<Icon svgName="ticket-icon" className="h-4 w-4"/>
+<Icon svgName="calender-icon" width="70" height="70"/>*/}
 

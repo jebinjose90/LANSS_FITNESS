@@ -9,11 +9,13 @@ export const useTheme = () => {
     const fetchTheme = async () => {
       const themeData = await getTheme();
       setTheme(themeData);
-      
+      localStorage.setItem('favicon', themeData.logoUrl);
+      localStorage.setItem('title', themeData.companyName);
       // Apply dynamic theme colors via CSS variables
       document.documentElement.style.setProperty('--color1', themeData.color1);
       document.documentElement.style.setProperty('--color2', themeData.color2);
       document.documentElement.style.setProperty('--color3', themeData.color3);
+
     };
 
     fetchTheme();

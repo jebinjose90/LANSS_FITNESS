@@ -62,6 +62,33 @@ export const createUser = async (email: string, otp: string): Promise<User> => {
     }
 };
 
+// Function to resend otp
+export const resendOtp = async (email: string): Promise<void> => {
+    // try {
+
+    //     // Find the email in the User database
+    //     const existingUser = await UserModel.findOne({ $or: [{ email }] });
+    //     if (existingUser) {
+    //         const otp = generateOtp();
+    //         console.log(otp);
+    //         await TempUserModel.updateOne({ email: email }, { $set: { otp: otp, otpExpiresAt: new Date(Date.now() + 10 * 60 * 1000) } })
+    //         // Send OTP email
+    //         await sendOtpEmail(email, otp);
+    //     }
+    //     // Generate OTP and save user info temporarily
+    //     const otp = generateOtp();
+    //     console.log(otp);
+
+    //     await TempUserModel.create({ email, password, username, phone, otp, profilePictureUrl, otpExpiresAt: new Date(Date.now() + 10 * 60 * 1000) }); // OTP expires in 10 minutes
+
+
+    // } catch (error: any) {  // Type the error as 'any'
+    //     console.log("ERROR", error.message);
+
+    //     throw new Error(`Error sending OTP: ${error.message}`);
+    // }
+};
+
 // Function to get a user by ID
 export const getUserById = async (userId: string): Promise<User | null> => {
     try {
@@ -111,7 +138,7 @@ export const loginUser = async (email: string, password: string): Promise<User> 
 
 export const calculateBMI = async (weight: number, heightCm: number, age: number, gender: string): Promise<void> => {
     try {
-        
+
 
 
     } catch (error: any) {

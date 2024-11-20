@@ -1,7 +1,7 @@
 ///backend/src/modules/user/routes/userRoutes.ts
 
 import { Router } from 'express';
-import { getUser, getUserByUsernameController, userSignupRequestOtp, userSignupVerifyOtp, userLogin, googleCallbackController, signinFailed, logout, getHomeData} from '../controllers/userController';
+import { getUser, getUserByUsernameController, userSignupRequestOtp, userSignupVerifyOtp, userLogin, googleCallbackController, signinFailed, logout, getHomeData, requestResendOtp} from '../controllers/userController';
 import passport from 'passport';
 import { uploadImage } from '../controllers/imageController';
 import multer from "multer";
@@ -17,6 +17,7 @@ const router = Router();
 
 router.post('/signup/request-otp', userSignupRequestOtp);
 router.post('/signup/verify-otp', userSignupVerifyOtp);
+router.post('/request-otp', requestResendOtp)
 router.post('/signin', userLogin);
 router.post('/home', authenticateToken, getHomeData);
 router.post('/logout', logout);

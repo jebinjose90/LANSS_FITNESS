@@ -4,11 +4,13 @@ import { useCallback, useState } from 'react';
 import { userApi } from '../../../infrastructure/api/userApi';
 import { useNavigate } from 'react-router-dom';
 
+
 export const useUserAuth = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [userData, setUserData] = useState<any>(null); // Adjust type as needed
   const navigate = useNavigate();
+  const apiUrl:String = import.meta.env.VITE_BACKEND_URL;
 
   const login = async (email: string, password: string) => {
     setLoading(true);
@@ -16,9 +18,11 @@ export const useUserAuth = () => {
     try {
       const data = await userApi.login(email, password);
       // Access token, username, and imageUrl from response data
-      const { token} = data.data;
+      const { token,username, imageUrl } = data.data;
       // Save token, username, and imageUrl to localStorage
       localStorage.setItem('token', token);
+      localStorage.setItem('username', username);
+      localStorage.setItem('imageUrl', `${apiUrl}${imageUrl}`);
       navigate('/home');
     }
     catch (err) {
@@ -36,9 +40,10 @@ export const useUserAuth = () => {
       const data = await userApi.homeData();
       // Access token, username, and imageUrl from response data
       const { username, imageUrl } = data.data;
+      
       // Save token, username, and imageUrl to localStorage
       localStorage.setItem('username', username);
-      localStorage.setItem('imageUrl', imageUrl);
+      localStorage.setItem('imageUrl', `${apiUrl}${imageUrl}`);
     }
     catch (err) {
       setError('Home data fetching failed. Please check your credentials.');

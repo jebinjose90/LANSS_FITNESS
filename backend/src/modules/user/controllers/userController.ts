@@ -22,7 +22,7 @@ export const userSignupRequestOtp = async (req: Request, res: Response): Promise
         const { username, email, phone, password, imageUrl } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
         await findExistingUser(username, email, hashedPassword, phone, imageUrl);
-        res.status(201).json({ message: 'OTP sent to email. Please verify to complete signup.' });
+        res.status(201).json({ message: 'OTP sent to email. Please verify to complete signup.'});
     } catch (error: unknown) {
         const errorMessage = error instanceof Error ? error.message : CREATE_USER_ERROR_MSG;
         res.status(500).json({ message: errorMessage });
@@ -51,6 +51,29 @@ export const userSignupVerifyOtp = async (req: Request, res: Response): Promise<
         const errorMessage = error instanceof Error ? error.message : CREATE_USER_ERROR_MSG;
         res.status(500).json({ message: errorMessage });
     }
+};
+
+export const requestResendOtp = async (req: Request, res: Response): Promise<void> => {
+    // try {
+    //     const { email, otp } = req.body;
+    //     const user = await createUser(email, otp);
+    //     const username = user.username
+    //     const imageUrl = user.profilePictureUrl || ""
+
+    //     // Generate JWT token
+    //     const token = generateToken({ id: user._id, username: user.username, email: user.email });
+    //     res.json({
+    //         message: "Login Success",
+    //         data: {
+    //             token,
+    //             username,
+    //             imageUrl,
+    //         }
+    //     })
+    // } catch (error) {
+    //     const errorMessage = error instanceof Error ? error.message : CREATE_USER_ERROR_MSG;
+    //     res.status(500).json({ message: errorMessage });
+    // }
 };
 
 // Controller function to get a user by ID
@@ -97,10 +120,14 @@ export const userLogin = async (req: Request, res: Response): Promise<void> => {
             res.status(401).json({ message: INVALID_CREDENTIALS_MSG });
             return;
         }
-        const username = user.username
+        function capitalizeFirstLetter(str: string): string {
+            if (!str) return ''; // Handle empty strings
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+        const username = capitalizeFirstLetter(user.username)
         const imageUrl = user.profilePictureUrl || ""
         // Generate JWT token
-        const token = generateToken({ id: user._id, username: user.username, email: user.email });
+        const token = generateToken({ id: user._id, username: username, email: user.email });
         res.json({
             message: "Login Success",
             data: {
@@ -164,11 +191,16 @@ export const getHomeData = async (req: Request, res: Response) => {
                 res.status(404).json({ message: USER_NOT_FOUND_MSG });
             }
 
+            function capitalizeFirstLetter(str: string | undefined): string {
+                if (!str) return ''; // Handle empty strings
+                return str.charAt(0).toUpperCase() + str.slice(1);
+            }
+
             // Send the data needed for the home page
             res.json({
                 message: 'Home Data',
                 data: {
-                    username: tokenUser?.username,
+                    username: capitalizeFirstLetter(tokenUser?.username),
                     imageUrl: tokenUser?.profilePictureUrl,
                     // Add any other relevant data here, such as recent activities or stats
                 },

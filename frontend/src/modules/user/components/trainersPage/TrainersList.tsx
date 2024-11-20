@@ -3,23 +3,28 @@ import Icon from '../../../common/Icon'
 import Search from '../../../common/Search'
 import Pagination from '../../../common/Pagination'
 import ChatWithTrainerModal from './ChatWithTrainerModal'
+import BookTrainerSlotModal from './BookTrainerSlotModal'
 
 const TrainersList: React.FC = () => {
-    const [showModal, setShowModal] = useState<boolean>(false);
+    const [showChatModal, setShowChatModal] = useState<boolean>(false);
+    const [showBookSlotModal, setShowBookSlotModal] = useState<boolean>(false);
     function chatWithTheTrainer() {
-        setShowModal(true)
+        setShowChatModal(true)
     }
     function closeChat() {
-        setShowModal(false)
+        setShowChatModal(false)
     }
     function bookTrainerSlot() {
-
+        setShowBookSlotModal(true)
+    }
+    function closeBookSlot() {
+        setShowBookSlotModal(false)
     }
 
 
     // Disable scrolling when modal is open
     useEffect(() => {
-        if (showModal) {
+        if (showChatModal || showBookSlotModal) {
             document.body.style.overflow = 'hidden';
         } else {
             document.body.style.overflow = 'auto';
@@ -29,7 +34,7 @@ const TrainersList: React.FC = () => {
         return () => {
             document.body.style.overflow = 'auto';
         };
-    }, [showModal]);
+    }, [showChatModal,showBookSlotModal]);
 
     return (
         <>
@@ -42,11 +47,39 @@ const TrainersList: React.FC = () => {
                             <label className='font-extrabold text-xl'>Trainer</label>
                             <label>Specification: <a>________________________</a></label>
                         </div>
-                        <div className='grid gap-6 grid-cols-3 pt-2'>
-                            <button className='hover:opacity-45 transition duration-300' ><Icon svgName="video-icon" width="40" height="27" className="videoCall" /></button>
-                            <button onClick={chatWithTheTrainer} className="text-color2 text-[11px] font-extrabold bg-color3 font-sanspy hover:opacity-45 transition duration-300 px-2">CHART</button>
-                            {showModal && <ChatWithTrainerModal onClose={closeChat} />}
-                            <button onClick={bookTrainerSlot} className="text-color2 text-[12px] font-extrabold bg-color3 font-sanspy hover:opacity-45 transition duration-300 px-2">BOOK SLOT</button>
+                        <div className='grid gap-6 grid-cols-3 pl-2 '>
+                            <div className="relative group">
+                                {/* Button */}
+                                <button className='hover:opacity-45 transition duration-300' >
+                                    <Icon svgName="video-icon" width="40" height="27" className="videoCall" />
+                                </button>
+                                {/* Tooltip */}
+                                <div className="absolute top-full mt-2 px-3 py-1 bg-color1 text-color3 text-sm rounded shadow-lg opacity-0 group-hover:opacity-90 transition-opacity">
+                                    Video Call
+                                </div>
+                            </div>
+                            <div className="relative group">
+                                {/* Button */}
+                                <button onClick={chatWithTheTrainer} className="text-color3 text-[11px] font-extrabold font-sanspy hover:opacity-45 transition duration-300 px-2">
+                                    <Icon svgName="chat-icon" />
+                                </button>
+                                {showChatModal && <ChatWithTrainerModal onClose={closeChat} />}
+                                {/* Tooltip */}
+                                <div className="absolute top-full mt-2 px-3 py-1 bg-color1 text-color3 text-sm rounded shadow-lg opacity-0 group-hover:opacity-90 transition-opacity">
+                                    Chat
+                                </div>
+                            </div>
+                            <div className="relative group">
+                                {/* Button */}
+                                <button onClick={bookTrainerSlot} className="text-color3 text-[11px] font-extrabold font-sanspy hover:opacity-45 transition duration-300 px-2">
+                                    <Icon svgName="ticket-icon" />
+                                </button>
+                                {showBookSlotModal && <BookTrainerSlotModal onClose={closeBookSlot} />}
+                                {/* Tooltip */}
+                                <div className="absolute top-full mt-2 px-3 py-1 bg-color1 text-color3 text-sm rounded shadow-lg opacity-0 group-hover:opacity-90 transition-opacity">
+                                    Book Slot
+                                </div>
+                            </div>
                         </div>
                     </div>
 

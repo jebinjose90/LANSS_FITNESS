@@ -16,7 +16,7 @@ export const Otp: React.FC = () => {
     const params = new URLSearchParams(location.search);
     const email = params.get('email')
     const navigate = useNavigate();
-    const {verifyOtp } = useUserAuth();
+    const { verifyOtp } = useUserAuth();
     const inputRef = useRef<(HTMLInputElement | null)[]>([]);
     const [otp, setOtp] = useState<OtpState>({
         digitOne: "",
@@ -24,6 +24,9 @@ export const Otp: React.FC = () => {
         digitThree: "",
         digitFour: ""
     });
+
+    const [timer, setTimer] = useState<number>(59); // Countdown starts at 59 seconds
+    const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);
 
     const pasteText = (event: ClipboardEvent) => {
         const pastedText = event.clipboardData?.getData("text") || "";
@@ -90,10 +93,35 @@ export const Otp: React.FC = () => {
         const otpValue = `${otp.digitOne}${otp.digitTwo}${otp.digitThree}${otp.digitFour}`;
         try {
             await verifyOtp(email!, otpValue);
-          } catch (error) {
+        } catch (error) {
             console.error("OTP verification failed", error);
-          }
+        }
     }
+
+    // Effect to handle the countdown
+    useEffect(() => {
+        let interval: NodeJS.Timeout | null = null;
+
+        if (isButtonDisabled && timer > 0) {
+            interval = setInterval(() => {
+                setTimer((prevTimer) => prevTimer - 1);
+            }, 1000);
+        } else if (timer === 0) {
+            setIsButtonDisabled(false); // Enable button when timer reaches 0
+            if (interval) clearInterval(interval); // Clear interval when timer ends
+        }
+
+        return () => {
+            if (interval) clearInterval(interval); // Clean up on unmount
+        };
+    }, [timer, isButtonDisabled]);
+
+    const handleResendOtp = () => {
+        setTimer(59); // Reset the timer
+        setIsButtonDisabled(true); // Disable the button again
+        // Trigger OTP resend API call here
+        console.log("OTP resent!");
+    };
 
     return (
         <form onSubmit={handleSubmit}>
@@ -101,7 +129,19 @@ export const Otp: React.FC = () => {
             <div className="space-x-1">
                 {renderInput()}
             </div>
-            <p className="text-color3 text-left font-sans my-[10px]">Resend OTP <a className='opacity-80' href="">59:00</a></p>
+            <button
+                onClick={handleResendOtp}
+                disabled={isButtonDisabled}
+                className={`pt-4 font-semibold ${isButtonDisabled
+                    ? "bg-transparent text-color3 opacity-35 cursor-not-allowed"
+                    : "bg-transparent text-color3 hover:bg-transparent"
+                    }`}
+            >
+                Resend OTP
+            </button>
+            <p className="mt-2 text-sm text-color3">
+                {isButtonDisabled ? `Resend OTP in ${timer}s` : "You can resend the OTP now."}
+            </p>
             <div className='flex flex-row justify-center items-start'>
                 <button type='submit' className="text-color3 border-2 border-color3 bg-transparent font-sans py-2 h-10 w-1/4 px-4 hover:opacity-45 transition duration-300">
                     LOGIN

@@ -23,7 +23,7 @@ const Carousel: React.FC = () => {
 
     return (
         <>
-         <div className='bg-color2 sliderOuter p-28 h-[730] w-full'>
+         <div className='bg-color2 sliderOuter h-[730] w-full xs:p-2 sm:p-5 md:p-10 lg:p-14 xl:p-20 2xl:p-28'>
             <div id="carouselExampleSlidesOnly" className="relative" data-twe-carousel-init data-twe-ride="carousel">
                 <div className="relative w-full overflow-hidden after:clear-both after:block after:content-['']">
                     {images.map((image: string, index: number) => (
@@ -32,7 +32,7 @@ const Carousel: React.FC = () => {
                             className={`relative float-left w-full transition-transform duration-[600ms] ease-in-out ${index === activeIndex ? "block" : "hidden"
                                 }`}
                         >
-                            <img src={image} className="block w-full rounded-3xl" alt={`Slide ${index + 1}`} />
+                            <img src={image} className="block w-full rounded-xl" alt={`Slide ${index + 1}`} />
                         </div>
                     ))}
                 </div>
