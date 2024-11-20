@@ -17,7 +17,7 @@ const router = Router();
 
 router.post('/signup/request-otp', userSignupRequestOtp);
 router.post('/signup/verify-otp', userSignupVerifyOtp);
-router.post('/request-otp', requestResendOtp)
+router.post('/request-resend-otp', requestResendOtp)
 router.post('/signin', userLogin);
 router.post('/home', authenticateToken, getHomeData);
 router.post('/logout', logout);

@@ -69,6 +69,22 @@ export const useUserAuth = () => {
     }
   };
 
+  const resendOtp = async (email: string) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await userApi.requestResendOtp(email);
+      setUserData(data);
+      // Handle post-signup actions
+    }
+    catch (err) {
+      setError('Signup failed. Please try again.');
+    }
+    finally {
+      setLoading(false);
+    }
+  };
+
   const logout = useCallback(async () => {
     try {
       await userApi.logout();
@@ -108,5 +124,5 @@ export const useUserAuth = () => {
     await userApi.loginWithGoogle(); // Calls the loginWithGoogle method from userApi
   };
 
-  return { loading, error, userData, login, signup, signinWithGoogle, verifyOtp, logout, home};
+  return { loading, error, userData, login, signup, signinWithGoogle, verifyOtp, resendOtp, logout, home};
 };

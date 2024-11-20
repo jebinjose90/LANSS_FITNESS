@@ -30,6 +30,10 @@ export const userApi = {
     const response = await axios.post(`${apiUrl}/signup/request-otp`, { username, email, password, phone, imageUrl });
     return response.data;
   },
+  requestResendOtp: async (email: string) => {
+    const response = await axios.post(`${apiUrl}/request-resend-otp`, { email});
+    return response.data;
+  },
   logout: async () => {
     await axios.post(`${apiUrl}/logout`);
   },

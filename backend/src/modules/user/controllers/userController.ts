@@ -2,7 +2,7 @@
 
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
-import { createUser, findExistingUser, getUserById, getUserByUsername, loginUser } from '../usecases/getUserUsecases';
+import { createUser, findExistingUser, getUserById, getUserByUsername, loginUser, resendOtp } from '../usecases/getUserUsecases';
 import { generateToken } from '../../../infrastructure/security/jwtService';
 
 
@@ -11,6 +11,7 @@ const USER_NOT_FOUND_MSG = 'User not found';
 const INVALID_CREDENTIALS_MSG = 'Invalid credentials';
 const CREATE_USER_ERROR_MSG = 'Error creating user';
 const FETCH_USER_ERROR_MSG = 'Error fetching user';
+const ERROR_SENDING_OTP = "Error sending otp"
 const LOGIN_ERROR_MSG = 'Error logging in';
 const AUTH_ERROR_MSG = 'Not Authorized';
 
@@ -54,26 +55,14 @@ export const userSignupVerifyOtp = async (req: Request, res: Response): Promise<
 };
 
 export const requestResendOtp = async (req: Request, res: Response): Promise<void> => {
-    // try {
-    //     const { email, otp } = req.body;
-    //     const user = await createUser(email, otp);
-    //     const username = user.username
-    //     const imageUrl = user.profilePictureUrl || ""
-
-    //     // Generate JWT token
-    //     const token = generateToken({ id: user._id, username: user.username, email: user.email });
-    //     res.json({
-    //         message: "Login Success",
-    //         data: {
-    //             token,
-    //             username,
-    //             imageUrl,
-    //         }
-    //     })
-    // } catch (error) {
-    //     const errorMessage = error instanceof Error ? error.message : CREATE_USER_ERROR_MSG;
-    //     res.status(500).json({ message: errorMessage });
-    // }
+    try {
+        const { email} = req.body;
+        await resendOtp(email);
+        res.status(201).json({ message: 'OTP sent to email. Please verify to complete signup.'});
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : ERROR_SENDING_OTP;
+        res.status(500).json({ message: errorMessage });
+    }
 };
 
 // Controller function to get a user by ID
