@@ -21,7 +21,7 @@ interface UserType {
 
 const AuthenticationUISkin: React.FC<UserType> =
     ({
-        imageUrl, heading, showSubHeading = false, children, showUserSignup = false, userSigupText = 'New User', userSignupHref = "", showUserSignin = false, userSigninHref = "",
+        imageUrl, heading, showSubHeading = false, children, showUserSignup = false, userSigupText = "",userSiginText = "", userSignupHref = "", showUserSignin = false, userSigninHref = "",
     }) => {
         const theme = useTheme()
 
@@ -57,7 +57,7 @@ const AuthenticationUISkin: React.FC<UserType> =
                         {showUserSignin && (
                             <div className="md:flex justify-end space-x-4 text-color3 mb-10">
                                 <p className="text-end ml-auto">
-                                    {userSigupText}
+                                    {userSiginText}
                                     <Link className="font-bold pl-2" to={userSigninHref}>SIGN IN</Link>
                                 </p>
                             </div>

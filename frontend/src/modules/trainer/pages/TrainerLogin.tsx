@@ -10,8 +10,7 @@ const TrainerLogin: React.FC = () => {
             heading="Trainer!"
             showUserSignup={true}
             userSigupText='New Trainer?'
-            userSigninHref=''
-            onSubmit={() => console.log('Submitted')}>
+            userSignupHref='/trainer/trainerSignup'>
             <Login />
         </AuthenticationUISkin>
     )

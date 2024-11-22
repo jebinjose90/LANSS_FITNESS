@@ -5,8 +5,7 @@ const TrainerResetPassword = () => {
     return (
         <AuthenticationUISkin
             imageUrl="https://i.imgur.com/SExGsnl.jpeg"
-            heading="Reset Trainer Password"
-            onSubmit={() => console.log('Submitted')}>
+            heading="Reset Trainer Password">
             <ResetPassword />
         </AuthenticationUISkin>
     )

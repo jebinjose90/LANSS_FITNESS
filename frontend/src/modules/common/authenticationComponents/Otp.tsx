@@ -16,7 +16,7 @@ export const Otp: React.FC = () => {
     const params = new URLSearchParams(location.search);
     const email = params.get('email')
     const navigate = useNavigate();
-    const { verifyOtp } = useUserAuth();
+    const { verifyOtp , resendOtp} = useUserAuth();
     const inputRef = useRef<(HTMLInputElement | null)[]>([]);
     const [otp, setOtp] = useState<OtpState>({
         digitOne: "",
@@ -116,11 +116,13 @@ export const Otp: React.FC = () => {
         };
     }, [timer, isButtonDisabled]);
 
-    const handleResendOtp = () => {
-        setTimer(59); // Reset the timer
-        setIsButtonDisabled(true); // Disable the button again
-        // Trigger OTP resend API call here
-        console.log("OTP resent!");
+    const handleResendOtp = async() => {
+        if (email) {
+            setTimer(59); // Reset the timer
+            setIsButtonDisabled(true); // Disable the button again
+            await resendOtp(email);
+            return;
+        }
     };
 
     return (

@@ -9,6 +9,11 @@ import UserOTP from '../modules/user/pages/UserOTP'
 import UserResetPassword from '../modules/user/pages/UserResetPassword'
 import UserSignup from '../modules/user/pages/UserSignup'
 import UserVerifyEmail from '../modules/user/pages/UserVerifyEmail'
+import TrainerSignUp from '../modules/trainer/pages/TrainerSignUp'
+import TrainerOTP from '../modules/trainer/pages/TrainerOTP'
+import TrainerResetPassword from '../modules/trainer/pages/TrainerResetPassword'
+import TrainerLogin from '../modules/trainer/pages/TrainerLogin'
+import TrainerVerifyEmail from '../modules/trainer/pages/TrainerVerifyEmail'
 
 const AppRouter = () => {
     return (
@@ -21,6 +26,13 @@ const AppRouter = () => {
                 <Route path="userResetPassword" element={<UserResetPassword />} />
                 <Route path="userSignup" element={<UserSignup />} />
                 <Route path="userVerifyEmail" element={<UserVerifyEmail />} />
+
+                <Route path="trainer/trainerSignin" element={<TrainerLogin />} />
+                <Route path="trainer/trainerSignup" element={<TrainerSignUp />} />
+                <Route path="trainer/trainerOtp" element={<TrainerOTP />} />
+                <Route path="trainer/trainerResetPassword" element={<TrainerResetPassword />} />
+                <Route path="trainer/trainerVerifyEmail" element={<TrainerVerifyEmail />} />
+                
             </Routes>
     )
 }

@@ -5,8 +5,7 @@ const TrainerVerifyEmail = () => {
     return (
         <AuthenticationUISkin
             imageUrl="https://i.imgur.com/SExGsnl.jpeg"
-            heading="Verify Trainer Email"
-            onSubmit={() => console.log('Submitted')}>
+            heading="Verify Trainer Email">
             <VerifyEmail />
         </AuthenticationUISkin>
     )

@@ -1,6 +1,6 @@
 import React from 'react'
 import AuthenticationUISkin from '../../common/AuthenticationUISkin'
-import Signup from '../../common/authenticationComponents/Signup'
+import Signup from '../../user/components/signup/Signup'
 
 const UserSignup: React.FC = () => {
     return (
@@ -10,8 +10,7 @@ const UserSignup: React.FC = () => {
             showUserSignin={true}
             userSiginText='Already User?'
             userSigninHref='/userSignin'>
-            <Signup
-                showUplaodCertificate={false} />
+            <Signup/>
         </AuthenticationUISkin>
     )
 }

@@ -5,8 +5,7 @@ const TrainerOTP = () => {
     return (
         <AuthenticationUISkin
             imageUrl="https://i.imgur.com/SExGsnl.jpeg"
-            heading="Verify with OTP"
-            onSubmit={() => console.log('Submitted')}>
+            heading="Verify with OTP">
             <Otp />
         </AuthenticationUISkin>
     )

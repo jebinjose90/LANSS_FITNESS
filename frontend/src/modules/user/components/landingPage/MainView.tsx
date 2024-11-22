@@ -14,7 +14,7 @@ const MainView: React.FC = () => {
     }
 
     function trainerSignin(): void {
-        alert("Button clicked!"); // To quickly check if it's triggering
+        navigate('trainer/trainerSignin')
     }
 
     if (!theme) {
