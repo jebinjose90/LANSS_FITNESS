@@ -8,6 +8,7 @@ import morgan from 'morgan';
 import connectToDatabase from './infrastructure/database/connection';
 import themeRoutes from './modules/theme/routes/themeRoutes';
 import userRoutes from './modules/user/routes/userRoutes'
+import trainerRoutes from './modules/trainer/routes/trainerRoutes';
 import passport from 'passport';
 import session from 'express-session';
 
@@ -41,6 +42,7 @@ app.use(passport.session());
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 app.use('/', userRoutes);
+app.use('/trainer', trainerRoutes);
 app.use('/api', themeRoutes);
 
 // Connect to the database and start the server
