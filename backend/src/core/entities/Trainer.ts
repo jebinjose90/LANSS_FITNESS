@@ -1,4 +1,4 @@
-// backend/src/core/entities/User.ts
+// backend/src/core/entities/Trainer.ts
 
 import { Document, Types } from 'mongoose';
 

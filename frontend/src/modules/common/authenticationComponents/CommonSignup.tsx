@@ -59,9 +59,8 @@ const CommonSignup: React.FC<SignupModel> = ({ showUplaodCertificate = false, av
                 <InputField svgName="login-phone-icon" svgWidth="30" svgHeight="30" placeholder="ENTER PHONE" name="phone" inputValue={formValues.phone} onChange={handleInputChange} type='tel' />
                 <InputField svgName="login-password-icon" svgWidth="28" svgHeight="24" placeholder="ENTER PASSWORD" name="password" inputValue={formValues.password} onChange={handleInputChange} type='password' />
                 {showUplaodCertificate &&
-                    <div className="flex items-center space-x-6 bg-transparent border-2 border-color3 text-color3 px-4 w-full">
-                        <Icon svgName="login-user-icon" width="23" height="23" className="custom-class" />
-                        <input type="text" className="bg-transparent placeholder-color3 font-sans h-10 focus:outline-none w-full" name="certificate" id="certificate" placeholder='ATTACH YOUR CERTIFICATE' />
+                    <div className="flex items-center space-x-6 bg-transparent border-2 border-color3 text-color3 pt-2 px-4 w-full">
+                        <input type="file" accept='application/pdf' className="bg-transparent placeholder-color3 font-sans h-10 focus:outline-none w-full" name="certificate" id="certificate" placeholder='ATTACH YOUR CERTIFICATE' />
                     </div>
                 }
                 <p className="text-color3 text-left font-sans my-[10px]">By continuing I agree to the <a className='opacity-80' href="">Terms of Use</a> & <a className='opacity-80' href="">Privacy Policy</a></p>

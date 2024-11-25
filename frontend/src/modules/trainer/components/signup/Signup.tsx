@@ -37,7 +37,7 @@ const Signup = () => {
             try {
                 // Attempt signup and navigate on success
                 await signup(formValues.username, formValues.email, formValues.password, Number(formValues.phone), imageUrl);
-                navigate(`/trainer/trainerOtp?email=${encodeURIComponent(formValues.email)}`); // Pass email as a URL parameter;
+               
             } catch (signUpError) {
                 console.error(signUpError);
             }

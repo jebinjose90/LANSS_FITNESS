@@ -57,12 +57,16 @@ export const useTrainerAuth = () => {
     setLoading(true);
     setError(null);
     try {
-      const data = await trainerApi.signup(trainername, email, password, phone, imageUrl);
+      const certificatePdfUrl = "data"
+      const data = await trainerApi.signup(trainername, email, password, phone, imageUrl, certificatePdfUrl);
+      console.log("ERR",data);
+      navigate(`/trainer/trainerOtp?email=${encodeURIComponent(email)}`); // Pass email as a URL parameter;
       setTrainerData(data);
       // Handle post-signup actions
     }
     catch (err) {
-      setError('Signup failed. Please try again.');
+      setError(`Signup failed. Please try again.`);
+      console.error();
     }
     finally {
       setLoading(false);

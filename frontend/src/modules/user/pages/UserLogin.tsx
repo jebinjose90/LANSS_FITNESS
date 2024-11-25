@@ -1,6 +1,6 @@
 import React from 'react'
 import AuthenticationUISkin from '../../common/AuthenticationUISkin';
-import Login from '../../common/authenticationComponents/Login';
+import Login from '../../user/components/login/Login';
 
 const UserLogin: React.FC = () => {
     

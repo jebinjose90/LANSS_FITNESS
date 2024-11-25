@@ -2,7 +2,7 @@
 
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
-import { createUser, findExistingUser, getUserById, getUserByUsername, loginUser, resendOtp } from '../usecases/getTrainerUsecases';
+import { createTrainer, findExistingTrainer, getTrainerById, getTrainerByTrainername, loginTrainer, resendOtp } from '../usecases/getTrainerUsecases';
 import { generateToken } from '../../../infrastructure/security/jwtService';
 
 
@@ -20,9 +20,9 @@ export const trainerSignupRequestOtp = async (req: Request, res: Response): Prom
     try {
         console.log(req.body);
         // const serverAddress = `${req.protocol}://${req.get('host')}`;
-        const { trainername, email, phone, password, imageUrl } = req.body;
+        const { trainername, email, phone, password, imageUrl ,certificatePdfUrl} = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
-        await findExistingTrainer(trainername, email, hashedPassword, phone, imageUrl);
+        await findExistingTrainer(trainername, email, hashedPassword, phone, imageUrl,certificatePdfUrl);
         res.status(201).json({ message: 'OTP sent to email. Please verify to complete signup.'});
     } catch (error: unknown) {
         const errorMessage = error instanceof Error ? error.message : CREATE_USER_ERROR_MSG;
@@ -85,7 +85,7 @@ export const getTrainer = async (req: Request, res: Response): Promise<void> => 
 export const getTrainerByTrainernameController = async (req: Request, res: Response): Promise<void> => {
     try {
         const { trainername } = req.params;
-        const trainer = await getUserByTrainername(trainername);
+        const trainer = await getTrainerByTrainername(trainername);
         if (trainer) {
             res.status(200).json(trainer);
         } else {
@@ -148,10 +148,10 @@ export const googleCallbackController = (req: Request, res: Response) => {
         // Generate JWT token
         const token = generateToken({ id: trainer._id, trainername: trainer.trainername, email: trainer.email });
         // Redirect to frontend with token, username, and image URL as query parameters
-        res.redirect(`${process.env.CLIENT_URL}/home`);
+        res.redirect(`${process.env.CLIENT_URL}/trainer/profile`);
         //?token=${token}&username=${firstName}&imageUrl=${imageUrl}
     } else {
-        res.redirect(`${process.env.CLIENT_URL}/userSignin`);
+        res.redirect(`${process.env.CLIENT_URL}/trainer/TrainerSignin`);
     }
 };
 
