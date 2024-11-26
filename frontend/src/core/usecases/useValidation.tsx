@@ -8,6 +8,7 @@ interface FormValues {
   height: string;
   age: string;
   gender: string;
+  certificateUrl: string;
 }
 const useValidation = () => {
     // Function to validate the username
@@ -112,9 +113,18 @@ const useValidation = () => {
       return errors;
     };
 
+    const validateCertificate = (certificateUrl: string): string[] => {
+      const errors: string[] = [];
+      if (certificateUrl !== "*") {
+        if (!certificateUrl) {
+          errors.push("Certificate is required");
+        }
+      }
+      return errors;
+    };
   
     // Aggregates errors from all fields into an array
-    const validateAll = ({ username, email, password, phone, weight, height, age, gender}: FormValues): string[] => {
+    const validateAll = ({ username, email, password, phone, weight, height, age, gender, certificateUrl}: FormValues): string[] => {
       return [
         ...validateUsername(username),
         ...validateEmail(email),
@@ -123,7 +133,8 @@ const useValidation = () => {
         ...validateWeight(weight),
         ...validateHeight(height),
         ...validateAge(age),
-        ...validateGender(gender)
+        ...validateGender(gender),
+        ...validateCertificate(certificateUrl),
       ];
     };
   

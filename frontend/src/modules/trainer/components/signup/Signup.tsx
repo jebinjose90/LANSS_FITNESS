@@ -1,27 +1,25 @@
 import { useEffect, useRef, useState } from "react";
 import CommonSignup from "../../../common/authenticationComponents/CommonSignup"
 import { useTrainerAuth } from "../../hooks/manageTrainerAuth";
-import { useNavigate } from "react-router-dom";
 import useValidation from "../../../../core/usecases/useValidation";
 import useCustomAlert from "../../../../core/usecases/useCustomAlert";
 import { uploadImage } from "../../../../infrastructure/api/fileApi";
 
-interface FormValues { username: string; email: string; password: string; phone: string; imageUrl: string;}
+interface FormValues { username: string; email: string; password: string; phone: string; imageUrl: string; pdfUrl:string;}
 
 const Signup = () => {
-    const [formValues, setFormValues] = useState<FormValues>({ username: '', email: '', password: '', phone: '', imageUrl: '' });
+    const [formValues, setFormValues] = useState<FormValues>({ username: '', email: '', password: '', phone: '', imageUrl: '' ,pdfUrl: ''});
     const [modalOpen, setModalOpen] = useState(false);
     const { loading, error, signup, signinWithGoogle } = useTrainerAuth();
-    const navigate = useNavigate(); // Set up navigation
     const { validateAll } = useValidation();
     const { showAlert } = useCustomAlert();
-
+    const [isPdfModalOpen, setPdfModalOpen] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         // Get all errors as an array
-        const allErrors = validateAll({ username: formValues.username, email: formValues.email, password: formValues.password, phone: formValues.phone, height: "*", weight: "*", age: "*", gender: "*" });
+        const allErrors = validateAll({ username: formValues.username, email: formValues.email, password: formValues.password, phone: formValues.phone, height: "*", weight: "*", age: "*", gender: "*" ,certificateUrl: formValues.pdfUrl});
 
         console.log("ERR", allErrors);
         let imageUrl = ''
@@ -64,6 +62,13 @@ const Signup = () => {
         }
     };
 
+    const handlePdfUploadSuccess = (uploadedPdfUrl: string) => {
+        setFormValues((prevState) => ({
+            ...prevState,
+            pdfUrl: uploadedPdfUrl, // Set the imageUrl in the state
+        }));
+    };
+
     useEffect(() => {
         console.log("Updated form image URL:", formValues.imageUrl);
     }, [formValues.imageUrl]);
@@ -79,7 +84,11 @@ const Signup = () => {
             setModalOpen={setModalOpen} 
             signinWithGoogle={signinWithGoogle} 
             updateAvatar={updateAvatar}
-            namePlaceholder="ENTER TRAINERNAME"/>
+            namePlaceholder="ENTER TRAINERNAME"
+            handlePdfUploadSuccess={handlePdfUploadSuccess}
+            isPdfModalOpen={isPdfModalOpen}
+            setPdfModalOpen={setPdfModalOpen}
+            />
         </>
     )
 }
