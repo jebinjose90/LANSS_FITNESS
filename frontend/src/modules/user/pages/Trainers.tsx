@@ -5,9 +5,9 @@ import TrainersList from '../components/trainersPage/TrainersList'
 const Home = () => {
     return (
         <div>
-            <Navbar/>
-            <TrainersList/>
-            <Footer/>
+            <Navbar role={'user'} />
+            <TrainersList />
+            <Footer />
         </div>
     )
 }

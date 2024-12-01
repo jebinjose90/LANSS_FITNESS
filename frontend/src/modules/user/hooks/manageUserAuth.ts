@@ -12,7 +12,7 @@ export const useUserAuth = () => {
   const navigate = useNavigate();
   const apiUrl:String = import.meta.env.VITE_BACKEND_URL;
 
-  const login = async (email: string, password: string) => {
+  const userLogin = async (email: string, password: string) => {
     setLoading(true);
     setError(null);
     try {
@@ -22,7 +22,7 @@ export const useUserAuth = () => {
       // Save token, username, and imageUrl to localStorage
       localStorage.setItem('token', token);
       localStorage.setItem('username', username);
-      localStorage.setItem('imageUrl', `${apiUrl}${imageUrl}`);
+      localStorage.setItem('userImageUrl', `${apiUrl}${imageUrl}`);
       navigate('/home');
     }
     catch (err) {
@@ -43,7 +43,7 @@ export const useUserAuth = () => {
       
       // Save token, username, and imageUrl to localStorage
       localStorage.setItem('username', username);
-      localStorage.setItem('imageUrl', `${apiUrl}${imageUrl}`);
+      localStorage.setItem('userImageUrl', `${apiUrl}${imageUrl}`);
     }
     catch (err) {
       setError('Home data fetching failed. Please check your credentials.');
@@ -53,7 +53,7 @@ export const useUserAuth = () => {
     }
   };
 
-  const signup = async (username: string, email: string, password: string, phone: number, imageUrl: string) => {
+  const userSignup = async (username: string, email: string, password: string, phone: number, imageUrl: string) => {
     setLoading(true);
     setError(null);
     try {
@@ -69,7 +69,7 @@ export const useUserAuth = () => {
     }
   };
 
-  const resendOtp = async (email: string) => {
+  const userResendOtp = async (email: string) => {
     setLoading(true);
     setError(null);
     try {
@@ -85,19 +85,19 @@ export const useUserAuth = () => {
     }
   };
 
-  const logout = useCallback(async () => {
+  const userLogout = useCallback(async () => {
     try {
       await userApi.logout();
       localStorage.removeItem('token');
       localStorage.removeItem('username');
-      localStorage.removeItem('imageUrl');
+      localStorage.removeItem('userImageUrl');
       navigate('/userSignin');
     } catch (error) {
       console.error('Error during logout', error);
     }
   }, [navigate]);
 
-  const verifyOtp = async (email: string, otp: string) => {
+  const userVerifyOtp = async (email: string, otp: string) => {
     setLoading(true);
     setError(null);
     try {
@@ -108,7 +108,7 @@ export const useUserAuth = () => {
       // Save token, username, and imageUrl to localStorage
       localStorage.setItem('token', token);
       localStorage.setItem('username', username);
-      localStorage.setItem('imageUrl', imageUrl);
+      localStorage.setItem('userImageUrl', imageUrl);
 
       navigate('/home');
     }
@@ -120,9 +120,9 @@ export const useUserAuth = () => {
     }
   };
 
-  const signinWithGoogle = async () => {
+  const userSigninWithGoogle = async () => {
     await userApi.loginWithGoogle(); // Calls the loginWithGoogle method from userApi
   };
 
-  return { loading, error, userData, login, signup, signinWithGoogle, verifyOtp, resendOtp, logout, home};
+  return { loading, error, userData, userLogin, userSignup, userSigninWithGoogle, userVerifyOtp, userResendOtp, userLogout, home};
 };

@@ -4,7 +4,7 @@ import CommonLogin from '../../../common/authenticationComponents/CommonLogin';
 
 const Login = () => {
     const [formValues, setFormValues] = useState({ email: '', password: '' });
-    const { loading, error, login } = useTrainerAuth();
+    const { loading, error, trainerLogin } = useTrainerAuth();
     const gioLoc = () => {
         navigator.geolocation.getCurrentPosition((position) => {
             const p = position.coords;
@@ -14,7 +14,7 @@ const Login = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        login(formValues.email, formValues.password);
+        trainerLogin(formValues.email, formValues.password);
     };
 
     return (

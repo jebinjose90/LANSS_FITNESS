@@ -4,13 +4,14 @@ import { useTrainerAuth } from "../../hooks/manageTrainerAuth";
 import useValidation from "../../../../core/usecases/useValidation";
 import useCustomAlert from "../../../../core/usecases/useCustomAlert";
 import { uploadImage } from "../../../../infrastructure/api/fileApi";
+import TrainerSignUp from "../../pages/TrainerSignUp";
 
 interface FormValues { username: string; email: string; password: string; phone: string; imageUrl: string; pdfUrl:string;}
 
 const Signup = () => {
     const [formValues, setFormValues] = useState<FormValues>({ username: '', email: '', password: '', phone: '', imageUrl: '' ,pdfUrl: ''});
     const [modalOpen, setModalOpen] = useState(false);
-    const { loading, error, signup, signinWithGoogle } = useTrainerAuth();
+    const { loading, error, trainerSignup, trainerSigninWithGoogle } = useTrainerAuth();
     const { validateAll } = useValidation();
     const { showAlert } = useCustomAlert();
     const [isPdfModalOpen, setPdfModalOpen] = useState(false);
@@ -34,7 +35,7 @@ const Signup = () => {
         } else {
             try {
                 // Attempt signup and navigate on success
-                await signup(formValues.username, formValues.email, formValues.password, Number(formValues.phone), imageUrl);
+                await trainerSignup(formValues.username, formValues.email, formValues.password, Number(formValues.phone), imageUrl, formValues.pdfUrl);
                
             } catch (signUpError) {
                 console.error(signUpError);
@@ -82,7 +83,7 @@ const Signup = () => {
             handleSubmit={handleSubmit} 
             modalOpen={modalOpen} 
             setModalOpen={setModalOpen} 
-            signinWithGoogle={signinWithGoogle} 
+            signinWithGoogle={trainerSigninWithGoogle} 
             updateAvatar={updateAvatar}
             namePlaceholder="ENTER TRAINERNAME"
             handlePdfUploadSuccess={handlePdfUploadSuccess}

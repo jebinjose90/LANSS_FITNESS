@@ -11,7 +11,7 @@ interface FormValues { username: string; email: string; password: string; phone:
 const Signup = () => {
     const [formValues, setFormValues] = useState<FormValues>({ username: '', email: '', password: '', phone: '', imageUrl: '' ,pdfUrl: "*"});
     const [modalOpen, setModalOpen] = useState(false);
-    const { loading, error, signup, signinWithGoogle } = useUserAuth();
+    const { loading, error, userSignup, userSigninWithGoogle } = useUserAuth();
     const navigate = useNavigate(); // Set up navigation
     const { validateAll } = useValidation();
     const { showAlert } = useCustomAlert();
@@ -36,7 +36,7 @@ const Signup = () => {
         } else {
             try {
                 // Attempt signup and navigate on success
-                await signup(formValues.username, formValues.email, formValues.password, Number(formValues.phone), imageUrl);
+                await userSignup(formValues.username, formValues.email, formValues.password, Number(formValues.phone), imageUrl);
                 navigate(`/userOtp?email=${encodeURIComponent(formValues.email)}`); // Pass email as a URL parameter;
             } catch (signUpError) {
                 console.error(signUpError);
@@ -76,7 +76,7 @@ const Signup = () => {
             handleSubmit={handleSubmit} 
             modalOpen={modalOpen} 
             setModalOpen={setModalOpen} 
-            signinWithGoogle={signinWithGoogle} 
+            signinWithGoogle={userSigninWithGoogle} 
             updateAvatar={updateAvatar}
             namePlaceholder="ENTER USERNAME"/>
         </>

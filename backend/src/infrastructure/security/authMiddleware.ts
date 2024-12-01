@@ -3,6 +3,8 @@ import { Request, Response, NextFunction } from 'express';
 import { verifyToken } from './jwtService';
 
 export const authenticateToken = (req: Request, res: Response, next: NextFunction): void => {
+  console.log("TOKEN",req.headers.authorization);
+  
   const authHeader = req.headers.authorization;
   const token = authHeader && authHeader.split(' ')[1];
 

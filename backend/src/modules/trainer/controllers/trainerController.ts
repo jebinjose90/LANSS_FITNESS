@@ -185,12 +185,18 @@ export const getProfileData = async (req: Request, res: Response) => {
                 return str.charAt(0).toUpperCase() + str.slice(1);
             }
 
+            let trainername = tokenTrainer?.trainername
+            let imageUrl = tokenTrainer?.profilePictureUrl
+            let phone = tokenTrainer?.phone
+            let email = tokenTrainer?.email
             // Send the data needed for the home page
             res.json({
                 message: 'Profile Data',
                 data: {
-                    trainername: capitalizeFirstLetter(tokenTrainer?.trainername),
-                    imageUrl: tokenTrainer?.profilePictureUrl,
+                    trainername: capitalizeFirstLetter(trainername),
+                    imageUrl: imageUrl,
+                    phone: phone,
+                    email: email
                     // Add any other relevant data here, such as recent activities or stats
                 },
             });

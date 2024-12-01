@@ -1,6 +1,6 @@
 import React from 'react'
 import AuthenticationUISkin from '../../common/AuthenticationUISkin';
-import Login from '../../user/components/login/Login';
+import Login from '../../trainer/components/login/Login';
 
 
 const TrainerLogin: React.FC = () => {

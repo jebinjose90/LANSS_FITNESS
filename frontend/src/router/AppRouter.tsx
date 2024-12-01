@@ -14,6 +14,8 @@ import TrainerOTP from '../modules/trainer/pages/TrainerOTP'
 import TrainerResetPassword from '../modules/trainer/pages/TrainerResetPassword'
 import TrainerLogin from '../modules/trainer/pages/TrainerLogin'
 import TrainerVerifyEmail from '../modules/trainer/pages/TrainerVerifyEmail'
+import TrainerProfile from '../modules/trainer/pages/TrainerProfile'
+import TrainerChats from '../modules/trainer/pages/TrainerChats'
 
 const AppRouter = () => {
     return (
@@ -28,6 +30,8 @@ const AppRouter = () => {
                 <Route path="userVerifyEmail" element={<UserVerifyEmail />} />
 
                 <Route path="trainer/trainerSignin" element={<TrainerLogin />} />
+                <Route path="trainer/profile" element={<TrainerProfile />} />
+                <Route path="trainer/trainerChats" element={<TrainerChats />} />
                 <Route path="trainer/trainerSignup" element={<TrainerSignUp />} />
                 <Route path="trainer/trainerOtp" element={<TrainerOTP />} />
                 <Route path="trainer/trainerResetPassword" element={<TrainerResetPassword />} />

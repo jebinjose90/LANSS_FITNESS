@@ -4,25 +4,34 @@ import { useCallback, useState } from 'react';
 import { trainerApi } from '../../../infrastructure/api/trainerApi';
 import { useNavigate } from 'react-router-dom';
 
+interface UserDetails {
+  id: string;
+  image: string;
+  email: string;
+  name: string;
+  subscriptionPlan: string;
+}
+
 
 export const useTrainerAuth = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [trainerData, setTrainerData] = useState<any>(null); // Adjust type as needed
   const navigate = useNavigate();
-  const apiUrl:String = import.meta.env.VITE_BACKEND_URL;
+  const apiUrl: String = import.meta.env.VITE_BACKEND_URL;
 
-  const login = async (email: string, password: string) => {
+
+  const trainerLogin = async (email: string, password: string) => {
     setLoading(true);
     setError(null);
     try {
       const data = await trainerApi.login(email, password);
       // Access token, trainername, and imageUrl from response data
-      const { token,trainername, imageUrl } = data.data;
+      const { token, trainername, imageUrl } = data.data;
       // Save token, trainername, and imageUrl to localStorage
       localStorage.setItem('token', token);
       localStorage.setItem('trainername', trainername);
-      localStorage.setItem('imageUrl', `${apiUrl}${imageUrl}`);
+      localStorage.setItem('trainerImageUrl', `${apiUrl}${imageUrl}`);
       navigate('/trainer/profile');
     }
     catch (err) {
@@ -33,33 +42,61 @@ export const useTrainerAuth = () => {
     }
   };
 
-  const profile = async () => {
+  const trainerProfile = async () => {
     setLoading(true);
     setError(null);
     try {
       const data = await trainerApi.profileData();
-      // Access token, trainername, and imageUrl from response data
-      const { trainername, imageUrl } = data.data;
-      
-      // Save token, trainername, and imageUrl to localStorage
-      localStorage.setItem('trainername', trainername);
-      localStorage.setItem('imageUrl', `${apiUrl}${imageUrl}`);
+      // Modify the imageUrl by adding the API URL
+      const trainnameToCaps = data.data.trainername.toUpperCase();
+      const updatedData = {
+        ...data.data, // Spread the existing data
+        imageUrl: `${apiUrl}${data.data.imageUrl}`,
+        trainername: `${trainnameToCaps}` // Update the imageUrl
+      };
+
+      return updatedData;
     }
-    catch (err) {
-      setError('Home data fetching failed. Please check your credentials.');
+    catch (err: any) {
+      // Check if the error response exists and contains a message
+      if (err.response && err.response.data && err.response.data.message) {
+        console.log("ERR", err.response.data.message);
+        setError(err.response.data.message); // Display the message from the server
+      } else {
+        setError("An unexpected error occurred. Please try again later."); // Fallback error
+      }
     }
     finally {
       setLoading(false);
     }
   };
 
-  const signup = async (trainername: string, email: string, password: string, phone: number, imageUrl: string) => {
+  const trainerUserChats = async () => {
     setLoading(true);
     setError(null);
     try {
-      const certificatePdfUrl = "data"
+      const data = await trainerApi.usersListData();
+        return data; // Ensure it's returning an array
+    } catch (err: any) {
+      // Check if the error response exists and contains a message
+      if (err.response && err.response.data && err.response.data.message) {
+        console.error("ERR", err.response.data.message);
+        setError(err.response.data.message); // Display the message from the server
+      } else {
+        setError("An unexpected error occurred. Please try again later."); // Fallback error
+      }
+      return []; // Return an empty array in case of an error
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+  const trainerSignup = async (trainername: string, email: string, password: string, phone: number, imageUrl: string, certificatePdfUrl: string) => {
+    setLoading(true);
+    setError(null);
+    try {
       const data = await trainerApi.signup(trainername, email, password, phone, imageUrl, certificatePdfUrl);
-      console.log("ERR",data);
       navigate(`/trainer/trainerOtp?email=${encodeURIComponent(email)}`); // Pass email as a URL parameter;
       setTrainerData(data);
       // Handle post-signup actions
@@ -73,7 +110,7 @@ export const useTrainerAuth = () => {
     }
   };
 
-  const resendOtp = async (email: string) => {
+  const trainerResendOtp = async (email: string) => {
     setLoading(true);
     setError(null);
     try {
@@ -89,19 +126,19 @@ export const useTrainerAuth = () => {
     }
   };
 
-  const logout = useCallback(async () => {
+  const trainerLogout = useCallback(async () => {
     try {
       await trainerApi.logout();
       localStorage.removeItem('token');
       localStorage.removeItem('trainername');
-      localStorage.removeItem('imageUrl');
+      localStorage.removeItem('trainerImageUrl');
       navigate('/trainer/trainerSignin');
     } catch (error) {
       console.error('Error during logout', error);
     }
   }, [navigate]);
 
-  const verifyOtp = async (email: string, otp: string) => {
+  const trainerVerifyOtp = async (email: string, otp: string) => {
     setLoading(true);
     setError(null);
     try {
@@ -112,7 +149,7 @@ export const useTrainerAuth = () => {
       // Save token, trainername, and imageUrl to localStorage
       localStorage.setItem('token', token);
       localStorage.setItem('trainername', trainername);
-      localStorage.setItem('imageUrl', imageUrl);
+      localStorage.setItem('trainerImageUrl', imageUrl);
 
       navigate('/trainer/profile');
     }
@@ -124,9 +161,9 @@ export const useTrainerAuth = () => {
     }
   };
 
-  const signinWithGoogle = async () => {
+  const trainerSigninWithGoogle = async () => {
     await trainerApi.loginWithGoogle(); // Calls the loginWithGoogle method from trainerApi
   };
 
-  return { loading, error, trainerData, login, signup, signinWithGoogle, verifyOtp, resendOtp, logout, profile};
+  return { loading, error, trainerData, trainerLogin, trainerSignup, trainerSigninWithGoogle, trainerVerifyOtp, trainerResendOtp, trainerLogout, trainerProfile, trainerUserChats };
 };

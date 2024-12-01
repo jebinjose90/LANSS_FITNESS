@@ -4,6 +4,7 @@ import { Trainer } from '@core/entities/Trainer';  // Import your User interface
 import { generateOtp } from '../../../utils/verification/otpGenerator';
 import { sendOtpEmail } from '../../../utils/verification/emailService';
 import TrainerModel from '../models/TrainerModel';
+import UserModel from '../../user/models/UserModel'
 import bcrypt from 'bcryptjs'; // Import bcrypt for password comparison
 import TempTrainerModel from '../models/TempTrainerModel';
 
@@ -30,7 +31,6 @@ export const findExistingTrainer = async (trainername: string, email: string, ha
         await sendOtpEmail(email, otp);
     } catch (error: any) {  // Type the error as 'any'
         console.log("ERROR", error.message);
-
         throw new Error(`Error sending OTP: ${error.message}`);
     }
 };
@@ -49,9 +49,9 @@ export const createTrainer = async (email: string, otp: string): Promise<Trainer
             throw new Error('OTP expired. Please request a new one.');
         }
         // Create the User and delete the TempUser
-        const { trainername, password, profilePictureUrl ,certificatePdfUrl} = tempTrainer;
+        const { trainername, password, phone, profilePictureUrl ,certificatePdfUrl} = tempTrainer;
         const isGoogleAuth = false
-        const newTrainer = new TrainerModel({ email, trainername, password, isGoogleAuth, profilePictureUrl ,certificatePdfUrl});
+        const newTrainer = new TrainerModel({ email, trainername, password, phone, isGoogleAuth, profilePictureUrl ,certificatePdfUrl});
         await newTrainer.save();
         await TempTrainerModel.deleteOne({ email });
         return newTrainer; // Return the created user object

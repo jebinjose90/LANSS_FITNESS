@@ -24,6 +24,7 @@ router.post('/signup/verify-otp', trainerSignupVerifyOtp);
 router.post('/request-resend-otp', requestResendOtp)
 router.post('/signin', trainerLogin);
 router.post('/profile', authenticateToken, getProfileData);
+router.post('/usersList',authenticateToken, getUsersList)
 router.post('/logout', logout);
 router.get('/:id', getTrainer);
 router.get('/trainername/:trainername', getTrainerByTrainernameController);

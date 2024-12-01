@@ -54,4 +54,9 @@ export const trainerApi = {
     const response = await apiClient.post(`${apiUrl}/trainer/profile`);
     return response.data;
   },
+
+  usersListData: async () => {
+    const response = await apiClient.post(`${apiUrl}/trainer/usersList`);
+    return response.data;
+  }
 };
