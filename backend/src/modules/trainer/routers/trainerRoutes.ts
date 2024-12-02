@@ -1,7 +1,7 @@
 ///backend/src/modules/trainer/routes/trainerRoutes.ts
 
 import { Router } from 'express';
-import { getTrainer, getTrainerByTrainernameController, trainerSignupRequestOtp, trainerSignupVerifyOtp, trainerLogin, googleCallbackController, signinFailed, logout, getProfileData, requestResendOtp} from '../controllers/trainerController';
+import { getTrainer, getTrainerByTrainernameController, trainerSignupRequestOtp, trainerSignupVerifyOtp, trainerLogin, googleCallbackController, signinFailed, logout, getProfileData, requestResendOtp, getUsersList} from '../controllers/trainerController';
 import passport from 'passport';
 import { uploadImage } from '../controllers/imageController';
 import multer from "multer";
