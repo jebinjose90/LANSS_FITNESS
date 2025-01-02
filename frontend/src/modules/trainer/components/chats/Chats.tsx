@@ -12,34 +12,33 @@ interface UserDetails {
 
 const Chats = () => {
     const { trainerUserChats, loading, error, trainerLogout } = useTrainerAuth();
-    const [userDetails, setUserDetails] = useState<UserDetails[]>([]); // Initialize as an empty array
+  const [userDetails, setUserDetails] = useState<UserDetails[]>([]);
 
-    // Fetch trainer profile data on component mount
-    useEffect(() => {
-        const fetchUsersToChat = async () => {
-            const data = await trainerUserChats();
-            if (data) setUserDetails(data);
-        };
-        fetchUsersToChat();
-    }, []);
+  // Fetch trainer profile data on component mount
+  useEffect(() => {
+    const fetchUsersToChat = async () => {
+      const data = await trainerUserChats();
+      if (data) setUserDetails(data); 
+    };
+    fetchUsersToChat();
+  }, []);
 
-    if (loading) {
-        return <div className="text-center p-4">Loading...</div>;
+  if (loading) {
+    return <div className="text-center p-4">Loading...</div>;
+  }
+
+  if (error) {
+    if (error === "Invalid Token") {
+      trainerLogout()
+    }else{
+      return <div className="text-center text-red-500 p-4">{error}</div>;
     }
-
-    if (error) {
-        if (error === "Invalid Token") {
-            trainerLogout()
-        } else {
-            return <div className="text-center text-red-500 p-4">{error}</div>;
-        }
-    }
-
+  }
     return (
         <div className="flex items-center justify-center bg-color2">
             <div className="flex-1 w-full">
                 <div className="px-20 py-5 space-y-6">
-                    {userDetails.map((user: UserDetails) => (
+                    {userDetails.map((user) => (
                         <div
                             key={user.id}
                             className="border-2 border-color3 p-4 flex items-center shadow-md"
@@ -54,7 +53,7 @@ const Chats = () => {
                             {/* Content */}
                             <div className="ml-4 flex-1 space-y-2 inline-block min-w-0 text-color3">
                                 {/* Email */}
-                                <p className=" text-sm truncate block" title={user.email}>
+                                <p className=" text-sm truncate block" title={user.email}> 
                                     {user.email}
                                 </p>
 
@@ -69,7 +68,7 @@ const Chats = () => {
                                     <div className="relative group">
                                         {/* Button */}
                                         <button className='hover:opacity-45 transition duration-300' >
-                                            <Icon svgName="video-icon" width="40" height="27" />
+                                            <Icon svgName="video-icon" width="40" height="27"/>
                                         </button>
                                         {/* Tooltip */}
                                         <div className="absolute top-full mt-2 px-3 py-1 bg-color1 text-color3 text-xs rounded shadow-lg opacity-0 group-hover:opacity-90 transition-opacity">
@@ -78,10 +77,10 @@ const Chats = () => {
                                     </div>
                                     <div className="relative group">
                                         {/* Button */}
-                                        <button className="hover:opacity-45 transition duration-300">
+                                        <button  className="hover:opacity-45 transition duration-300">
                                             <Icon svgName="chat-icon" />
                                         </button>
-
+                                        
                                         {/* Tooltip */}
                                         <div className="absolute top-full mt-2 px-3 py-1 bg-color1 text-color3 text-xs rounded shadow-lg opacity-0 group-hover:opacity-90 transition-opacity">
                                             Chat
@@ -94,6 +93,8 @@ const Chats = () => {
                 </div>
             </div>
         </div>
+
+
     )
 }
 

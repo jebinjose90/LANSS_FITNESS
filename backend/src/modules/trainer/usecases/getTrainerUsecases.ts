@@ -51,7 +51,8 @@ export const createTrainer = async (email: string, otp: string): Promise<Trainer
         // Create the User and delete the TempUser
         const { trainername, password, phone, profilePictureUrl ,certificatePdfUrl} = tempTrainer;
         const isGoogleAuth = false
-        const newTrainer = new TrainerModel({ email, trainername, password, phone, isGoogleAuth, profilePictureUrl ,certificatePdfUrl});
+        const { v4: uuidv4 } = require('uuid');
+        const newTrainer = new TrainerModel({ email,googleId: uuidv4(), trainername, password, phone, isGoogleAuth, profilePictureUrl ,certificatePdfUrl});
         await newTrainer.save();
         await TempTrainerModel.deleteOne({ email });
         return newTrainer; // Return the created user object
@@ -89,7 +90,9 @@ export const resendOtp = async (email: string): Promise<void> => {
 };
 
 // Function to get a user by ID
-export const getTrainerById = async (trainerId: string): Promise<Trainer | null> => {
+export const 
+
+getTrainerById = async (trainerId: string): Promise<Trainer | null> => {
     try {
         const trainer = await TrainerModel.findById(trainerId);
         return trainer; // Returns the user object or null if not found

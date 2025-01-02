@@ -102,7 +102,9 @@ export const useUserAuth = () => {
     setError(null);
     try {
       // Call verifyOtp and expect a response with username and imageUrl
+      console.log(typeof userApi.verifyOtp); // Should log: 'function'
       const data = await userApi.verifyOtp(email, otp);
+      
       // Access token, username, and imageUrl from response data
       const { token, username, imageUrl } = data.data;
       // Save token, username, and imageUrl to localStorage

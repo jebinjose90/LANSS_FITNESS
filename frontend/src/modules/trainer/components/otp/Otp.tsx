@@ -16,7 +16,7 @@ const Otp = () => {
     const location = useLocation();
     const params = new URLSearchParams(location.search);
     const email = params.get('email')
-    const { verifyOtp , resendOtp} = useTrainerAuth();
+    const { trainerVerifyOtp , trainerResendOtp} = useTrainerAuth();
     const inputRef = useRef<(HTMLInputElement | null)[]>([]);
     const [otp, setOtp] = useState<OtpState>({
         digitOne: "",
@@ -92,7 +92,7 @@ const Otp = () => {
         // Concatenate the OTP digits into a single string
         const otpValue = `${otp.digitOne}${otp.digitTwo}${otp.digitThree}${otp.digitFour}`;
         try {
-            await verifyOtp(email!, otpValue);
+            await trainerVerifyOtp(email!, otpValue);
         } catch (error) {
             console.error("OTP verification failed", error);
         }
@@ -120,7 +120,7 @@ const Otp = () => {
         if (email) {
             setTimer(59); // Reset the timer
             setIsButtonDisabled(true); // Disable the button again
-            await resendOtp(email);
+            await trainerResendOtp(email);
             return;
         }
     };

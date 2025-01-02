@@ -3,7 +3,7 @@
 import { Document, Types } from 'mongoose';
 
 export interface Trainer extends Document {
-    _id: Types.ObjectId; // Required for Mongoose
+   
     password: string;
     trainername: string;
     email: string;

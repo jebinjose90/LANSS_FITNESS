@@ -1,7 +1,7 @@
 // backend/src/modules/user/models/UserModel.ts
 
 import { User } from '@core/entities/User';
-import { Schema, model } from 'mongoose';
+import mongoose, { Document, model, Schema } from 'mongoose';
 
 // Create a User schema
 const userSchema = new Schema<User>({
@@ -9,7 +9,6 @@ const userSchema = new Schema<User>({
     password: { type: String, required: false }, // Optional
     email: { type: String, required: true, unique: true },
     phone: { type: Number, required: false, unique: true }, // Optional
-    id: { type: String, required: false, unique: true }, // Optional
     googleId: { type: String, required: false, unique: true }, // Required
     isGoogleAuth: { type: Boolean, required: true }, // Required
     profilePictureUrl: { type: String, required: false } // Optional

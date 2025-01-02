@@ -3,7 +3,7 @@
 import { Document, Types } from 'mongoose';
 
 export interface User extends Document {
-    _id: Types.ObjectId; // Required for Mongoose
+    
     password: string;
     username: string;
     email: string;

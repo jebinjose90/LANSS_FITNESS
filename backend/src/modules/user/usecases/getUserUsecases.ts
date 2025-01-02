@@ -6,6 +6,7 @@ import { sendOtpEmail } from '../../../utils/verification/emailService';
 import UserModel from '../models/UserModel';
 import bcrypt from 'bcryptjs'; // Import bcrypt for password comparison
 import TempUserModel from '../models/TempUserModel';
+import mongoose from 'mongoose';
 
 
 // Function to login user
@@ -51,8 +52,9 @@ export const createUser = async (email: string, otp: string): Promise<User> => {
         // Create the User and delete the TempUser
         const { username, password, phone, profilePictureUrl } = tempUser;
         const isGoogleAuth = false
-        const newUser = new UserModel({ email, username, password, phone, isGoogleAuth, profilePictureUrl });
-        await newUser.save();
+        const { v4: uuidv4 } = require('uuid');
+        const newUser = await UserModel.create({ email, googleId: uuidv4(), username, password, phone, isGoogleAuth, profilePictureUrl });
+        console.log("NEW USER", newUser);
         await TempUserModel.deleteOne({ email });
         return newUser; // Return the created user object
 
@@ -67,17 +69,17 @@ export const resendOtp = async (email: string): Promise<void> => {
     try {
 
         // find email in the TempUserModel data base
-        const existingEmail = await TempUserModel.findOne({$or: [{email}]})
+        const existingEmail = await TempUserModel.findOne({ $or: [{ email }] })
         if (existingEmail) {
             const otp = generateOtp();
             console.log(otp);
 
-            await TempUserModel.updateOne({email: email},{$set: {otp:otp, otpExpiresAt: new Date(Date.now() + 10 * 60 * 1000) } })
+            await TempUserModel.updateOne({ email: email }, { $set: { otp: otp, otpExpiresAt: new Date(Date.now() + 10 * 60 * 1000) } })
 
             // Send OTP email
-            await sendOtpEmail(email,otp);
-            
-        }else{
+            await sendOtpEmail(email, otp);
+
+        } else {
             throw new Error('Email not found');
         }
 
@@ -137,7 +139,7 @@ export const loginUser = async (email: string, password: string): Promise<User> 
 
 export const calculateBMI = async (weight: number, heightCm: number, age: number, gender: string): Promise<void> => {
     try {
-        
+
     } catch (error: any) {
         throw new Error(`Failed to calculate BMI, please try again.`)
     }

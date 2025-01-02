@@ -9,11 +9,14 @@ const tempUserSchema = new Schema<TempUser>({
     password: { type: String, required: true },
     phone: { type: Number, required: true },
     username: { type: String, required: true },
-    otp: { type: String, required: true },
-    otpExpiresAt: { type: Date, required: true },
-    profilePictureUrl: { type: String, required: false } // Optional
+    otp: { type: String, required: true }, // OTP sent to the user
+    otpExpiresAt: { type: Date, required: true }, // Expiry time for OTP
+    profilePictureUrl: { type: String, required: false } // Optional profile picture URL
+}, {
+    timestamps: true // Automatically manages createdAt and updatedAt fields
 });
-// Create a User model
-const TempUserModel = model<TempUser>('TempUser', tempUserSchema, "temp-user");
+
+// Create a TempUser model
+const TempUserModel = model<TempUser>('TempUser', tempUserSchema, 'temp_user');
 
 export default TempUserModel;
