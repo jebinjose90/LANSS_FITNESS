@@ -1,6 +1,7 @@
 // \frontend\src\infrastructure\api\userApi.ts
 
 import axios from 'axios';
+import userEndUrls from './userrApi/userEndUrls';
 
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -20,43 +21,46 @@ apiClient.interceptors.request.use((config) => {
 
 export const userApi = {
   login: async (email: string, password: string) => {
-    const response = await axios.post(`${apiUrl}/signin`, { email, password });
+    const response = await axios.post(`${apiUrl}${userEndUrls.login}`, { email, password });
     return response.data
   },
   loginWithGoogle: async () => {
-    window.location.href = `${apiUrl}/auth/user/google`; // Adjust path based on user module
+    window.location.href = `${apiUrl}${userEndUrls.loginWithGoogle}`; // Adjust path based on user module
   },
   signup: async (username: string, email: string, password: string, phone: number, imageUrl: string) => {
-    const response = await axios.post(`${apiUrl}/signup/request-otp`, { username, email, password, phone, imageUrl });
+    const response = await axios.post(`${apiUrl}${userEndUrls.signup}`, { username, email, password, phone, imageUrl });
     return response.data;
   },
   requestResendOtp: async (email: string) => {
-    const response = await axios.post(`${apiUrl}/request-resend-otp`, { email});
+    const response = await axios.post(`${apiUrl}${userEndUrls.requestResendOtp}`, { email});
     return response.data;
   },
   logout: async () => {
-    await axios.post(`${apiUrl}/logout`);
+    await axios.post(`${apiUrl}${userEndUrls.logout}`);
   },
   verifyOtp: async (email: string, otp: string) => {
-    const response = await axios.post(`${apiUrl}/signup/verify-otp`, { email, otp });
+    const response = await axios.post(`${apiUrl}${userEndUrls.verifyOtp}`, { email, otp });
     return response.data; // Ensure the response has the expected shape
   },
   resetPassword: async (email: string) => {
-    const response = await axios.post(`${apiUrl}/reset-password`, { email });
+    const response = await axios.post(`${apiUrl}${userEndUrls.resetPassword}`, { email });
     return response.data;
   },
   verifyEmail: async (token: string) => {
-    const response = await axios.post(`${apiUrl}/verify-email`, { token });
+    const response = await axios.post(`${apiUrl}${userEndUrls.verifyEmail}`, { token });
     return response.data;
   },
   // Example of an authenticated request
   homeData: async () => {
-    const response = await apiClient.post(`${apiUrl}/home`);
+    const response = await apiClient.post(`${apiUrl}${userEndUrls.homeData}`);
     return response.data;
   },
-
+  profileData: async () => {
+    const response = await apiClient.post(`${apiUrl}${userEndUrls.profileData}`);
+    return response.data;
+  },
   submitBMI: async (weight: string, heightCm: string, age: string, gender: string) => {
-    const response = await apiClient.post(`${apiUrl}/calculate-bmi`,{weight, heightCm, age, gender});
+    const response = await apiClient.post(`${apiUrl}${userEndUrls.submitBMI}`,{weight, heightCm, age, gender});
     return response.data;
   },
 };

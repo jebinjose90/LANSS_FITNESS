@@ -1,4 +1,3 @@
-import { BrowserRouter} from 'react-router-dom'
 import AppRouter from './router/AppRouter';
 import { useEffect } from 'react';
 
@@ -23,9 +22,7 @@ const App = () => {
     document.title = title;
   }, []);
   return (
-    <BrowserRouter>
       <AppRouter/>
-    </BrowserRouter>
   );
 };
 

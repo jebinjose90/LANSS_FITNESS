@@ -3,6 +3,7 @@
 import { useCallback, useState } from 'react';
 import { userApi } from '../../../infrastructure/api/userApi';
 import { useNavigate } from 'react-router-dom';
+import userCRM from '../../../router/UserRoute/userCRM';
 
 
 export const useUserAuth = () => {
@@ -23,7 +24,8 @@ export const useUserAuth = () => {
       localStorage.setItem('token', token);
       localStorage.setItem('username', username);
       localStorage.setItem('userImageUrl', `${apiUrl}${imageUrl}`);
-      navigate('/home');
+      console.log("HOME");
+      navigate(`/${userCRM.Home}`);
     }
     catch (err) {
       setError('Login failed. Please check your credentials.');
@@ -44,6 +46,23 @@ export const useUserAuth = () => {
       // Save token, username, and imageUrl to localStorage
       localStorage.setItem('username', username);
       localStorage.setItem('userImageUrl', `${apiUrl}${imageUrl}`);
+    }
+    catch (err) {
+      setError('Home data fetching failed. Please check your credentials.');
+    }
+    finally {
+      setLoading(false);
+    }
+  };
+
+  const profile = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await userApi.profileData();
+      // Access token, username, and imageUrl from response data
+      const profile = data.data;
+      setUserData(profile)
     }
     catch (err) {
       setError('Home data fetching failed. Please check your credentials.');
@@ -126,5 +145,5 @@ export const useUserAuth = () => {
     await userApi.loginWithGoogle(); // Calls the loginWithGoogle method from userApi
   };
 
-  return { loading, error, userData, userLogin, userSignup, userSigninWithGoogle, userVerifyOtp, userResendOtp, userLogout, home};
+  return { loading, error, userData, userLogin, userSignup, userSigninWithGoogle, userVerifyOtp, userResendOtp, userLogout, home, profile};
 };

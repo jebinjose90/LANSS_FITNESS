@@ -201,3 +201,39 @@ export const getHomeData = async (req: Request, res: Response) => {
         res.status(500).json({ message: 'Error fetching home data' });
     }
 };
+
+export const getProfileData = async (req: Request, res: Response) => {
+    try {
+        // `req.user` contains decoded token data if token verification was successful
+        const user = req.user; // Assuming `id` was part of the token payload
+        if (user) {
+            const { id } = user as { id: string; }; // Cast to expected structure
+            // Fetch user data based on `userId`
+            const tokenUser = await getUserById(id);
+            if (!tokenUser) {
+                res.status(404).json({ message: USER_NOT_FOUND_MSG });
+            }
+
+            function capitalizeFirstLetter(str: string | undefined): string {
+                if (!str) return ''; // Handle empty strings
+                return str.charAt(0).toUpperCase() + str.slice(1);
+            }
+
+            // Send the data needed for the profile page
+            res.json({
+                message: 'Profile Data',
+                data: {
+                    username: capitalizeFirstLetter(tokenUser?.username),
+                    imageUrl: tokenUser?.profilePictureUrl,
+                    email: tokenUser?.email,
+                    phone: tokenUser?.phone,
+                    // Add any other relevant data here, such as recent activities or stats
+                },
+            });
+        } else {
+            res.status(403).json({ message: 'Profile data not found in token' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching home data' });
+    }
+};
