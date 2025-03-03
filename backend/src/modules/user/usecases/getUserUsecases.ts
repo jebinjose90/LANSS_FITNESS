@@ -145,3 +145,10 @@ export const calculateBMI = async (weight: number, heightCm: number, age: number
     }
 }
 
+export const updateUserProfile = async (email: string ,username: string, age: string, gender: string, height: string, weight: string, place: string): Promise<void> => {
+    try {
+        await UserModel.updateOne({ email: email }, { $set: { username: username, age: age, gender: gender, height: height, weight: weight, place: place } })
+    } catch (error: any) {
+        throw new Error(`Failed to update User Profile, please try again`)
+    }
+}

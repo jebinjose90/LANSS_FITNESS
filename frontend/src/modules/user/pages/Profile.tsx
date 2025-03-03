@@ -1,6 +1,7 @@
 import Navbar from '../../common/Navbar'
 import Footer from '../../common/Footer'
 import ProfileView from '../components/profilePage/ProfileView'
+import SubscriptionPlans from '../components/homePage/SubscriptionPlans'
 
 
 const Profile = () => {
@@ -8,6 +9,7 @@ const Profile = () => {
         <div>
             <Navbar role={'user'} />
             <ProfileView />
+            <SubscriptionPlans />
             <Footer />
         </div>
     )

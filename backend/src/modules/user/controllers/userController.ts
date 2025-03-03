@@ -2,7 +2,7 @@
 
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
-import { createUser, findExistingUser, getUserById, getUserByUsername, loginUser, resendOtp } from '../usecases/getUserUsecases';
+import { createUser, findExistingUser, getUserById, getUserByUsername, loginUser, resendOtp, updateUserProfile} from '../usecases/getUserUsecases';
 import { generateToken } from '../../../infrastructure/security/jwtService';
 
 
@@ -10,6 +10,7 @@ import { generateToken } from '../../../infrastructure/security/jwtService';
 const USER_NOT_FOUND_MSG = 'User not found';
 const INVALID_CREDENTIALS_MSG = 'Invalid credentials';
 const CREATE_USER_ERROR_MSG = 'Error creating user';
+const UPDATE_USER_PROFILE_ERROR_MSG = 'Error updating user details';
 const FETCH_USER_ERROR_MSG = 'Error fetching user';
 const ERROR_SENDING_OTP = "Error sending otp"
 const LOGIN_ERROR_MSG = 'Error logging in';
@@ -23,7 +24,7 @@ export const userSignupRequestOtp = async (req: Request, res: Response): Promise
         const { username, email, phone, password, imageUrl } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
         await findExistingUser(username, email, hashedPassword, phone, imageUrl);
-        res.status(201).json({ message: 'OTP sent to email. Please verify to complete signup.'});
+        res.status(201).json({ message: 'OTP sent to email. Please verify to complete signup.' });
     } catch (error: unknown) {
         const errorMessage = error instanceof Error ? error.message : CREATE_USER_ERROR_MSG;
         res.status(500).json({ message: errorMessage });
@@ -56,9 +57,9 @@ export const userSignupVerifyOtp = async (req: Request, res: Response): Promise<
 
 export const requestResendOtp = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { email} = req.body;
+        const { email } = req.body;
         await resendOtp(email);
-        res.status(201).json({ message: 'OTP sent to email. Please verify to complete signup.'});
+        res.status(201).json({ message: 'OTP sent to email. Please verify to complete signup.' });
     } catch (error) {
         const errorMessage = error instanceof Error ? error.message : ERROR_SENDING_OTP;
         res.status(500).json({ message: errorMessage });
@@ -218,6 +219,15 @@ export const getProfileData = async (req: Request, res: Response) => {
                 if (!str) return ''; // Handle empty strings
                 return str.charAt(0).toUpperCase() + str.slice(1);
             }
+            console.log("DATA", {
+                username: capitalizeFirstLetter(tokenUser?.username),
+                imageUrl: tokenUser?.profilePictureUrl,
+                email: tokenUser?.email,
+                phone: tokenUser?.phone,
+            }
+                // Add any other relevant data here, such as recent activities or stats}
+            );
+
 
             // Send the data needed for the profile page
             res.json({
@@ -227,6 +237,11 @@ export const getProfileData = async (req: Request, res: Response) => {
                     imageUrl: tokenUser?.profilePictureUrl,
                     email: tokenUser?.email,
                     phone: tokenUser?.phone,
+                    gender: tokenUser?.gender,
+                    age: tokenUser?.age,
+                    weight: tokenUser?.weight,
+                    height: tokenUser?.height,
+                    place: tokenUser?.place,
                     // Add any other relevant data here, such as recent activities or stats
                 },
             });
@@ -235,5 +250,19 @@ export const getProfileData = async (req: Request, res: Response) => {
         }
     } catch (error) {
         res.status(500).json({ message: 'Error fetching home data' });
+    }
+};
+
+export const updat_UserProfile = async (req: Request, res: Response): Promise<void> => {
+    try {
+        console.log(req.body);
+        // const serverAddress = `${req.protocol}://${req.get('host')}`;
+        const {email, username, age, gender, height, weight, place } = req.body;
+        
+        await updateUserProfile(email, username, age, gender, height, weight, place);
+        res.status(201).json({ message: 'User Profile updated succssfully' });
+    } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : UPDATE_USER_PROFILE_ERROR_MSG;
+        res.status(500).json({ message: errorMessage });
     }
 };

@@ -6,7 +6,7 @@ const refreshSecretKey = process.env.JWT_REFRESH_SECRET || 'your-refresh-secret-
 
 // Generate Access Token
 export const generateToken = (payload: object): string => {
-  return jwt.sign(payload, secretKey, { expiresIn: '1h' }); // Token expires in 1 hour
+  return jwt.sign(payload, secretKey, { expiresIn: '24h' }); // Token expires in 1 hour
 };
 
 // Generate Refresh Token

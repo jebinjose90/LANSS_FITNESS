@@ -65,7 +65,7 @@ export const useUserAuth = () => {
       setUserData(profile)
     }
     catch (err) {
-      setError('Home data fetching failed. Please check your credentials.');
+      setError('Profile data fetching failed. Please check your credentials.');
     }
     finally {
       setLoading(false);
@@ -141,9 +141,24 @@ export const useUserAuth = () => {
     }
   };
 
+  const updateUserProfile = async(email: string, username: string, age: string, gender: string, height: string, weight: string, place: string) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const updatedData = await userApi.updateProfile(email, username, age, gender, height, weight, place);
+      setUserData(updatedData.data);
+    }
+    catch (err) {
+      setError('Profile update failed.');
+    }
+    finally {
+      setLoading(false);
+    }
+  };
+  
   const userSigninWithGoogle = async () => {
     await userApi.loginWithGoogle(); // Calls the loginWithGoogle method from userApi
   };
 
-  return { loading, error, userData, userLogin, userSignup, userSigninWithGoogle, userVerifyOtp, userResendOtp, userLogout, home, profile};
+  return { loading, error, userData, userLogin, userSignup, userSigninWithGoogle, userVerifyOtp, userResendOtp, userLogout, home, profile, updateUserProfile};
 };

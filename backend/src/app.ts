@@ -10,8 +10,8 @@ import connectToDatabase from './infrastructure/database/connection';
 import themeRoutes from './modules/theme/routes/themeRoutes';
 import userRoutes from './modules/user/routes/userRoutes'
 import trainerRoutes from './modules/trainer/routers/trainerRoutes'
-import chatRoutes from './modules/chat/routes/chatRoutes';
-import { configureWebSocket } from './infrastructure/websocket/WebSocket';
+// import chatRoutes from './modules/chat/routes/chatRoutes';
+// import { configureWebSocket } from './infrastructure/websocket/WebSocket';
 import passport from 'passport';
 import session from 'express-session';
 
@@ -47,11 +47,11 @@ app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 app.use('/', userRoutes);
 app.use('/trainer', trainerRoutes);
-app.use('/chat', chatRoutes);
+// app.use('/chat', chatRoutes);
 app.use('/api', themeRoutes);
 
 // WebSocket Configuration
-configureWebSocket(server);
+// configureWebSocket(server);
 
 // Connect to the database and start the server
 connectToDatabase() // Call the connection function

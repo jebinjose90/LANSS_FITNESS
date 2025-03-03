@@ -11,4 +11,9 @@ export interface User extends Document {
     googleId?: string; // Required for Google authentication
     isGoogleAuth: boolean; // Indicates if the user authenticated via Google
     profilePictureUrl?: string; // Optional for Google-auth users
+    gender?: string;
+    height?: string;
+    weight?: string;
+    age?: string;
+    place?: string;
 }

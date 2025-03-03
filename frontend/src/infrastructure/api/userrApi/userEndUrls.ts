@@ -10,5 +10,6 @@ const userEndUrls = {
     homeData: `/home`,
     profileData: `/profile`,
     submitBMI: `/calculate-bmi`,
+    updateUserProfile: '/updateUserProfile',
 }
 export default userEndUrls;

@@ -57,6 +57,12 @@ export const userApi = {
   },
   profileData: async () => {
     const response = await apiClient.post(`${apiUrl}${userEndUrls.profileData}`);
+    console.log("DATA",response.data);
+    return response.data;
+  },
+  updateProfile: async (email: string ,username: string, age: string, gender: string, height: string, weight: string, place: string) => {
+    const response = await apiClient.post(`${apiUrl}${userEndUrls.updateUserProfile}`,{email,username, age, gender, height, weight, place});
+    console.log("DATA",response.data);
     return response.data;
   },
   submitBMI: async (weight: string, heightCm: string, age: string, gender: string) => {

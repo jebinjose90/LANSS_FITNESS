@@ -50,5 +50,6 @@ export default Icon;
 <Icon svgName="ticket-icon" className="h-4 w-4"/>
 <Icon svgName="calender-icon" width="70" height="70"/>
 <Icon svgName="mail-icon" width="20" height="15" className="custom-class"/>
-<Icon svgName="phone-icon" width="20" height="20" className="custom-class"/>*/}
+<Icon svgName="phone-icon" width="20" height="20" className="custom-class"/>
+<Icon svgName="edit-icon" width="20" height="20 className="custom-class"/>*/}
 
