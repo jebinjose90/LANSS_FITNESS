@@ -1,4 +1,4 @@
-// /backend/src/modules/trainer/repositories/trainerRepository.ts
+// /backend/src/modules/user/repositories/userRepository.ts
 import { Trainer } from '@core/entities/Trainer';
 import TrainerModel from '../models/TrainerModel'; // Mongoose model for the User
 

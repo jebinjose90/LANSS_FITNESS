@@ -117,7 +117,6 @@ export const loginTrainer = async (email: string, password: string): Promise<Tra
         console.log("email", email);
         const trainer = await TrainerModel.findOne({ email });
         console.log("TRAINER", trainer);
-
         if (!trainer) {
             throw new Error("Trainer not found");
         }
@@ -131,7 +130,6 @@ export const loginTrainer = async (email: string, password: string): Promise<Tra
         if (!isMatch) {
             throw new Error("Incorrect password");
         }
-
         return trainer; // Return user object if credentials are valid
     } catch (error: any) {  // Type the error as 'any'
         throw new Error(`Login failed: ${error.message}`);
