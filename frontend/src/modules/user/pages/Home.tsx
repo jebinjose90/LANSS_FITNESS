@@ -1,4 +1,3 @@
-import React from 'react'
 import Navbar from '../../common/Navbar'
 import MainView from '../components/homePage/MainView'
 import FeaturesView from '../components/homePage/FeaturesView'
@@ -10,7 +9,7 @@ import Footer from '../../common/Footer'
 const Home = () => {
     return (
         <div>
-            <Navbar />
+            <Navbar role={'user'} />
             <MainView />
             <FeaturesView />
             <ImageSlider />

@@ -6,12 +6,12 @@ import useValidation from "../../../../core/usecases/useValidation";
 import useCustomAlert from "../../../../core/usecases/useCustomAlert";
 import { uploadImage } from "../../../../infrastructure/api/fileApi";
 
-interface FormValues { username: string; email: string; password: string; phone: string; imageUrl: string;}
+interface FormValues { username: string; email: string; password: string; phone: string; imageUrl: string; pdfUrl: string}
 
 const Signup = () => {
-    const [formValues, setFormValues] = useState<FormValues>({ username: '', email: '', password: '', phone: '', imageUrl: '' });
+    const [formValues, setFormValues] = useState<FormValues>({ username: '', email: '', password: '', phone: '', imageUrl: '' ,pdfUrl: "*"});
     const [modalOpen, setModalOpen] = useState(false);
-    const { loading, error, signup, signinWithGoogle } = useUserAuth();
+    const { loading, error, userSignup, userSigninWithGoogle } = useUserAuth();
     const navigate = useNavigate(); // Set up navigation
     const { validateAll } = useValidation();
     const { showAlert } = useCustomAlert();
@@ -21,7 +21,7 @@ const Signup = () => {
         e.preventDefault();
 
         // Get all errors as an array
-        const allErrors = validateAll({ username: formValues.username, email: formValues.email, password: formValues.password, phone: formValues.phone, height: "*", weight: "*", age: "*", gender: "*" });
+        const allErrors = validateAll({ username: formValues.username, email: formValues.email, password: formValues.password, phone: formValues.phone, height: "*", weight: "*", age: "*", gender: "*", certificateUrl: formValues.pdfUrl});
 
         console.log("ERR", allErrors);
         let imageUrl = ''
@@ -36,7 +36,7 @@ const Signup = () => {
         } else {
             try {
                 // Attempt signup and navigate on success
-                await signup(formValues.username, formValues.email, formValues.password, Number(formValues.phone), imageUrl);
+                await userSignup(formValues.username, formValues.email, formValues.password, Number(formValues.phone), imageUrl);
                 navigate(`/userOtp?email=${encodeURIComponent(formValues.email)}`); // Pass email as a URL parameter;
             } catch (signUpError) {
                 console.error(signUpError);
@@ -76,7 +76,7 @@ const Signup = () => {
             handleSubmit={handleSubmit} 
             modalOpen={modalOpen} 
             setModalOpen={setModalOpen} 
-            signinWithGoogle={signinWithGoogle} 
+            signinWithGoogle={userSigninWithGoogle} 
             updateAvatar={updateAvatar}
             namePlaceholder="ENTER USERNAME"/>
         </>

@@ -3,7 +3,7 @@
 import { Document, Types } from 'mongoose';
 
 export interface User extends Document {
-    _id: Types.ObjectId; // Required for Mongoose
+    
     password: string;
     username: string;
     email: string;
@@ -11,4 +11,9 @@ export interface User extends Document {
     googleId?: string; // Required for Google authentication
     isGoogleAuth: boolean; // Indicates if the user authenticated via Google
     profilePictureUrl?: string; // Optional for Google-auth users
+    gender?: string;
+    height?: string;
+    weight?: string;
+    age?: string;
+    place?: string;
 }

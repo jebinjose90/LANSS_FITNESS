@@ -1,5 +1,5 @@
 import AuthenticationUISkin from '../../common/AuthenticationUISkin'
-import { Otp } from '../../common/authenticationComponents/Otp'
+import Otp from '../../trainer/components/otp/Otp'
 
 const TrainerOTP = () => {
     return (

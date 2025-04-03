@@ -19,5 +19,4 @@ const InputField: React.FC<InputFieldProps> = ({ svgName, svgWidth, svgHeight, p
         <input type={type} name={name} id={name} className="bg-transparent placeholder-color3 font-sans h-10 w-full focus:outline-none" placeholder={placeholder} value={inputValue} onChange={onChange} autoComplete='off' />
     </div>
 );
-
 export default InputField;

@@ -41,7 +41,7 @@ const AuthenticationUISkin: React.FC<UserType> =
                         </div>
                     </div>
 
-                    <div className="w-[600px] h-full bg-color1 absolute skew-x-[5deg] left-[850px]"></div>
+                    <div className="w-[600px] h-full bg-color1 absolute skew-x-[5deg] left-[750px]"></div>
                     <div className="h-4/5 w-4/12 bg-gradient-to-b from-color2 to-color3 opacity-20 skew-x-[-40deg] absolute bottom-0 right-[350px]"></div>
                     <div className="h-4/5 w-4/12 bg-gradient-to-b from-color2 to-color3 opacity-20 skew-x-[-40deg] absolute botttom-10 right-[400px] "></div>
 

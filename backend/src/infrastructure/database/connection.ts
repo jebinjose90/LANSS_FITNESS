@@ -1,3 +1,5 @@
+// backend\src\infrastructure\database\connection.ts
+
 import mongoose from 'mongoose';
 
 const connectToDatabase = async () => {

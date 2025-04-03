@@ -20,9 +20,9 @@ export const trainerSignupRequestOtp = async (req: Request, res: Response): Prom
     try {
         console.log(req.body);
         // const serverAddress = `${req.protocol}://${req.get('host')}`;
-        const { trainername, email, phone, password, imageUrl } = req.body;
+        const { trainername, email, phone, password, imageUrl ,certificatePdfUrl} = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
-        await findExistingTrainer(trainername, email, hashedPassword, phone, imageUrl);
+        await findExistingTrainer(trainername, email, hashedPassword, phone, imageUrl,certificatePdfUrl);
         res.status(201).json({ message: 'OTP sent to email. Please verify to complete signup.'});
     } catch (error: unknown) {
         const errorMessage = error instanceof Error ? error.message : CREATE_USER_ERROR_MSG;
@@ -185,12 +185,58 @@ export const getProfileData = async (req: Request, res: Response) => {
                 return str.charAt(0).toUpperCase() + str.slice(1);
             }
 
+            let trainername = tokenTrainer?.trainername
+            let imageUrl = tokenTrainer?.profilePictureUrl
+            let phone = tokenTrainer?.phone
+            let email = tokenTrainer?.email
             // Send the data needed for the home page
             res.json({
                 message: 'Profile Data',
                 data: {
-                    trainername: capitalizeFirstLetter(tokenTrainer?.trainername),
-                    imageUrl: tokenTrainer?.profilePictureUrl,
+                    trainername: capitalizeFirstLetter(trainername),
+                    imageUrl: imageUrl,
+                    phone: phone,
+                    email: email
+                    // Add any other relevant data here, such as recent activities or stats
+                },
+            });
+        } else {
+            res.status(403).json({ message: 'User data not found in token' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching home data' });
+    }
+};
+
+export const getUsersList = async (req: Request, res: Response) => {
+    try {
+        // `req.user` contains decoded token data if token verification was successful
+        const trainer = req.user; // Assuming `id` was part of the token payload
+        if (trainer) {
+            const { id } = trainer as { id: string; }; // Cast to expected structure
+            // Fetch user data based on `userId`
+            const tokenTrainer = await getTrainerById(id);
+            if (!tokenTrainer) {
+                res.status(404).json({ message: USER_NOT_FOUND_MSG });
+            }
+
+            function capitalizeFirstLetter(str: string | undefined): string {
+                if (!str) return ''; // Handle empty strings
+                return str.charAt(0).toUpperCase() + str.slice(1);
+            }
+
+            let trainername = tokenTrainer?.trainername
+            let imageUrl = tokenTrainer?.profilePictureUrl
+            let phone = tokenTrainer?.phone
+            let email = tokenTrainer?.email
+            // Send the data needed for the home page
+            res.json({
+                message: 'Profile Data',
+                data: {
+                    trainername: capitalizeFirstLetter(trainername),
+                    imageUrl: imageUrl,
+                    phone: phone,
+                    email: email
                     // Add any other relevant data here, such as recent activities or stats
                 },
             });

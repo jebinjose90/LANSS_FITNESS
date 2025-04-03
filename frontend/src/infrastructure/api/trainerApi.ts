@@ -26,8 +26,8 @@ export const trainerApi = {
   loginWithGoogle: async () => {
     window.location.href = `${apiUrl}/trainer/auth/trainer/google`; // Adjust path based on user module
   },
-  signup: async (username: string, email: string, password: string, phone: number, imageUrl: string) => {
-    const response = await axios.post(`${apiUrl}/trainer/signup/request-otp`, { username, email, password, phone, imageUrl });
+  signup: async (trainername: string, email: string, password: string, phone: number, imageUrl: string, certificatePdfUrl: string) => {
+    const response = await axios.post(`${apiUrl}/trainer/signup/request-otp`, { trainername, email, password, phone, imageUrl, certificatePdfUrl});
     return response.data;
   },
   requestResendOtp: async (email: string) => {
@@ -54,4 +54,9 @@ export const trainerApi = {
     const response = await apiClient.post(`${apiUrl}/trainer/profile`);
     return response.data;
   },
+
+  usersListData: async () => {
+    const response = await apiClient.post(`${apiUrl}/trainer/usersList`);
+    return response.data;
+  }
 };

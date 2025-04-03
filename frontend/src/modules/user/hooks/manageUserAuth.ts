@@ -3,6 +3,7 @@
 import { useCallback, useState } from 'react';
 import { userApi } from '../../../infrastructure/api/userApi';
 import { useNavigate } from 'react-router-dom';
+import userCRM from '../../../router/UserRoute/userCRM';
 
 
 export const useUserAuth = () => {
@@ -12,7 +13,7 @@ export const useUserAuth = () => {
   const navigate = useNavigate();
   const apiUrl:String = import.meta.env.VITE_BACKEND_URL;
 
-  const login = async (email: string, password: string) => {
+  const userLogin = async (email: string, password: string) => {
     setLoading(true);
     setError(null);
     try {
@@ -22,8 +23,9 @@ export const useUserAuth = () => {
       // Save token, username, and imageUrl to localStorage
       localStorage.setItem('token', token);
       localStorage.setItem('username', username);
-      localStorage.setItem('imageUrl', `${apiUrl}${imageUrl}`);
-      navigate('/home');
+      localStorage.setItem('userImageUrl', `${apiUrl}${imageUrl}`);
+      console.log("HOME");
+      navigate(`/${userCRM.Home}`);
     }
     catch (err) {
       setError('Login failed. Please check your credentials.');
@@ -43,7 +45,7 @@ export const useUserAuth = () => {
       
       // Save token, username, and imageUrl to localStorage
       localStorage.setItem('username', username);
-      localStorage.setItem('imageUrl', `${apiUrl}${imageUrl}`);
+      localStorage.setItem('userImageUrl', `${apiUrl}${imageUrl}`);
     }
     catch (err) {
       setError('Home data fetching failed. Please check your credentials.');
@@ -53,7 +55,24 @@ export const useUserAuth = () => {
     }
   };
 
-  const signup = async (username: string, email: string, password: string, phone: number, imageUrl: string) => {
+  const profile = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await userApi.profileData();
+      // Access token, username, and imageUrl from response data
+      const profile = data.data;
+      setUserData(profile)
+    }
+    catch (err) {
+      setError('Profile data fetching failed. Please check your credentials.');
+    }
+    finally {
+      setLoading(false);
+    }
+  };
+
+  const userSignup = async (username: string, email: string, password: string, phone: number, imageUrl: string) => {
     setLoading(true);
     setError(null);
     try {
@@ -69,7 +88,7 @@ export const useUserAuth = () => {
     }
   };
 
-  const resendOtp = async (email: string) => {
+  const userResendOtp = async (email: string) => {
     setLoading(true);
     setError(null);
     try {
@@ -85,30 +104,32 @@ export const useUserAuth = () => {
     }
   };
 
-  const logout = useCallback(async () => {
+  const userLogout = useCallback(async () => {
     try {
       await userApi.logout();
       localStorage.removeItem('token');
       localStorage.removeItem('username');
-      localStorage.removeItem('imageUrl');
+      localStorage.removeItem('userImageUrl');
       navigate('/userSignin');
     } catch (error) {
       console.error('Error during logout', error);
     }
   }, [navigate]);
 
-  const verifyOtp = async (email: string, otp: string) => {
+  const userVerifyOtp = async (email: string, otp: string) => {
     setLoading(true);
     setError(null);
     try {
       // Call verifyOtp and expect a response with username and imageUrl
+      console.log(typeof userApi.verifyOtp); // Should log: 'function'
       const data = await userApi.verifyOtp(email, otp);
+      
       // Access token, username, and imageUrl from response data
       const { token, username, imageUrl } = data.data;
       // Save token, username, and imageUrl to localStorage
       localStorage.setItem('token', token);
       localStorage.setItem('username', username);
-      localStorage.setItem('imageUrl', imageUrl);
+      localStorage.setItem('userImageUrl', imageUrl);
 
       navigate('/home');
     }
@@ -120,9 +141,24 @@ export const useUserAuth = () => {
     }
   };
 
-  const signinWithGoogle = async () => {
+  const updateUserProfile = async(email: string, username: string, age: string, gender: string, height: string, weight: string, place: string) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const updatedData = await userApi.updateProfile(email, username, age, gender, height, weight, place);
+      setUserData(updatedData.data);
+    }
+    catch (err) {
+      setError('Profile update failed.');
+    }
+    finally {
+      setLoading(false);
+    }
+  };
+  
+  const userSigninWithGoogle = async () => {
     await userApi.loginWithGoogle(); // Calls the loginWithGoogle method from userApi
   };
 
-  return { loading, error, userData, login, signup, signinWithGoogle, verifyOtp, resendOtp, logout, home};
+  return { loading, error, userData, userLogin, userSignup, userSigninWithGoogle, userVerifyOtp, userResendOtp, userLogout, home, profile, updateUserProfile};
 };

@@ -15,6 +15,6 @@ const tempTrainerSchema = new Schema<TempTrainer>({
     certificatePdfUrl: {type: String, required: true}
 });
 // Create a User model
-const TempTrainerModel = model<TempTrainer>('TempTrainer', tempTrainerSchema, "temp-Trainer");
+const TempTrainerModel = model<TempTrainer>('TempTrainer', tempTrainerSchema, "temp-trainer");
 
 export default TempTrainerModel;

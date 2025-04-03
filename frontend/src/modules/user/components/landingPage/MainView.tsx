@@ -22,11 +22,11 @@ const MainView: React.FC = () => {
     }
     return (
         <>
-            <div className="h-[924px] w-screen bg-color1 relative">
+            <div className="h-[924px] w-full bg-color1 relative">
                 <div className="absolute top-0 right-0 w-1/2 h-full">
                     <img className="object-cover w-full h-full opacity-50 transform scale-x-[-1]" src="https://i.imgur.com/F6iBfkA.jpeg" alt="Image" />
                 </div>
-                <div className="w-[600px] h-full bg-color1 absolute skew-x-[-20deg] left-[500px]"></div>
+                <div className="w-[600px] h-full bg-color1 absolute skew-x-[-20deg] left-[400px]"></div>
                 <div className="w-[760.89px] h-[300px] bg-gradient-to-r from-color2 to-color3 opacity-20 skew-y-[-40deg] rotate-90 absolute bottom-72 -left-[-180px]"></div>
                 <div className="w-[760.89px] h-[300px] bg-gradient-to-r from-color2 to-color3 opacity-20 skew-y-[-40deg] rotate-90 absolute bottom-64 -left-[-160px]"></div>
                 <img className="absolute w-80 h-80 rounded-full object-cover bottom-5 left-1/2 transform -translate-x-1/2"
@@ -56,7 +56,7 @@ const MainView: React.FC = () => {
                 </div>
 
             </div>
-            <div className="w-screen h-[1px] bg-gray-300"></div>
+            <div className="w-full h-[1px] bg-gray-300"></div>
         </>
     )
 }

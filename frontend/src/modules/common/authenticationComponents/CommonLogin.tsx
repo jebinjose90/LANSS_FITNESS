@@ -1,34 +1,20 @@
-import React, { useState } from 'react';
 import Icon from '../Icon';
-import { useUserAuth } from '../../user/hooks/manageUserAuth';
+import InputField from '../InputField';
 
-interface InputFieldProps {
-    svgName: string;
-    svgWidth: string;
-    svgHeight: string;
-    placeholder: string;
-    type?: string;
-    name: string;
-    inputValue: string
-    onChange: React.ChangeEventHandler<HTMLInputElement>
+
+interface FormValues {
+    email: string;
+    password: string;
 }
 
-const InputField: React.FC<InputFieldProps> = ({ svgName, svgWidth, svgHeight, placeholder, type = "text", name, inputValue, onChange }) => (
-    <div className="flex items-center space-x-6 bg-transparent border-2 border-color3 text-color3 px-4 w-full">
-        <Icon svgName={svgName} width={svgWidth} height={svgHeight} className="custom-class" />
-        <input type={type} name={name} id={name} className="bg-transparent placeholder-color3 font-sans h-10 focus:outline-none" placeholder={placeholder} value={inputValue} onChange={onChange} autoComplete='off'/>
-    </div>
-);
+interface LoginModel {
+    handleSubmit: (e: React.FormEvent) => void,
+    gioLoc: () => void,
+    formValues: FormValues,
+    setFormValues: React.Dispatch<React.SetStateAction<FormValues>>,
+}
 
-const Login: React.FC = () => {
-    const [formValues, setFormValues] = useState({ email: '', password: '' });
-    const { loading, error, login } = useUserAuth();
-
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        login(formValues.email, formValues.password);
-    };
+const CommonLogin: React.FC<LoginModel> = ({handleSubmit,gioLoc,formValues,setFormValues}) => {
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -38,12 +24,6 @@ const Login: React.FC = () => {
         }));
     };
 
-    const gioLoc = () =>{
-        navigator.geolocation.getCurrentPosition((position)=> {
-            const p=position.coords;
-            console.log(p.latitude,p.longitude);
-        })
-    }
     return (
         <>
             <form onSubmit={handleSubmit} className='space-y-7 bg-transparent py-10' method="POST">
@@ -55,20 +35,14 @@ const Login: React.FC = () => {
                 </p>
 
                 <div className="flex items-center justify-start space-x-5">
-                    <button
-                        type="submit"
-                        className="text-color3 border-2 border-color3 bg-transparent font-sans py-2 h-10 w-1/4 px-4 hover:opacity-45 transition duration-300"
-                       
-                    >
-                        {loading ? 'Logging in...' : 'LOGIN'}
+                    <button type="submit" className="text-color3 border-2 border-color3 bg-transparent font-sans py-2 h-10 w-1/4 px-4 hover:opacity-45 transition duration-300">
+                        LOGIN
                     </button>
                     <a className="text-color3 font-sans py-2" href="">FORGOT PASSWORD?</a>
                 </div>
-
                 <p className="text-color3 text-left font-sans my-2.5">
                     Having trouble logging in? <a className="opacity-80" href="">Get Help</a>
                 </p>
-                {error && <p>{error}</p>}
             </form>
             <button onClick={gioLoc} className="flex items-center text-color3 border-2 border-color3 bg-transparent font-sans py-3 px-5 hover:opacity-45 transition duration-300">
                 <Icon svgName="google-sign-color-icon" width="30" height="30" className="custom-class" />
@@ -80,4 +54,4 @@ const Login: React.FC = () => {
     );
 };
 
-export default Login;
+export default CommonLogin;

@@ -31,7 +31,7 @@ const BodyMassIndex = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         console.log("Form submitted with data:", bmiData);
-        const allErrors = validateAll({ username: "*", email: "*", password: "*", phone: "*" ,height: bmiData.height ,weight: bmiData.weight ,age: bmiData.age, gender: bmiData.gender});
+        const allErrors = validateAll({ username: "*", email: "*", password: "*", phone: "*" ,height: bmiData.height ,weight: bmiData.weight ,age: bmiData.age, gender: bmiData.gender, certificateUrl:"*"});
         console.log("GENDER",bmiData.gender);
         
     if (allErrors.length > 0) {
@@ -121,7 +121,6 @@ const BodyMassIndex = () => {
                                     CALCULATE NOW
                                 </button>
                             </div>
-
                         </div>
                     </form>
 

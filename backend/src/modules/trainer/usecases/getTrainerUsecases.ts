@@ -4,12 +4,13 @@ import { Trainer } from '@core/entities/Trainer';  // Import your User interface
 import { generateOtp } from '../../../utils/verification/otpGenerator';
 import { sendOtpEmail } from '../../../utils/verification/emailService';
 import TrainerModel from '../models/TrainerModel';
+import UserModel from '../../user/models/UserModel'
 import bcrypt from 'bcryptjs'; // Import bcrypt for password comparison
 import TempTrainerModel from '../models/TempTrainerModel';
 
 
 // Function to login user
-export const findExistingTrainer = async (trainername: string, email: string, hashedPassword: string, phone: number, imageUrl: string): Promise<void> => {
+export const findExistingTrainer = async (trainername: string, email: string, hashedPassword: string, phone: number, imageUrl: string, certificatePdfUrl: string): Promise<void> => {
     try {
         console.log("email", email, "password", hashedPassword, "trainername", trainername);
 
@@ -24,13 +25,12 @@ export const findExistingTrainer = async (trainername: string, email: string, ha
         const otp = generateOtp();
         console.log(otp);
 
-        await TempTrainerModel.create({ email, password, trainername, phone, otp, profilePictureUrl, otpExpiresAt: new Date(Date.now() + 10 * 60 * 1000) }); // OTP expires in 10 minutes
+        await TempTrainerModel.create({ email, password, trainername, phone, otp, profilePictureUrl,certificatePdfUrl, otpExpiresAt: new Date(Date.now() + 10 * 60 * 1000) }); // OTP expires in 10 minutes
 
         // Send OTP email
         await sendOtpEmail(email, otp);
     } catch (error: any) {  // Type the error as 'any'
         console.log("ERROR", error.message);
-
         throw new Error(`Error sending OTP: ${error.message}`);
     }
 };
@@ -49,9 +49,10 @@ export const createTrainer = async (email: string, otp: string): Promise<Trainer
             throw new Error('OTP expired. Please request a new one.');
         }
         // Create the User and delete the TempUser
-        const { trainername, password, profilePictureUrl ,certificatePdfUrl} = tempTrainer;
+        const { trainername, password, phone, profilePictureUrl ,certificatePdfUrl} = tempTrainer;
         const isGoogleAuth = false
-        const newTrainer = new TrainerModel({ email, trainername, password, isGoogleAuth, profilePictureUrl ,certificatePdfUrl});
+        const { v4: uuidv4 } = require('uuid');
+        const newTrainer = new TrainerModel({ email,googleId: uuidv4(), trainername, password, phone, isGoogleAuth, profilePictureUrl ,certificatePdfUrl});
         await newTrainer.save();
         await TempTrainerModel.deleteOne({ email });
         return newTrainer; // Return the created user object
@@ -89,7 +90,9 @@ export const resendOtp = async (email: string): Promise<void> => {
 };
 
 // Function to get a user by ID
-export const getTrainerById = async (trainerId: string): Promise<Trainer | null> => {
+export const 
+
+getTrainerById = async (trainerId: string): Promise<Trainer | null> => {
     try {
         const trainer = await TrainerModel.findById(trainerId);
         return trainer; // Returns the user object or null if not found
@@ -114,7 +117,6 @@ export const loginTrainer = async (email: string, password: string): Promise<Tra
         console.log("email", email);
         const trainer = await TrainerModel.findOne({ email });
         console.log("TRAINER", trainer);
-
         if (!trainer) {
             throw new Error("Trainer not found");
         }
@@ -128,7 +130,6 @@ export const loginTrainer = async (email: string, password: string): Promise<Tra
         if (!isMatch) {
             throw new Error("Incorrect password");
         }
-
         return trainer; // Return user object if credentials are valid
     } catch (error: any) {  // Type the error as 'any'
         throw new Error(`Login failed: ${error.message}`);

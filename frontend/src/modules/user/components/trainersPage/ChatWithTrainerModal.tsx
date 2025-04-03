@@ -1,5 +1,7 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Icon from "../../../common/Icon";
+// import { useSelector } from 'react-redux';
+// import socket from '../../../../infrastructure/socket/socketClient';
 
 interface ChildComponentProps {
     onClose: () => void; // Callback to close the child
@@ -7,11 +9,29 @@ interface ChildComponentProps {
 
 const ChatWithTrainerModal: React.FC<ChildComponentProps> = ({ onClose }) => {
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
+    const [message, setMessage] = useState('');
+    const [chat, setChat] = useState<string[]>([]);
 
     // Automatically scroll to the bottom
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, []);
+
+    const sendMessage = () => {
+        // socket.emit('message', message);
+        // setMessage('');
+    };
+
+    // useEffect(() => {
+    //     socket.on('message', (data: string) => {
+    //         setChat((prevChat) => [...prevChat, data]);
+    //     });
+
+    //     return () => {
+    //         socket.off('message');
+    //     };
+    // }, []);
+
     return (
         <>
             <div aria-hidden="true" className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none bg-black bg-opacity-50 backdrop-blur-sm">
@@ -42,7 +62,7 @@ const ChatWithTrainerModal: React.FC<ChildComponentProps> = ({ onClose }) => {
                                     </button>
                                 </div>
                             </div>
-                            <div id="messages" className="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-color3 scrollbar-thumb-rounded scrollbar-track-color3 scrollbar-w-2 scrolling-touch h-[440px]">
+                            {/* <div id="messages" className="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-color3 scrollbar-thumb-rounded scrollbar-track-color3 scrollbar-w-2 scrolling-touch h-[440px]">
 
                                 <div className="chat-message">
                                     <div className="flex items-end">
@@ -129,7 +149,14 @@ const ChatWithTrainerModal: React.FC<ChildComponentProps> = ({ onClose }) => {
                                     </div>
                                 </div>
                                 <div ref={messagesEndRef} />
+                            </div> */}
+
+                            <div>
+                                {chat.map((msg, index) => (
+                                    <div key={index}>{msg}</div>
+                                ))}
                             </div>
+
                             <div className="border-t-2 border-color3 px-4 pt-4 mb-2 sm:mb-0">
                                 <div className="relative flex">
                                     <span className="absolute inset-y-0 flex items-center">
@@ -139,7 +166,7 @@ const ChatWithTrainerModal: React.FC<ChildComponentProps> = ({ onClose }) => {
                                             </svg>
                                         </button>
                                     </span>
-                                    <input type="text" placeholder="Write your message!" className="w-full focus:outline-none focus:placeholder-color3 text-color3 placeholder-color3 pl-12 bg-color1 rounded-md py-3"></input>
+                                    <input type="text" value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Write your message!" className="w-full focus:outline-none focus:placeholder-color3 text-color3 placeholder-color3 pl-12 bg-color1 rounded-md py-3"></input>
                                     <div className="absolute right-0 items-center inset-y-0 hidden sm:flex">
                                         <button type="button" className="inline-flex items-center justify-center rounded-full h-10 w-10 transition duration-500 ease-in-out text-color3 hover:bg-color2 focus:outline-none">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6 text-color3">
@@ -157,7 +184,7 @@ const ChatWithTrainerModal: React.FC<ChildComponentProps> = ({ onClose }) => {
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                             </svg>
                                         </button>
-                                        <button type="button" className="inline-flex items-center justify-center rounded-lg px-4 py-3 transition duration-500 ease-in-out text-color1 bg-color3 hover:bg-color2 focus:outline-none">
+                                        <button type="button"  onClick={sendMessage} className="inline-flex items-center justify-center rounded-lg px-4 py-3 transition duration-500 ease-in-out text-color1 bg-color3 hover:bg-color2 focus:outline-none">
                                             <span className="font-bold">Send</span>
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-6 w-6 ml-2 transform rotate-90">
                                                 <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>

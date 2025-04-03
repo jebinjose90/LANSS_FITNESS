@@ -1,8 +1,9 @@
-// frontend\src\modules\common\authenticationComponents\Otp.tsx
+
 
 import { useEffect, useRef, useState } from "react";
-import { useNavigate, useLocation } from 'react-router-dom';
-import { useUserAuth } from "../../user/hooks/manageUserAuth";
+import { useLocation } from 'react-router-dom';
+import { useUserAuth } from "../../../user/hooks/manageUserAuth";
+import { CommonOtp } from "../../../common/authenticationComponents/CommonOtp"
 
 interface OtpState {
     digitOne: string;
@@ -11,12 +12,11 @@ interface OtpState {
     digitFour: string;
 }
 
-export const Otp: React.FC = () => {
+const Otp = () => {
     const location = useLocation();
     const params = new URLSearchParams(location.search);
     const email = params.get('email')
-    const navigate = useNavigate();
-    const { verifyOtp , resendOtp} = useUserAuth();
+    const { userVerifyOtp , userResendOtp} = useUserAuth();
     const inputRef = useRef<(HTMLInputElement | null)[]>([]);
     const [otp, setOtp] = useState<OtpState>({
         digitOne: "",
@@ -92,7 +92,7 @@ export const Otp: React.FC = () => {
         // Concatenate the OTP digits into a single string
         const otpValue = `${otp.digitOne}${otp.digitTwo}${otp.digitThree}${otp.digitFour}`;
         try {
-            await verifyOtp(email!, otpValue);
+            await userVerifyOtp(email!, otpValue);
         } catch (error) {
             console.error("OTP verification failed", error);
         }
@@ -120,37 +120,15 @@ export const Otp: React.FC = () => {
         if (email) {
             setTimer(59); // Reset the timer
             setIsButtonDisabled(true); // Disable the button again
-            await resendOtp(email);
+            await userResendOtp(email);
             return;
         }
     };
+  return (
+    <>
+        <CommonOtp handleResendOtp={handleResendOtp} handleSubmit={handleSubmit} isButtonDisabled={isButtonDisabled} renderInput={renderInput} timer={timer}/>
+    </>
+  )
+}
 
-    return (
-        <form onSubmit={handleSubmit}>
-            <p className="text-color3 text-left font-sans my-[10px]">Send to Email</p>
-            <div className="space-x-1">
-                {renderInput()}
-            </div>
-            <button
-                onClick={handleResendOtp}
-                disabled={isButtonDisabled}
-                className={`pt-4 font-semibold ${isButtonDisabled
-                    ? "bg-transparent text-color3 opacity-35 cursor-not-allowed"
-                    : "bg-transparent text-color3 hover:bg-transparent"
-                    }`}
-            >
-                Resend OTP
-            </button>
-            <p className="mt-2 text-sm text-color3">
-                {isButtonDisabled ? `Resend OTP in ${timer}s` : "You can resend the OTP now."}
-            </p>
-            <div className='flex flex-row justify-center items-start'>
-                <button type='submit' className="text-color3 border-2 border-color3 bg-transparent font-sans py-2 h-10 w-1/4 px-4 hover:opacity-45 transition duration-300">
-                    LOGIN
-                </button>
-            </div>
-            <p className="text-color3 text-left font-sans my-[10px]">Having trouble logging in? <a className='opacity-80' href="">Get Help</a></p>
-        </form>
-
-    );
-};
+export default Otp
