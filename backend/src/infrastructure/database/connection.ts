@@ -7,7 +7,7 @@ const connectToDatabase = async () => {
     await mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/lanss-fitness');
 
     const db = mongoose.connection;
-    console.log(⁠`✅ MongoDB connected successfully: ${db.host}:${db.port}/${db.name}`);
+    console.log(`✅ MongoDB connected successfully: ${db.host}:${db.port}/${db.name}`);
 
     db.on('connected', () => {
       console.log(`✅ MongoDB connected successfully: ${db.host}:${db.port}/${db.name}`);
