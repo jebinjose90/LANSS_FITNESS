@@ -36,7 +36,6 @@ const Signup = () => {
             try {
                 // Attempt signup and navigate on success
                 await trainerSignup(formValues.username, formValues.email, formValues.password, Number(formValues.phone), imageUrl, formValues.pdfUrl);
-               
             } catch (signUpError) {
                 console.error(signUpError);
             }
