@@ -20,7 +20,7 @@ const AdminLogin = () => {
         {/* <!-- Login component --> */}
         <div className="flex shadow-md">
           {/* <!-- Login form --> */}
-          <div className="flex flex-wrap content-center justify-center rounded-l-md bg-color1 w-[26rem] h-[42rem]">
+          <div className="flex flex-wrap content-center justify-center bg-color1 w-[26rem] h-[42rem]">
             <div className="w-auto space-y-9">
               {/* <!-- Heading --> */}
               <h1 className="text-3xl font-oswald text-color3">ADMIN</h1>
@@ -40,8 +40,8 @@ const AdminLogin = () => {
           </div>
 
           {/* <!-- Login banner --> */}
-          <div className="hidden xs:hidden sm:hidden md:hidden xl:flex flex-wrap content-center justify-center rounded-r-md w-[32rem] h-[42rem]">
-            <img className="w-full h-full bg-center bg-no-repeat bg-cover rounded-r-md" src="https://media-hosting.imagekit.io/60179717b1b44965/WhatsApp%20Image%202025-03-06%20at%2012.47.42.jpeg?Expires=1838290971&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=Mq0sGB44PmLgmTlBTJbj6zH3G~xQMCerJ5VxNodhLj6SPfEc2A1FRXeUKFVQkeDnA-VjuptX58o2ov5TaO3UCFxUmJdSOhnJUbQVZvs6LrjH405ufXo2MTYmGD2q2WPbnIpK~EZehi1dX3tcyrczhagl8OwSkNJSMoTkVl1XvVl4cKiZ2fokssMQQHoiA6nIqzKaCuh8siuUExqNe-SiqFhSyyFmUTKk8Nu0woM68fzOZoZJH-t-DO5GhIC~nfiW~FykjAl~wjj3M9DwFctu-7j5XAybEkA7yN-YYkmXRc6UNMxhYI9urbKTNeBMmp8ZydNUFwctVhUXsoUmmv~sPA__" />
+          <div className="hidden xs:hidden sm:hidden md:hidden xl:flex flex-wrap content-center justify-center w-[32rem] h-[42rem]">
+            <img className="w-full h-full bg-center bg-no-repeat bg-cover " src="https://i.imgur.com/f9szTOU.jpeg" />
           </div>
 
         </div>

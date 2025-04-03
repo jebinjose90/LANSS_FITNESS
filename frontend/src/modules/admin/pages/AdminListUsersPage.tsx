@@ -3,10 +3,10 @@ import ListUsers from "../components/listUsers/ListUsers"
 
 const AdminListUsersPage = () => {
   return (
-    <>
+    <div className="bg-color2">
     <Sidebar/>
     <ListUsers/>
-    </>
+    </div>
   )
 }
 
