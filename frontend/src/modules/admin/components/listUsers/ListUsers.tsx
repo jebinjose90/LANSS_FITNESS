@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ListTable from "../../../common/ListTable";
+import ListTable from "../common/ListTable";
 
 const ListUsers: React.FC = () => {
   const [users, setUsers] = useState([

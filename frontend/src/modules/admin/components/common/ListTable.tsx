@@ -29,6 +29,7 @@ const ListTable: React.FC<ListTableProps> = ({ title, data, onToggleBlock }) => 
       <div className="p-4 border-2 border-color1 border-dashed space-y-8 flex-grow">
         <div className="mb-2 flex items-center justify-between px-12">
           <h1 className="text-color3 font-oswald text-3xl">{title}</h1>
+          { title === "TRAINERS" && <button className="bg-color2 text-color3 border-2 border-color3 px-8 py-2">REQUESTS</button>}
         </div>
 
         {/* Table */}
