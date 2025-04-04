@@ -17,7 +17,7 @@ const TrainersList: React.FC = () => {
     );
   };
 
-  return <ListTable title="Trainers" data={trainers} onToggleBlock={handleBlockToggle} />;
+  return <ListTable title="TRAINERS" data={trainers} onToggleBlock={handleBlockToggle} />;
 };
 
 export default TrainersList;

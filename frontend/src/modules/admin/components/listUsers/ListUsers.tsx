@@ -15,7 +15,7 @@ const ListUsers: React.FC = () => {
     );
   };
 
-  return <ListTable title="Users" data={users} onToggleBlock={handleBlockToggle} />;
+  return <ListTable title="USERS" data={users} onToggleBlock={handleBlockToggle} />;
 };
 
 export default ListUsers;
