@@ -24,7 +24,8 @@ const ListTable: React.FC<ListTableProps> = ({ title, data, onToggleBlock }) => 
   const totalPages = Math.ceil(data.length / itemsPerPage);
 
   return (
-    <div className="flex-1 transition-all p-4 bg-color2 min-h-screen flex flex-col">
+    
+    <div className="flex-1 transition-all p-4 sm:ml-64 bg-color2 min-h-screen flex flex-col">
       <div className="p-4 border-2 border-color1 border-dashed space-y-8 flex-grow">
         <div className="mb-2 flex items-center justify-between px-12">
           <h1 className="text-color3 font-oswald text-3xl">{title}</h1>
