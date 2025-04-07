@@ -4,6 +4,7 @@ import Icon from '../Icon'
 import Modal from '../../../core/usecases/imageCrop/Modal';
 import InputField from '../InputField';
 import UploadPdfModal from '../../../core/usecases/pdfUpload/UploadPdfModal'; // Path to your modal component
+import InputParagraph from '../InputParagraph';
 
 
 interface FormValues {
@@ -12,7 +13,8 @@ interface FormValues {
     password: string;
     phone: string;
     imageUrl: string;
-    pdfUrl: string
+    pdfUrl: string;
+    description: string;
 }
 
 interface SignupModel {
@@ -33,7 +35,7 @@ interface SignupModel {
 
 const CommonSignup: React.FC<SignupModel> = ({ showUplaodCertificate = false, avatarUrl = "", formValues, namePlaceholder, setFormValues, handleSubmit, signinWithGoogle, updateAvatar, modalOpen, setModalOpen, isPdfModalOpen, setPdfModalOpen, handlePdfUploadSuccess }) => {
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormValues(prevValues => ({
             ...prevValues,
@@ -59,10 +61,12 @@ const CommonSignup: React.FC<SignupModel> = ({ showUplaodCertificate = false, av
                 <InputField svgName="login-password-icon" svgWidth="28" svgHeight="24" placeholder="ENTER PASSWORD" name="password" inputValue={formValues.password} onChange={handleInputChange} type='password' />
                 {/* {showUplaodCertificate && 
                 <InputField svgName="login-password-icon" svgWidth="28" svgHeight="24" placeholder="ENTER DESIGNATION" name="designation" inputValue={formValues.password} onChange={handleInputChange} type='password' />
-                } */}
+                } 
+                 <Icon svgName="description-icon" width="20" height="24" className="custom-class"/>*/}
+                 <InputParagraph svgName="description-icon" svgWidth="20" svgHeight="24" placeholder='ENTER DESIGNATION' name='dwscription' inputValue={formValues.description} onChange={handleInputChange}/>
                 {showUplaodCertificate &&
                     <>
-                        <button type="button" onClick={() => setPdfModalOpen && setPdfModalOpen(true)} className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                        <button type="button" onClick={() => setPdfModalOpen && setPdfModalOpen(true)} className="px-4 py-2 bg-color3 text-color2">
                             {formValues.pdfUrl ? 'Change PDF' : 'Upload PDF'}
                         </button>
                         {formValues.pdfUrl && <p className="mt-2 text-green-600">PDF Uploaded Successfully!</p>}

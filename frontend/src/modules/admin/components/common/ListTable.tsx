@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface ListTableProps {
   title: string;
@@ -23,13 +24,19 @@ const ListTable: React.FC<ListTableProps> = ({ title, data, onToggleBlock }) => 
 
   const totalPages = Math.ceil(data.length / itemsPerPage);
 
+  const navigate = useNavigate()
+
+  function goTotrainersRequests() {
+    navigate("/admin/trainers/request");
+  }
+
   return (
     
     <div className="flex-1 transition-all p-4 sm:ml-64 bg-color2 min-h-screen flex flex-col">
       <div className="p-4 border-2 border-color1 border-dashed space-y-8 flex-grow">
         <div className="mb-2 flex items-center justify-between px-12">
           <h1 className="text-color3 font-oswald text-3xl">{title}</h1>
-          { title === "TRAINERS" && <button className="bg-color2 text-color3 border-2 border-color3 px-8 py-2">REQUESTS</button>}
+          { title === "TRAINERS" && <button className="bg-color2 text-color3 border-2 border-color3 px-8 py-2" onClick={goTotrainersRequests}>REQUESTS</button>}
         </div>
 
         {/* Table */}

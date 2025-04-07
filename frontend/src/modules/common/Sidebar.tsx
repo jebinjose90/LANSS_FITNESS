@@ -24,10 +24,10 @@ const Sidebar: React.FC = () => {
   const links = [
     { path: "divide", label: 'divide' },
     { path: "/admin/dashboard", label: 'Dashboard' },
-    { path: "/admin/adminTrainers", label: 'Trainers' },
-    { path: "/admin/adminUsers", label: 'Users' },
-    { path: "/admin/adminMealPlans", label: 'Meal Plans' },
-    { path: "/admin/adminReports", label: 'Reports' },
+    { path: "/admin/trainers", label: 'Trainers' },
+    { path: "/admin/users", label: 'Users' },
+    { path: "/admin/mealPlans", label: 'Meal Plans' },
+    { path: "/admin/reports", label: 'Reports' },
     { path: "/admin/themeCustomization", label: 'Customization' },
     { path: "divide", label: 'divide' },
     { path: "/admin/logout", label: 'Logout' }
