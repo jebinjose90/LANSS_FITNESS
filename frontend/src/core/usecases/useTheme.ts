@@ -11,6 +11,9 @@ export const useTheme = () => {
       setTheme(themeData);
       localStorage.setItem('favicon', themeData.logoUrl);
       localStorage.setItem('title', themeData.companyName);
+      console.log("COLOR1",themeData.color1);
+      
+
       // Apply dynamic theme colors via CSS variables
       document.documentElement.style.setProperty('--color1', themeData.color1);
       document.documentElement.style.setProperty('--color2', themeData.color2);

@@ -90,7 +90,7 @@ const EditProfileModal: React.FC<EditProfileComponentProps> = ({ onClose }) => {
                                 </div>
                                 <div className="space-y-1">
                                     <label htmlFor="user_name" className="block text-sm font-medium text-color-3 ">Gender</label>
-                                    <Dropdown onSelect={handleGenderSelection} />
+                                    <Dropdown options={["Male", "Female"]} onSelect={handleGenderSelection} />
                                 </div>
                             </div>
                             <button type="submit" className="text-color1 bg-color3 font-sanspy-2 h-10 w-full px-4 hover:opacity-45 transition duration-300">

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface ListTableProps<T> {
   title: string;
@@ -18,12 +19,18 @@ const ListMealsTable = <T extends { id: number }>({ title, data }: ListTableProp
   // Extract table headers dynamically
   const headers = data.length ? Object.keys(data[0]) : [];
 
+  const navigate = useNavigate()
+
+  function goToAddMeal() {
+    navigate("/admin/mealPlans/addMeal")
+  }
+
   return (
     <div className="flex-1 transition-all p-4 sm:ml-64 bg-color2 min-h-screen flex flex-col">
       <div className="p-4 border-2 border-color1 border-dashed space-y-8 flex-grow">
         <div className="mb-2 flex items-center justify-between px-12">
           <h1 className="text-color3 font-oswald text-3xl">{title}</h1>
-          <button className="bg-color2 text-color3 border-2 border-color3 px-8 py-2">ADD MEAL</button>
+          <button onClick={goToAddMeal} className="bg-color2 text-color3 border-2 border-color3 px-8 py-2">ADD MEAL</button>
         </div>
 
         {/* Table */}

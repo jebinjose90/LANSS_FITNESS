@@ -1,21 +1,20 @@
 import React, { useState } from 'react';
 
 interface DropdownProps {
-    onSelect: (selectedOption: string) => void;  // Callback to pass the selected value to the parent
+    options: string[];
+    onSelect: (selectedOption: string) => void;
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ onSelect }) => {
+const Dropdown: React.FC<DropdownProps> = ({ options, onSelect }) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    const [selectedOption, setSelectedOption] = useState<string>('Sex'); // Default text
+    const [selectedOption, setSelectedOption] = useState<string>(options[0] || 'Select');
 
-    // Toggle dropdown open/close
     const toggleDropdown = () => setIsOpen(!isOpen);
 
-    // Handle selection of an option
     const handleOptionSelect = (option: string) => {
         setSelectedOption(option);
-        onSelect(option);  // Pass the selected option to the parent component
-        setIsOpen(false);  // Close the dropdown after selection
+        onSelect(option);
+        setIsOpen(false);
     };
 
     return (
@@ -43,26 +42,19 @@ const Dropdown: React.FC<DropdownProps> = ({ onSelect }) => {
                 </button>
             </div>
 
-            {/* Dropdown menu */}
             {isOpen && (
-                <div
-                    className="origin-top-right absolute right-0 mt-2 shadow-lg bg-color2 border-2 border-color3 w-full"
-                >
+                <div className="origin-top-right absolute right-0 mt-2 shadow-lg bg-color2 border-2 border-color3 w-full max-h-60 overflow-y-scroll scrollbar-hidden">
                     <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                        <a
-                            className="block px-4 py-2 text-sm text-color3 hover:bg-color2 opacity-45 hover:text-color3"
-                            role="menuitem"
-                            onClick={() => handleOptionSelect('Male')} // Update selected option
-                        >
-                            Male
-                        </a>
-                        <a
-                            className="block px-4 py-2 text-sm text-color3 hover:bg-color2 opacity-45 hover:text-color3"
-                            role="menuitem"
-                            onClick={() => handleOptionSelect('Female')} // Update selected option
-                        >
-                            Female
-                        </a>
+                        {options.map((option) => (
+                            <a
+                                key={option}
+                                className="block px-4 py-2 text-sm text-color3 hover:bg-color2 opacity-45 hover:text-color3 cursor-pointer"
+                                role="menuitem"
+                                onClick={() => handleOptionSelect(option)}
+                            >
+                                {option}
+                            </a>
+                        ))}
                     </div>
                 </div>
             )}

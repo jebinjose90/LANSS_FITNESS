@@ -106,7 +106,7 @@ const BodyMassIndex = () => {
                                 <input type="text" className="bg-color2 text-color3 border-2 border-color3 font-sanspy-2 h-10 px-4 focus:outline-none w-full" name="age" placeholder='Age' onChange={handleInputChange} value={bmiData.age} autoComplete='off' />
                             </div>
                             <div>
-                                <Dropdown onSelect={handleGenderSelection} />
+                                <Dropdown options={["Male", "Female"]} onSelect={handleGenderSelection} />
                             </div>
                         </div>
                         <div className="grid gap-6 mb-6 grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3">

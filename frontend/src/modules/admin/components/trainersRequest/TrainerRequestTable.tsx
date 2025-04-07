@@ -1,19 +1,15 @@
 import { useState } from "react";
-import Icon from "../../../common/Icon";
-import ViewUserReportModal from "./ViewUserReportModal";
+import { Link } from "react-router-dom";
 
 interface ListTableProps<T> {
   title: string;
   data: T[];
 }
 
-const ListReportsTable = <T extends { id: number; status: boolean }>({ title, data}: ListTableProps<T>) => {
-  // Setting for MODAL
-  const [isModalOpen, setModalOpen] = useState(false);
-  const [selectedData, setSelectedData] = useState<any>(null);
-  //____________________________________________________________
-  
-
+const TrainerRequestTable = <T extends { id: number; status: boolean }>({
+  title,
+  data,
+}: ListTableProps<T>) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
@@ -23,14 +19,8 @@ const ListReportsTable = <T extends { id: number; status: boolean }>({ title, da
 
   const totalPages = Math.ceil(data.length / itemsPerPage);
 
-  // Extract table headers dynamically and add the "Action" column
-  const headers = data.length ? [...Object.keys(data[0]), "Action"] : [];
-
-  // HANDLE MODAL - By Clicking the Action button the reports modal will pop up.
-  const handleButtonClick = (data: any) => {
-    setSelectedData(data);
-    setModalOpen(true);
-  };
+  // Extract table headers dynamically and add "Actions"
+  const headers = data.length ? [...Object.keys(data[0]), "Actions"] : [];
 
   return (
     <div className="flex-1 transition-all p-4 sm:ml-64 bg-color2 min-h-screen flex flex-col">
@@ -47,7 +37,7 @@ const ListReportsTable = <T extends { id: number; status: boolean }>({ title, da
                 <tr>
                   {headers.map((header) => (
                     <th key={header} className="px-6 py-4 capitalize">
-                      {header}
+                      {header === "Actions" ? "Actions" : header}
                     </th>
                   ))}
                 </tr>
@@ -55,33 +45,40 @@ const ListReportsTable = <T extends { id: number; status: boolean }>({ title, da
               <tbody>
                 {currentItems.map((item) => (
                   <tr key={item.id} className="text-color3">
-                    {headers.map((key) => (
-                      <td key={key} className="whitespace-nowrap px-6 py-4">
-                        {key === "status" ? (
-                          item.status ? (
-                            <div className="ml-12">
-                              <Icon svgName="check-icon-green" width="40" height="30" className="custom-class" />
-                            </div>
+                    {Object.keys(item).map((key) => {
+                      const value = item[key as keyof typeof item];
+
+                      return (
+                        <td key={key} className="whitespace-nowrap px-6 py-4">
+                          {key === "status" ? (
+                            <span className={value ? "text-green-600 font-semibold" : "text-red-600 font-semibold"}>
+                              {value ? "Approved" : "Not Approved"}
+                            </span>
+                          ) : key === "name" ? (
+                            <Link
+                              // to={`/admin/trainers/request/profile/${item.id}`}
+                              to={`/admin/trainers/request/profile`}
+                              className="text-white hover:underline font-medium"
+                            >
+                              {String(value)}
+                            </Link>
                           ) : (
-                            <div className="ml-12">
-                              <Icon svgName="uncheck-icon-red" width="30" height="30" className="custom-class" />
-                            </div>
-                          )
-                        ) : key === "Action" ? (
-                          <button
-                            onClick={() => handleButtonClick(item)}
-                            className="text-color3 border-2 border-color3 bg-color2 rounded-3xl p-2"
-                          >
-                            View
-                          </button>
-                        ) : (
-                          String(item[key as keyof typeof item])
-                        )}
-                      </td>
-                    ))}
+                            String(value)
+                          )}
+                        </td>
+                      );
+                    })}
+                    <td className="whitespace-nowrap px-6 py-4">
+                      {!item.status && (
+                        <button className="px-4 py-1 bg-green-600 text-white rounded hover:bg-green-700">
+                          Approve
+                        </button>
+                      )}
+                    </td>
                   </tr>
                 ))}
               </tbody>
+
             </table>
           </div>
         </div>
@@ -107,11 +104,8 @@ const ListReportsTable = <T extends { id: number; status: boolean }>({ title, da
           </button>
         </div>
       </div>
-      {/* ViewUserReportModal POPUP */}
-      <ViewUserReportModal isOpen={isModalOpen} onClose={() => setModalOpen(false)} data={selectedData}
-      />
     </div>
   );
 };
 
-export default ListReportsTable;
+export default TrainerRequestTable;

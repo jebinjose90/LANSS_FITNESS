@@ -15,12 +15,8 @@ const ListUserReports: React.FC = () => {
     { id: 10, username: "Rohan", trainerName: "Liam Johnson", date: "02/11/2025", reportType: "Performance", status: true }
   ]);
 
-  const handleViewReport = (id: number) => {
-    console.log(`Viewing report with ID: ${id}`);
-    // You can navigate or open a modal here
-  };
 
-  return <ListReportsTable title="USER REPORTS" data={userReports} onViewReport={handleViewReport} />;
+  return <ListReportsTable title="USER REPORTS" data={userReports}/>;
 };
 
 export default ListUserReports;

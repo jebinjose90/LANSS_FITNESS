@@ -53,4 +53,5 @@ export default Icon;
 <Icon svgName="phone-icon" width="20" height="20" className="custom-class"/>
 <Icon svgName="edit-icon" width="20" height="20 className="custom-class"/>
 <Icon svgName="uncheck-icon-red" width="30" height="30" className="custom-class"/>
-<Icon svgName="check-icon-green" width="40" height="30" className="custom-class"/>*/}
+<Icon svgName="check-icon-green" width="40" height="30" className="custom-class"/>
+<Icon svgName="description-icon" width="20" height="24" className="custom-class"/>*/}
