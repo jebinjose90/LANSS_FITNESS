@@ -29,6 +29,6 @@ router.get('/signin/failed', signinFailed)
 router.get('/auth/user/google', passport.authenticate('user-google', { scope: ['profile', 'email'] }));
 router.get('/auth/user/google/callback', passport.authenticate('user-google', 
     {failureRedirect: '/signin/failed' }), googleCallbackController);
-router.post('/upload', upload.single("file"), uploadImage);
+router.post('/upload-image', upload.single("file"), uploadImage);
 router.post('/calculate-bmi', calculateBMIHandler);
 export default router;

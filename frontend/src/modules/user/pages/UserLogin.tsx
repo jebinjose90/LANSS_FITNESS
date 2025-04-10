@@ -1,6 +1,7 @@
 import React from 'react'
 import AuthenticationUISkin from '../../common/AuthenticationUISkin';
 import Login from '../../user/components/login/Login';
+import LoginForm from '../components/login/LoginForm';
 
 const UserLogin: React.FC = () => {
     
@@ -12,7 +13,7 @@ const UserLogin: React.FC = () => {
             showUserSignup={true}
             userSigupText='New User?'
             userSignupHref='/userSignup'>
-            <Login />
+            <LoginForm />
         </AuthenticationUISkin>
     )
 }

@@ -1,7 +1,4 @@
-import { useEffect, useRef, useState } from "react";
 import Icon from "../../../common/Icon";
-// import { useSelector } from 'react-redux';
-// import socket from '../../../../infrastructure/socket/socketClient';
 
 interface EditImageComponentProps {
     onClose: () => void; // Callback to close the child

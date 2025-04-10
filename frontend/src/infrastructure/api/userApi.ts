@@ -20,10 +20,13 @@ apiClient.interceptors.request.use((config) => {
 });
 
 export const userApi = {
-  login: async (email: string, password: string) => {
-    const response = await axios.post(`${apiUrl}${userEndUrls.login}`, { email, password });
-    return response.data
-  },
+  // login: async (email: string, password: string) => {
+  //   const response = await axios.post(`${apiUrl}${userEndUrls.login}`, { email, password });
+  //   return response.data
+  // },
+  login: (email: string, password: string) =>
+    axios.post(`${apiUrl}${userEndUrls.login}`, { email, password }),
+
   loginWithGoogle: async () => {
     window.location.href = `${apiUrl}${userEndUrls.loginWithGoogle}`; // Adjust path based on user module
   },

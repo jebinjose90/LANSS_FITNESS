@@ -1,5 +1,6 @@
-import Icon from "../../../modules/common/Icon";
-import ImageCropper from "../imageCrop/ImageCropper";
+//LANSS_FITNESS/frontend/src/modules/common/components/imageCrop/Modal.tsx
+import Icon from "../../Icon";
+import ImageCropper from "./ImageCropper";
 
 
 // Define the props type for the Modal component

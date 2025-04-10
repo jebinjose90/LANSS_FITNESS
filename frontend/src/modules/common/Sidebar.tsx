@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom'; // Import Link and useLocation
-import { useTheme } from '../../core/usecases/useTheme';
+import { useTheme } from './hooks/useTheme';
 
 const Sidebar: React.FC = () => {
   const theme = useTheme();

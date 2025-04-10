@@ -1,32 +1,27 @@
+// src/modules/common/hooks/useCustomAlert.tsx
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import React from 'react';
-import Icon from '../../modules/common/Icon';
+import Icon from '../Icon';
+import { AlertContent, prepareAlertContent } from '../../../usecases/alert/useAlertLogic';
 
 const MySwal = withReactContent(Swal);
 
-// Updated the AlertContent type to reflect that message can be an array of strings or a string
-interface AlertContent {
-  title: string;
-  message?: string;  // Allowing for a single message or empty string
-  listItems?: string[];  // This will be used to show the error list
-}
-
 const useCustomAlert = () => {
   const showAlert = React.useCallback(({ title, message, listItems }: AlertContent) => {
-    // If no message is passed, show the list items only
-    const alertMessage = message || "There was an issue with your request.";
+    const { title: alertTitle, message: alertMessage, listItems: alertList } =
+      prepareAlertContent({ title, message, listItems });
 
     MySwal.fire({
       html: (
         <div className="text-sm bg-color1 text-color3 border-2 border-color2 flex items-start justify-center text-left p-4">
           <Icon svgName="info-icon" width='20' height='20' className="flex-shrink-0 inline mr-3"/>
           <div>
-            <span className="font-semibold">{title}</span>
+            <span className="font-semibold">{alertTitle}</span>
             <p>{alertMessage}</p>
-            {listItems && (
+            {alertList.length > 0 && (
               <ul className="mt-1 list-disc list-inside text-sm">
-                {listItems.map((item, index) => (
+                {alertList.map((item, index) => (
                   <li key={index}>{item}</li>
                 ))}
               </ul>
@@ -50,7 +45,7 @@ const useCustomAlert = () => {
     });
   }, []);
 
-  return { showAlert }; // Changed from showCustomAlert to showAlert
+  return { showAlert };
 };
 
 export default useCustomAlert;

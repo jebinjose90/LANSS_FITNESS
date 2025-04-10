@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useTheme } from "../../../../core/usecases/useTheme";
+import { useTheme } from "../../../common/hooks/useTheme";
 import CompanyName from "../../../common/CompanyName"
 import Logo from "../../../common/Logo"
 

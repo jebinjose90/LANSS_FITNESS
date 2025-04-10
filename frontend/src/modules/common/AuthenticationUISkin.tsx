@@ -1,6 +1,6 @@
 // frontend\src\modules\common\AuthenticationUISkin.tsx
 
-import { useTheme } from '../../core/usecases/useTheme';
+import { useTheme } from './hooks/useTheme';
 import Logo from './Logo';
 import CompanyName from './CompanyName';
 import { Link } from 'react-router-dom';

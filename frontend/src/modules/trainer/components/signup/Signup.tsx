@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import CommonSignup from "../../../common/authenticationComponents/CommonSignup"
 import { useTrainerAuth } from "../../hooks/manageTrainerAuth";
-import useValidation from "../../../../core/usecases/useValidation";
-import useCustomAlert from "../../../../core/usecases/useCustomAlert";
+import useValidation from "../../../../usecases/validation/useValidation";
+import useCustomAlert from "../../../common/hooks/useCustomAlert";
 import { uploadImage } from "../../../../infrastructure/api/fileApi";
 
 interface FormValues { trainername: string; username: string; email: string; password: string; phone: string; imageUrl: string; pdfUrl:string; description:string;}

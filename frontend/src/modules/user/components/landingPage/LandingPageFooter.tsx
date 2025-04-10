@@ -1,5 +1,5 @@
 import React from 'react'
-import { useTheme } from '../../../../core/usecases/useTheme'
+import { useTheme } from '../../../common/hooks/useTheme'
 import Logo from '../../../common/Logo'
 import CompanyName from '../../../common/CompanyName'
 import Icon from '../../../common/Icon'

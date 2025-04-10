@@ -1,5 +1,4 @@
 // frontend/src/core/models/Theme.ts
-
 export interface Theme {
     logoUrl: string;
     companyName: string;

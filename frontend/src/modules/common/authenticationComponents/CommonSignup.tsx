@@ -1,9 +1,9 @@
 // frontend\src\modules\common\authenticationComponents\Signup.tsx
 
 import Icon from '../Icon'
-import Modal from '../../../core/usecases/imageCrop/Modal';
+import Modal from '../components/imageCrop/Modal';
 import InputField from '../InputField';
-import UploadPdfModal from '../../../core/usecases/pdfUpload/UploadPdfModal'; // Path to your modal component
+import UploadPdfModal from '../components/pdfUpload/UploadPdfModal'; // Path to your modal component
 import InputParagraph from '../InputParagraph';
 
 

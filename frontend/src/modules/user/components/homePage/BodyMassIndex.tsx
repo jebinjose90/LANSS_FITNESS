@@ -6,8 +6,8 @@ import Dropdown from '../../../common/Dropdown'
 import { useBMI } from '../../hooks/useBMI';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import useCustomAlert from '../../../../core/usecases/useCustomAlert';
-import useValidation from '../../../../core/usecases/useValidation';
+import useCustomAlert from '../../../common/hooks/useCustomAlert';
+import useValidation from '../../../../usecases/validation/useValidation';
 
 
 const BodyMassIndex = () => {

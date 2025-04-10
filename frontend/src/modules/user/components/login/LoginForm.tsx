@@ -2,8 +2,17 @@ import React, { useState } from 'react';
 import { useLogin } from '../../hooks/userLogin';
 import { LoginRequest } from '../../../../core/models/Userr/userAuthModel';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState,AppDispatch } from '../../../../interface-adapters/redux/store';
+import { loginUser } from '../../../../usecases/user/loginUser';
+
 const LoginForm: React.FC = () => {
-  const { handleLogin, loading, error } = useLogin();
+  // const { handleLogin, loading, error } = useLogin();
+
+  const dispatch = useDispatch<AppDispatch>();
+  const { loading, error, data } = useSelector((state: RootState) => state.user);
+
+
   const [formData, setFormData] = useState<LoginRequest>({
     email: '',
     password: '',
@@ -14,9 +23,9 @@ const LoginForm: React.FC = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    await handleLogin(formData);
+    dispatch(loginUser(formData));
   };
 
   return (
@@ -41,6 +50,7 @@ const LoginForm: React.FC = () => {
         {loading ? 'Logging in...' : 'Login'}
       </button>
       {error && <p className="error">{error}</p>}
+      {data && <div className="text-green-500">Welcome, {data.username}</div>}
     </form>
   );
 };

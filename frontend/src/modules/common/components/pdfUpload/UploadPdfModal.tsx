@@ -1,5 +1,6 @@
+//LANSS_FITNESS/frontend/src/usecases/pdfUpload/UploadPdfModal.tsx
 import React, { useState } from 'react';
-import { uploadPdf } from '../../../infrastructure/api/fileApi';
+import { uploadPdf } from '../../../../infrastructure/api/fileApi';
 
 interface UploadPdfModalProps {
   isOpen: boolean;

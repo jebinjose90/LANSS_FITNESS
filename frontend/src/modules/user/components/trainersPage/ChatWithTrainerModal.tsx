@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import Icon from "../../../common/Icon";
-// import { useSelector } from 'react-redux';
-// import socket from '../../../../infrastructure/socket/socketClient';
+
 
 interface ChildComponentProps {
     onClose: () => void; // Callback to close the child
@@ -18,19 +17,8 @@ const ChatWithTrainerModal: React.FC<ChildComponentProps> = ({ onClose }) => {
     }, []);
 
     const sendMessage = () => {
-        // socket.emit('message', message);
-        // setMessage('');
+
     };
-
-    // useEffect(() => {
-    //     socket.on('message', (data: string) => {
-    //         setChat((prevChat) => [...prevChat, data]);
-    //     });
-
-    //     return () => {
-    //         socket.off('message');
-    //     };
-    // }, []);
 
     return (
         <>

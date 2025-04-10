@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import InputFieldWithoutIcon from '../../../common/InputFieldWithoutIcon';
 import ColorPicker from '../../../common/ColorPicker';
-import { useTheme } from '../../../../core/usecases/useTheme';
+import { useTheme } from '../../../common/hooks/useTheme';
 
 interface ThemeCustomizationModalProps {
   isOpen: boolean;

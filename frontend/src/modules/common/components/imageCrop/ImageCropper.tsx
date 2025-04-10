@@ -1,6 +1,7 @@
+//LANSS_FITNESS/frontend/src/modules/common/components/imageCrop/ImageCropper.tsx
 import React, { useRef, useState, ChangeEvent } from "react";
 import ReactCrop, {centerCrop , convertToPixelCrop, Crop, makeAspectCrop } from "react-image-crop";
-import setCanvasPreview from "../../../infrastructure/utils/setCanvasPreview";
+import setCanvasPreview from "../../../../infrastructure/utils/setCanvasPreview";
 import "react-image-crop/dist/ReactCrop.css";
 
 const ASPECT_RATIO = 1;

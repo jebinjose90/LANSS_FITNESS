@@ -1,16 +1,6 @@
+//LANSS_FITNESS/frontend/src/core/usecases/useValidation.tsx
+import { FormValues } from "../../core/interfaces/FormValues";
 
-interface FormValues {
-  username: string;
-  trainername: string;
-  email: string;
-  password: string;
-  phone: string;
-  weight: string;
-  height: string;
-  age: string;
-  gender: string;
-  certificateUrl: string;
-}
 const useValidation = () => {
   // Function to validate the username
   const validateUsername = (username: string): string[] => {

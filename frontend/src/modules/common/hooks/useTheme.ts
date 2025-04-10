@@ -1,7 +1,7 @@
-//LANSS_FITNESS\frontend\src\core\usecases\useTheme.ts
+//LANSS_FITNESS/frontend/src/usecases/useTheme.ts
 import { useEffect, useState } from 'react';
-import { getTheme } from '../../infrastructure/api/themeApi';
-import { Theme } from '../../core/models/Theme';
+import { getTheme } from '../../../infrastructure/api/themeApi';
+import { Theme } from '../../../core/models/Theme';
 
 export const useTheme = () => {
   const [theme, setTheme] = useState<Theme | null>(null);  // Use Theme type

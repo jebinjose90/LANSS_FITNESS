@@ -46,7 +46,7 @@ export const uploadImage = async (base64Image: string): Promise<UploadImageRespo
 
   formData.append('file', blob, 'image.png'); // 'file' must match the backend field name
 
-  const response = await apiClient.post('/upload', formData, {
+  const response = await apiClient.post('/upload-image', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },

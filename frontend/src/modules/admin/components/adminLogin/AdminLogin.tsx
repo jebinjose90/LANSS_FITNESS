@@ -1,4 +1,4 @@
-import { useTheme } from "../../../../core/usecases/useTheme";
+import { useTheme } from "../../../common/hooks/useTheme";
 import InputField from "../../../common/InputField";
 
 const AdminLogin = () => {

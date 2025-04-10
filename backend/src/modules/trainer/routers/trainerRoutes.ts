@@ -31,7 +31,7 @@ router.get('/trainername/:trainername', getTrainerByTrainernameController);
 router.get('/signin/failed', signinFailed)
 router.get('/auth/trainer/google', passport.authenticate('trainer-google', { scope: ['profile', 'email'] }));
 router.get('/auth/trainer/google/callback', passport.authenticate('trainer-google', {failureRedirect: '/signin/failed' }), googleCallbackController);
-router.post('/upload', imageUpload.single("file"), uploadImage);
+router.post('/upload-image', imageUpload.single("file"), uploadImage);
 // Route to upload PDF
 router.post("/upload-pdf", pdfUpload.single("file"), uploadPdf);
 
