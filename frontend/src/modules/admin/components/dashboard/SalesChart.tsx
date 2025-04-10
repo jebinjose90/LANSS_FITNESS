@@ -17,7 +17,7 @@ const data = [
 
 const SalesChart = () => {
   return (
-    <div className="w-full h-[500px] bg-color1 shadow-lg p-4">
+    <div className="w-full h-screen bg-color1 shadow-lg p-4">
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />

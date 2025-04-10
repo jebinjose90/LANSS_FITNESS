@@ -1,3 +1,5 @@
+// \LANSS_FITNESS\frontend\src\core\constants\route\adminCRM.ts
+// Centralized Route Management or Route Constants Management
 const adminCRM = {
   AdminLogin: "admin/signin",
   AdminDashboard: "admin/dashboard",

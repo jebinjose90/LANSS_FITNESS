@@ -1,3 +1,5 @@
+// \LANSS_FITNESS\frontend\src\core\constants\route\trainerCRM.ts
+// Centralized Route Management or Route Constants Management
 const trainerCRM = {
     TrainerLogin: "trainer/trainerSignin",
     TrainerProfile: "trainer/profile",

@@ -8,7 +8,7 @@ import TrainerLogin from '../../modules/trainer/pages/TrainerLogin'
 import TrainerVerifyEmail from '../../modules/trainer/pages/TrainerVerifyEmail'
 import TrainerProfile from '../../modules/trainer/pages/TrainerProfile'
 import TrainerChats from '../../modules/trainer/pages/TrainerChats'
-import trainerCRM from './trainerCRM'
+import trainerCRM from '../../core/constants/route/trainerCRM'
 
 
 

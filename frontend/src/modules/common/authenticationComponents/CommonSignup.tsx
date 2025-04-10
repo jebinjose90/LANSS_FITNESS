@@ -8,6 +8,7 @@ import InputParagraph from '../InputParagraph';
 
 
 interface FormValues {
+    trainername: string;
     username: string;
     email: string;
     password: string;
@@ -18,7 +19,7 @@ interface FormValues {
 }
 
 interface SignupModel {
-    showUplaodCertificate?: boolean,
+    trainerFormNeeds?: boolean,
     avatarUrl: string,
     formValues: FormValues,
     setFormValues: React.Dispatch<React.SetStateAction<FormValues>>,
@@ -33,7 +34,7 @@ interface SignupModel {
     handlePdfUploadSuccess?: (uploadedPdfUrl: string) => void;
 }
 
-const CommonSignup: React.FC<SignupModel> = ({ showUplaodCertificate = false, avatarUrl = "", formValues, namePlaceholder, setFormValues, handleSubmit, signinWithGoogle, updateAvatar, modalOpen, setModalOpen, isPdfModalOpen, setPdfModalOpen, handlePdfUploadSuccess }) => {
+const CommonSignup: React.FC<SignupModel> = ({ trainerFormNeeds = false, avatarUrl = "", formValues, namePlaceholder, setFormValues, handleSubmit, signinWithGoogle, updateAvatar, modalOpen, setModalOpen, isPdfModalOpen, setPdfModalOpen, handlePdfUploadSuccess }) => {
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -55,16 +56,18 @@ const CommonSignup: React.FC<SignupModel> = ({ showUplaodCertificate = false, av
                 )}
             </div>
             <form onSubmit={handleSubmit} className='space-y-7 bg-transparent py-10' method="POST">
-                <InputField svgName="login-user-icon" svgWidth="23" svgHeight="23" placeholder={namePlaceholder} name="username" inputValue={formValues.username} onChange={handleInputChange} />
+                {trainerFormNeeds &&
+                    <InputField svgName="login-user-icon" svgWidth="23" svgHeight="23" placeholder={namePlaceholder} name="trainer" inputValue={formValues.trainername} onChange={handleInputChange} />}
+
+                {!trainerFormNeeds &&
+                    <InputField svgName="login-user-icon" svgWidth="23" svgHeight="23" placeholder={namePlaceholder} name="username" inputValue={formValues.username} onChange={handleInputChange} />}
+
                 <InputField svgName="login-email-icon" svgWidth="30" svgHeight="23" placeholder="ENTER YOUR EMAIL" name="email" inputValue={formValues.email} onChange={handleInputChange} />
                 <InputField svgName="login-phone-icon" svgWidth="30" svgHeight="30" placeholder="ENTER PHONE" name="phone" inputValue={formValues.phone} onChange={handleInputChange} type='tel' />
                 <InputField svgName="login-password-icon" svgWidth="28" svgHeight="24" placeholder="ENTER PASSWORD" name="password" inputValue={formValues.password} onChange={handleInputChange} type='password' />
-                {/* {showUplaodCertificate && 
-                <InputField svgName="login-password-icon" svgWidth="28" svgHeight="24" placeholder="ENTER DESIGNATION" name="designation" inputValue={formValues.password} onChange={handleInputChange} type='password' />
-                } 
-                 <Icon svgName="description-icon" width="20" height="24" className="custom-class"/>*/}
-                 <InputParagraph svgName="description-icon" svgWidth="20" svgHeight="24" placeholder='ENTER DESIGNATION' name='dwscription' inputValue={formValues.description} onChange={handleInputChange}/>
-                {showUplaodCertificate &&
+                {trainerFormNeeds &&
+                    <InputParagraph svgName="description-icon" svgWidth="20" svgHeight="24" placeholder='ENTER DESIGNATION' name='dwscription' inputValue={formValues.description} onChange={handleInputChange} />}
+                {trainerFormNeeds &&
                     <>
                         <button type="button" onClick={() => setPdfModalOpen && setPdfModalOpen(true)} className="px-4 py-2 bg-color3 text-color2">
                             {formValues.pdfUrl ? 'Change PDF' : 'Upload PDF'}

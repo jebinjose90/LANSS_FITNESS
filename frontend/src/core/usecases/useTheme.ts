@@ -1,3 +1,4 @@
+//LANSS_FITNESS\frontend\src\core\usecases\useTheme.ts
 import { useEffect, useState } from 'react';
 import { getTheme } from '../../infrastructure/api/themeApi';
 import { Theme } from '../../core/models/Theme';
@@ -25,15 +26,4 @@ export const useTheme = () => {
   }, []);
 
   return theme;
-};
-
-export const homeData = () => {
-  useEffect(() => {
-    const fetchHomeData = async () => {
-      await getTheme();
-    };
-    fetchHomeData();
-  }, []);
-
-  return;
 };

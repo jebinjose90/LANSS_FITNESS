@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { TokenService } from '../../../infrastructure/services/userService/userTokenService';
-import userCRM from '../../../router/UserRoute/userCRM';
+import userCRM from '../../../core/constants/route/userCRM';
 
 export const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);

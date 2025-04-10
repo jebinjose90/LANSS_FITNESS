@@ -1,4 +1,4 @@
-// frontend\src\router\UserRoute\userCRM.ts
+// \LANSS_FITNESS\frontend\src\core\constants\route\userCRM.ts
 // Centralized Route Management or Route Constants Management
 const userCRM = {
     Landing  :"/",

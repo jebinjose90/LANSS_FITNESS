@@ -1,7 +1,7 @@
 // frontend\src\router\AdminRoutes.tsx
 
 import { Route, Routes } from 'react-router-dom'
-import adminCRM from './adminCRM'
+import adminCRM from '../../core/constants/route/adminCRM'
 
 import AdminLoginPage from '../../modules/admin/pages/AdminLoginPage'
 import AdminDashboardPage from '../../modules/admin/pages/AdminDashboardPage'

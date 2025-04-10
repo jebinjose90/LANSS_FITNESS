@@ -1,7 +1,8 @@
+//LANSS_FITNESS\frontend\src\infrastructure\services\userService\userAuthService.ts
 import { loginApi } from '../../api/userrApi/userAuthApi';
 import { LoginRequest, LoginResponse } from '../../../core/models/Userr/userAuthModel';
 import { TokenService } from './userTokenService';
-import userCRM from '../../../router/UserRoute/userCRM';
+import userCRM from '../../../core/constants/route/userCRM';
 import { useNavigate } from 'react-router-dom';
 
 // Login function

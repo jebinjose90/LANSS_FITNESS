@@ -6,10 +6,10 @@ import useValidation from "../../../../core/usecases/useValidation";
 import useCustomAlert from "../../../../core/usecases/useCustomAlert";
 import { uploadImage } from "../../../../infrastructure/api/fileApi";
 
-interface FormValues { username: string; email: string; password: string; phone: string; imageUrl: string; pdfUrl: string}
+interface FormValues {trainername:string; username: string; email: string; password: string; phone: string; imageUrl: string; pdfUrl: string; description: string;}
 
 const Signup = () => {
-    const [formValues, setFormValues] = useState<FormValues>({ username: '', email: '', password: '', phone: '', imageUrl: '' ,pdfUrl: "*"});
+    const [formValues, setFormValues] = useState<FormValues>({trainername: '', username: '', email: '', password: '', phone: '', imageUrl: '' ,pdfUrl: "*",description: "*"});
     const [modalOpen, setModalOpen] = useState(false);
     const { loading, error, userSignup, userSigninWithGoogle } = useUserAuth();
     const navigate = useNavigate(); // Set up navigation
@@ -21,7 +21,7 @@ const Signup = () => {
         e.preventDefault();
 
         // Get all errors as an array
-        const allErrors = validateAll({ username: formValues.username, email: formValues.email, password: formValues.password, phone: formValues.phone, height: "*", weight: "*", age: "*", gender: "*", certificateUrl: formValues.pdfUrl});
+        const allErrors = validateAll({ username: formValues.username, email: formValues.email, password: formValues.password, phone: formValues.phone, certificateUrl: formValues.pdfUrl});
 
         console.log("ERR", allErrors);
         let imageUrl = ''
@@ -69,7 +69,7 @@ const Signup = () => {
     return (
         <>
             <CommonSignup 
-            showUplaodCertificate={false} 
+            trainerFormNeeds={false} 
             avatarUrl= {avatarUrl.current} 
             formValues={formValues} 
             setFormValues={setFormValues} 

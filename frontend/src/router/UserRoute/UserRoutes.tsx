@@ -13,7 +13,7 @@ import Profile from '../../modules/user/pages/Profile'
 import Courses from '../../modules/user/pages/Courses'
 import DietPlans from '../../modules/user/pages/DietPlans'
 import Reports from '../../modules/user/pages/Reports'
-import userCRM from './userCRM'
+import userCRM from '../../core/constants/route/userCRM'
 
 
 const UserRoutes = () => {

@@ -1,7 +1,7 @@
 // \frontend\src\infrastructure\api\userApi.ts
 
 import axios from 'axios';
-import userEndUrls from './userrApi/userEndUrls';
+import userEndUrls from '../../core/constants/endUrl/userEndUrls';
 
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
 

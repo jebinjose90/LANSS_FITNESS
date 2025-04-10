@@ -3,7 +3,7 @@ import Customization from "../components/customization/Customization"
 
 const AdminThemeCustomizationPage = () => {
   return (
-    <div>
+    <div className="bg-color2">
       <Sidebar/>
       <Customization/>
     </div>

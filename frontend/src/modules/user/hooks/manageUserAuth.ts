@@ -3,7 +3,7 @@
 import { useCallback, useState } from 'react';
 import { userApi } from '../../../infrastructure/api/userApi';
 import { useNavigate } from 'react-router-dom';
-import userCRM from '../../../router/UserRoute/userCRM';
+import userCRM from '../../../core/constants/route/userCRM';
 
 
 export const useUserAuth = () => {
