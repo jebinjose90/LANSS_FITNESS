@@ -56,10 +56,8 @@ const CommonSignup: React.FC<SignupModel> = ({ trainerFormNeeds = false, avatarU
                 )}
             </div>
             <form onSubmit={handleSubmit} className='space-y-7 bg-transparent py-10' method="POST">
-                {trainerFormNeeds &&
-                    <InputField svgName="login-user-icon" svgWidth="23" svgHeight="23" placeholder={namePlaceholder} name="trainer" inputValue={formValues.trainername} onChange={handleInputChange} />}
-
-                {!trainerFormNeeds &&
+                {trainerFormNeeds ?
+                    <InputField svgName="login-user-icon" svgWidth="23" svgHeight="23" placeholder={namePlaceholder} name="trainer" inputValue={formValues.trainername} onChange={handleInputChange} /> : 
                     <InputField svgName="login-user-icon" svgWidth="23" svgHeight="23" placeholder={namePlaceholder} name="username" inputValue={formValues.username} onChange={handleInputChange} />}
 
                 <InputField svgName="login-email-icon" svgWidth="30" svgHeight="23" placeholder="ENTER YOUR EMAIL" name="email" inputValue={formValues.email} onChange={handleInputChange} />

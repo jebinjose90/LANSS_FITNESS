@@ -48,8 +48,8 @@ const useValidation = () => {
   const validatePassword = (password: string): string[] => {
     const errors: string[] = [];
     if (password !== "*") {
-      if (password.length < 10 || password.length > 100) {
-        errors.push("Password must be between 10 and 100 characters.");
+      if (password.length < 10 || password.length > 20) {
+        errors.push("Password must be between 10 and 20 characters.");
       }
       if (!/[a-z]/.test(password)) {
         errors.push("Password must contain at least one lowercase character.");

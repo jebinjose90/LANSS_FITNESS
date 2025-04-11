@@ -3,7 +3,8 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import React from 'react';
 import Icon from '../Icon';
-import { AlertContent, prepareAlertContent } from '../../../usecases/alert/useAlertLogic';
+import { prepareAlertContent } from '../../../usecases/alert/useAlertLogic';
+import { AlertContent } from '../../../core/types/alert';
 
 const MySwal = withReactContent(Swal);
 

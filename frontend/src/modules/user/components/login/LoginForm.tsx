@@ -1,3 +1,4 @@
+//LANSS_FITNESS\frontend\src\modules\user\components\login\LoginForm.tsx
 import React, { useState } from 'react';
 import { useLogin } from '../../hooks/userLogin';
 import { LoginRequest } from '../../../../core/models/Userr/userAuthModel';
@@ -5,6 +6,8 @@ import { LoginRequest } from '../../../../core/models/Userr/userAuthModel';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState,AppDispatch } from '../../../../interface-adapters/redux/store';
 import { loginUser } from '../../../../usecases/user/loginUser';
+import toast from 'react-hot-toast';
+import useValidation from '../../../../usecases/validation/useValidation';
 
 const LoginForm: React.FC = () => {
   // const { handleLogin, loading, error } = useLogin();
@@ -17,15 +20,19 @@ const LoginForm: React.FC = () => {
     email: '',
     password: '',
   });
+  const { validateAll } = useValidation();
+  // Get all errors as an array
+  const allErrors = validateAll({ email: formData.email, password: formData.password});
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(loginUser(formData));
+    dispatch(loginUser({...formData, allErrors}));
   };
 
   return (
