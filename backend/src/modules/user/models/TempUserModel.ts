@@ -11,7 +11,8 @@ const tempUserSchema = new Schema<TempUser>({
     username: { type: String, required: true },
     otp: { type: String, required: true }, // OTP sent to the user
     otpExpiresAt: { type: Date, required: true }, // Expiry time for OTP
-    profilePictureUrl: { type: String, required: false } // Optional profile picture URL
+    profilePictureUrl: { type: String, required: false }, // Optional profile picture URL
+    role: { type: String, required: true },
 }, {
     timestamps: true // Automatically manages createdAt and updatedAt fields
 });

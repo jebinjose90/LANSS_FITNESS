@@ -8,9 +8,8 @@ import UserModel from '../../user/models/UserModel'
 import bcrypt from 'bcryptjs'; // Import bcrypt for password comparison
 import TempTrainerModel from '../models/TempTrainerModel';
 
-
 // Function to login user
-export const findExistingTrainer = async (trainername: string, email: string, hashedPassword: string, phone: number, imageUrl: string, certificatePdfUrl: string): Promise<void> => {
+export const findExistingTrainer = async (trainername: string, email: string, hashedPassword: string, phone: number, imageUrl: string, certificatePdfUrl: string, role: string): Promise<void> => {
     try {
         console.log("email", email, "password", hashedPassword, "trainername", trainername);
 
@@ -25,7 +24,7 @@ export const findExistingTrainer = async (trainername: string, email: string, ha
         const otp = generateOtp();
         console.log(otp);
 
-        await TempTrainerModel.create({ email, password, trainername, phone, otp, profilePictureUrl,certificatePdfUrl, otpExpiresAt: new Date(Date.now() + 10 * 60 * 1000) }); // OTP expires in 10 minutes
+        await TempTrainerModel.create({ email, password, trainername, phone, otp, profilePictureUrl,certificatePdfUrl, role, otpExpiresAt: new Date(Date.now() + 10 * 60 * 1000) }); // OTP expires in 10 minutes
 
         // Send OTP email
         await sendOtpEmail(email, otp);
@@ -90,9 +89,7 @@ export const resendOtp = async (email: string): Promise<void> => {
 };
 
 // Function to get a user by ID
-export const 
-
-getTrainerById = async (trainerId: string): Promise<Trainer | null> => {
+export const getTrainerById = async (trainerId: string): Promise<Trainer | null> => {
     try {
         const trainer = await TrainerModel.findById(trainerId);
         return trainer; // Returns the user object or null if not found

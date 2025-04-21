@@ -1,7 +1,7 @@
 // frontend\src\modules\user\hooks\manageUserAuth.ts
 
 import { useCallback, useState } from 'react';
-import { userApi } from '../../../infrastructure/api/userApi';
+import { userApi } from '../../../infrastructure/api/userrApi/userApi';
 import { useNavigate } from 'react-router-dom';
 import userCRM from '../../../core/constants/route/userCRM';
 
@@ -19,9 +19,8 @@ export const useUserAuth = () => {
     try {
       const data = await userApi.login(email, password);
       // Access token, username, and imageUrl from response data
-      const { token,username, imageUrl } = data.data;
-      // Save token, username, and imageUrl to localStorage
-      localStorage.setItem('token', token);
+      const { username, imageUrl } = data.data;
+      // Save username, and imageUrl to localStorage
       localStorage.setItem('username', username);
       localStorage.setItem('userImageUrl', `${apiUrl}${imageUrl}`);
       console.log("HOME");
@@ -107,10 +106,9 @@ export const useUserAuth = () => {
   const userLogout = useCallback(async () => {
     try {
       await userApi.logout();
-      localStorage.removeItem('token');
       localStorage.removeItem('username');
       localStorage.removeItem('userImageUrl');
-      navigate('/userSignin');
+      navigate(`/${userCRM.UserLogin}`);
     } catch (error) {
       console.error('Error during logout', error);
     }
@@ -125,9 +123,8 @@ export const useUserAuth = () => {
       const data = await userApi.verifyOtp(email, otp);
       
       // Access token, username, and imageUrl from response data
-      const { token, username, imageUrl } = data.data;
-      // Save token, username, and imageUrl to localStorage
-      localStorage.setItem('token', token);
+      const {username, imageUrl } = data.data;
+      // Save username, and imageUrl to localStorage
       localStorage.setItem('username', username);
       localStorage.setItem('userImageUrl', imageUrl);
 

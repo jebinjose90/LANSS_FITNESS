@@ -1,3 +1,4 @@
+//frontend/src/App.tsx
 import { Toaster } from 'react-hot-toast';
 import AppRouter from './router/AppRouter';
 import { useEffect } from 'react';

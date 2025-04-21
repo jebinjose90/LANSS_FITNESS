@@ -1,4 +1,4 @@
-// frontend\src\router\AppRouter.tsx
+// frontend/src/router/AppRouter.tsx
 
 import { BrowserRouter as Router} from 'react-router-dom'
 import UserRoutes from './UserRoute/UserRoutes'

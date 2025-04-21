@@ -1,24 +1,26 @@
 // src/use-cases/user/loginUser.ts
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { userApi } from '../../infrastructure/api/userrApi/userApi';
-import userEndUrls from '../../core/constants/endUrl/userEndUrls';
-import { toast } from 'react-hot-toast';
+import { userApi } from '../../../infrastructure/api/userrApi/userApi';
+import userEndUrls from '../../../core/constants/endUrl/userEndUrls';
+import { showCustomToast } from '../../toast/showCustomToast';
+import toastTypeConstants from '../../../core/constants/toastTypeConstants';
+
 
 export const loginUser = createAsyncThunk(
   `${userEndUrls.login}`,
   async ({ email, password , allErrors}: { email: string; password: string; allErrors: string[]}, thunkAPI) => {
     try {
       if (allErrors.length > 0) {
-        toast.error(allErrors[0] || 'Login failed');
+        showCustomToast(allErrors[0] || 'Login failed',toastTypeConstants.error)
       }else{
         const response = await userApi.login(email, password);
         console.log("DATA RESP",response.data.data);
-        toast.success("Logged in successfully");
+        showCustomToast("Logged in successfully",toastTypeConstants.success)
         return response.data.data;
       }
     } catch (err: any) {
-      toast.error(err.response?.data?.message || 'Login failed');
+      showCustomToast(err.response?.data?.message,toastTypeConstants.error)
       return thunkAPI.rejectWithValue(err.response?.data?.message || 'Login failed');
-    }
+    } 
   }
 );

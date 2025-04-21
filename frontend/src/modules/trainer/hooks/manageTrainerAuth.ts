@@ -3,6 +3,7 @@
 import { useCallback, useState } from 'react';
 import { trainerApi } from '../../../infrastructure/api/trainerApi';
 import { useNavigate } from 'react-router-dom';
+import trainerCRM from '../../../core/constants/route/trainerCRM';
 
 interface UserDetails {
   id: string;
@@ -27,9 +28,8 @@ export const useTrainerAuth = () => {
     try {
       const data = await trainerApi.login(email, password);
       // Access token, trainername, and imageUrl from response data
-      const { token, trainername, imageUrl } = data.data;
+      const { trainername, imageUrl } = data.data;
       // Save token, trainername, and imageUrl to localStorage
-      localStorage.setItem('token', token);
       localStorage.setItem('trainername', trainername);
       localStorage.setItem('trainerImageUrl', `${apiUrl}${imageUrl}`);
       navigate('/trainer/profile');
@@ -97,7 +97,7 @@ export const useTrainerAuth = () => {
     setError(null);
     try {
       const data = await trainerApi.signup(trainername, email, password, phone, imageUrl, certificatePdfUrl);
-      navigate(`/trainer/trainerOtp?email=${encodeURIComponent(email)}`); // Pass email as a URL parameter;
+      navigate(`/${trainerCRM.TrainerOTP}?email=${encodeURIComponent(email)}`); // Pass email as a URL parameter;
       setTrainerData(data);
       // Handle post-signup actions
     }
@@ -129,7 +129,6 @@ export const useTrainerAuth = () => {
   const trainerLogout = useCallback(async () => {
     try {
       await trainerApi.logout();
-      localStorage.removeItem('token');
       localStorage.removeItem('trainername');
       localStorage.removeItem('trainerImageUrl');
       navigate('/trainer/trainerSignin');
@@ -145,9 +144,8 @@ export const useTrainerAuth = () => {
       // Call verifyOtp and expect a response with trainername and imageUrl
       const data = await trainerApi.verifyOtp(email, otp);
       // Access token, trainername, and imageUrl from response data
-      const { token, trainername, imageUrl } = data.data;
-      // Save token, trainername, and imageUrl to localStorage
-      localStorage.setItem('token', token);
+      const { trainername, imageUrl } = data.data;
+      // Save trainername, and imageUrl to localStorage
       localStorage.setItem('trainername', trainername);
       localStorage.setItem('trainerImageUrl', imageUrl);
 

@@ -1,5 +1,8 @@
 export interface UserState {
+  username: string | null;
+  imageUrl: string | null;
+  profile: any;
   loading: boolean;
   error: string | null;
-  data: any;
+  userData: any;
 }

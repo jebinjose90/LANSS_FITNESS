@@ -1,13 +1,14 @@
 ///backend/src/modules/user/routes/userRoutes.ts
 
 import { Router } from 'express';
-import { getUser, getUserByUsernameController, userSignupRequestOtp, userSignupVerifyOtp, userLogin, googleCallbackController, signinFailed, logout, getHomeData, getProfileData ,requestResendOtp, updat_UserProfile} from '../controllers/userController';
+import { getUser, getUserByUsernameController, userSignupRequestOtp, userSignupVerifyOtp, userLogin, googleCallbackController, signinFailed, logout, getHomeData, getProfileData, requestResendOtp, updat_UserProfile } from '../controllers/userController';
 import passport from 'passport';
 import { uploadImage } from '../controllers/imageController';
 import multer from "multer";
 import { authenticateToken } from '../../../infrastructure/security/authMiddleware';
 import { calculateBMIHandler } from '../controllers/bmiController';
-
+import { userRefreshAccessToken } from '../controllers/userAuthController';
+import { refreshToken } from '../controllers/refreshTokenController';
 
 // Set up multer storage configuration
 const storage = multer.memoryStorage();  // Store files in memory
@@ -22,13 +23,15 @@ router.post('/signin', userLogin);
 router.post('/home', authenticateToken, getHomeData);
 router.post('/profile', authenticateToken, getProfileData);
 router.post('/updateUserProfile', authenticateToken, updat_UserProfile);
+router.get('/refresh-token', userRefreshAccessToken);
 router.post('/logout', logout);
 router.get('/:id', getUser);
 router.get('/username/:username', getUserByUsernameController);
 router.get('/signin/failed', signinFailed)
 router.get('/auth/user/google', passport.authenticate('user-google', { scope: ['profile', 'email'] }));
-router.get('/auth/user/google/callback', passport.authenticate('user-google', 
-    {failureRedirect: '/signin/failed' }), googleCallbackController);
+router.get('/auth/user/google/callback', passport.authenticate('user-google',
+    { failureRedirect: '/signin/failed' }), googleCallbackController);
+router.use('/refresh-token', refreshToken);
 router.post('/upload-image', upload.single("file"), uploadImage);
 router.post('/calculate-bmi', calculateBMIHandler);
 export default router;

@@ -11,8 +11,6 @@ export const useLogin = () => {
     setError(null);
     try {
       const response = await login(data);
-      // Save token to localStorage or context
-      localStorage.setItem('token', response.token);
       return response;
     } catch (err) {
       // Narrow the error type

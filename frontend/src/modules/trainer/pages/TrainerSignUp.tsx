@@ -1,3 +1,4 @@
+import trainerCRM from '../../../core/constants/route/trainerCRM'
 import AuthenticationUISkin from '../../common/AuthenticationUISkin'
 import Signup from '../../trainer/components/signup/Signup'
 
@@ -8,7 +9,7 @@ const TrainerSignUp: React.FC = () => {
             heading="Trainer Sign Up"
             showUserSignin= {true}
             userSiginText='Already a Trainer?'
-            userSigninHref='/trainer/trainerSignin'>
+            userSigninHref={`/${trainerCRM.TrainerLogin}`}>
             <Signup/>
         </AuthenticationUISkin>
     )

@@ -12,4 +12,5 @@ export interface TempTrainer extends Document {  // Extend Document to include M
     otpExpiresAt: Date
     profilePictureUrl: String,
     certificatePdfUrl: string;
+    role: string;
 }

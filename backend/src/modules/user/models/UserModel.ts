@@ -17,6 +17,7 @@ const userSchema = new Schema<User>({
     weight: { type: String, required: false },
     age: { type: String, required: false },
     place: { type: String, required: false },
+    role: { type: String, required: true },
 }, {
     timestamps: true // Automatically manage createdAt and updatedAt fields
 });

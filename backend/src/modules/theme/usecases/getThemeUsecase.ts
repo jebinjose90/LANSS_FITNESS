@@ -3,7 +3,7 @@
 import { getTheme } from '../repositories/themeRepository';  // Import the repository function
 import { Theme } from '../../../core/entities/Theme';
 
-export const getThemeUsecase = async (): Promise<Theme | null> => {
+export const get_theme = async (): Promise<Theme | null> => {
   try {
     const theme = await getTheme();  // Use the repository function to get the theme
     console.log('Theme found:', theme);  // Add a log to see what is being fetched

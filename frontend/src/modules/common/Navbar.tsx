@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTheme } from "./hooks/useTheme";
 import Logo from "./Logo";
 import CompanyName from "./CompanyName";
@@ -7,16 +7,30 @@ import Icon from "./Icon";
 import { useUserAuth } from "../user/hooks/manageUserAuth";
 import { useTrainerAuth } from "../trainer/hooks/manageTrainerAuth";
 
+import { fetchHomeDataThunk, userLogoutThunk } from "../../usecases/thunks/user/userThunks";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../interface-adapters/redux/store";
+import userCRM from "../../core/constants/route/userCRM";
+import trainerCRM from "../../core/constants/route/trainerCRM";
+
+
 const Navbar: React.FC<{ role: 'user' | 'trainer' }> = ({ role }) => {
+  const navigate = useNavigate()
+  const dispatch = useDispatch<AppDispatch>();
+  const { userData} = useSelector((state: RootState) => state.user);
   const [isOpen, setIsOpen] = useState(false);
   const theme = useTheme();
-  const { userLogout } = useUserAuth();
   const { trainerLogout } = useTrainerAuth();
   const location = useLocation();
 
-  const logout = () => {
+  const logout = async () => {
     if (role === 'user') {
-      userLogout()
+      const result = await dispatch(userLogoutThunk());
+    if (userLogoutThunk.fulfilled.match(result)) {
+      navigate(`/${userCRM.UserLogin}`); 
+    } else {
+      console.error("Logout failed");
+    }
     }else{
       trainerLogout()
     }
@@ -27,20 +41,24 @@ const Navbar: React.FC<{ role: 'user' | 'trainer' }> = ({ role }) => {
 
   useEffect(() => {
     if (role === "user") {
-      if (!localStorage.getItem("token")) {
-        logout()
-      }
+      // if (!localStorage.getItem("token")) {
+      //   logout()
+      // }
 
-      // Fetch username, and image URL from localStorage
-      const storedUsername = localStorage.getItem("username");
-      const storedImageUrl = localStorage.getItem("userImageUrl");
+      dispatch(fetchHomeDataThunk()).unwrap()
 
-      setUsername(storedUsername);
-      setUserImageUrl(storedImageUrl);
+      // // Fetch username, and image URL from localStorage
+      // const storedUsername = localStorage.getItem("username");
+      // const storedImageUrl = localStorage.getItem("userImageUrl");
+
+      
+
+      setUsername(userData.username);
+      setUserImageUrl(userData.imageUrl);
     } else {
-      if (!localStorage.getItem("token")) {
-        logout()
-      }
+      // if (!localStorage.getItem("token")) {
+      //   logout()
+      // }
 
       // Fetch username, and image URL from localStorage
       const storedUsername = localStorage.getItem("trainername");
@@ -52,24 +70,25 @@ const Navbar: React.FC<{ role: 'user' | 'trainer' }> = ({ role }) => {
       setUserImageUrl(storedImageUrl);
     }
 
-  }, [localStorage.getItem("token")]);
+  }, [dispatch]);
+  // localStorage.getItem("token")
 
   // Define dynamic navigation links based on roles
   const links = role === 'user'
     ? [
-      { path: '/home', label: 'Home' },
-      { path: '/trainers', label: 'Trainers' },
-      { path: '/profile', label: 'Profile' },
-      { path: '/courses', label: 'Courses' },
-      { path: '/dietPlans', label: 'Diet Plans' },
-      { path: '/reports', label: 'Reports' },
+      { path: `/${userCRM.Home}`, label: 'Home' },
+      { path: `/${userCRM.Trainers}`, label: 'Trainers' },
+      { path: `/${userCRM.Profile}`, label: 'Profile' },
+      { path: `/${userCRM.Courses}`, label: 'Courses' },
+      { path: `/${userCRM.DietPlans}`, label: 'Diet Plans' },
+      { path: `/${userCRM.Reports}`, label: 'Reports' },
     ]
     : [
-      { path: '/trainer/profile', label: 'Profile' },
-      { path: '/trainer/trainerChats', label: 'Chats' },
-      { path: '/trainer/trainerStatus', label: 'Status' },
-      { path: '/trainer/trainerRevenue', label: 'Revenue' },
-      { path: '/trainer/trainerCourses', label: 'Courses' }
+      { path: `/${trainerCRM.TrainerProfile}`, label: 'Profile' },
+      { path: `/${trainerCRM.TrainerChats}`, label: 'Chats' },
+      { path: `/${trainerCRM.TrainerStatus}`, label: 'Status' },
+      { path: `/${trainerCRM.TrainerRevenue}`, label: 'Revenue' },
+      { path: `/${trainerCRM.TrainerCourses}`, label: 'Courses' }
     ];
 
   if (!theme) {

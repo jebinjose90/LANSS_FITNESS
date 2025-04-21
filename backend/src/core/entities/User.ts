@@ -16,4 +16,5 @@ export interface User extends Document {
     weight?: string;
     age?: string;
     place?: string;
+    role: string;
 }

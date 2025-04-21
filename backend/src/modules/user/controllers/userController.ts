@@ -2,19 +2,13 @@
 
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
-import { createUser, findExistingUser, getUserById, getUserByUsername, loginUser, resendOtp, updateUserProfile} from '../usecases/getUserUsecases';
-import { generateToken } from '../../../infrastructure/security/jwtService';
+import { createUser, findExistingUser, getUserById, getUserByUsername, loginUser, resendOtp, updateUserProfile } from '../usecases/getUserUsecases';
+import { generateTokens } from '../../../infrastructure/security/jwtService';
+import { USER } from '../../../core/constants/general/messages';
+import { UserRole } from '../../../core/constants/general/roles';
 
 
-// Constants for error and success messages
-const USER_NOT_FOUND_MSG = 'User not found';
-const INVALID_CREDENTIALS_MSG = 'Invalid credentials';
-const CREATE_USER_ERROR_MSG = 'Error creating user';
-const UPDATE_USER_PROFILE_ERROR_MSG = 'Error updating user details';
-const FETCH_USER_ERROR_MSG = 'Error fetching user';
-const ERROR_SENDING_OTP = "Error sending otp"
-const LOGIN_ERROR_MSG = 'Error logging in';
-const AUTH_ERROR_MSG = 'Not Authorized';
+
 
 // Controller function to create a new user
 export const userSignupRequestOtp = async (req: Request, res: Response): Promise<void> => {
@@ -23,10 +17,11 @@ export const userSignupRequestOtp = async (req: Request, res: Response): Promise
         // const serverAddress = `${req.protocol}://${req.get('host')}`;
         const { username, email, phone, password, imageUrl } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
-        await findExistingUser(username, email, hashedPassword, phone, imageUrl);
+        const role = UserRole.USER
+        await findExistingUser(username, email, hashedPassword, phone, imageUrl, role);
         res.status(201).json({ message: 'OTP sent to email. Please verify to complete signup.' });
     } catch (error: unknown) {
-        const errorMessage = error instanceof Error ? error.message : CREATE_USER_ERROR_MSG;
+        const errorMessage = error instanceof Error ? error.message : USER.MESSAGES.ERROR.CREATE_USER_ERROR_MSG;
         res.status(500).json({ message: errorMessage });
     }
 };
@@ -39,18 +34,17 @@ export const userSignupVerifyOtp = async (req: Request, res: Response): Promise<
         const username = user.username
         const imageUrl = user.profilePictureUrl || ""
 
+        const role = UserRole.USER
         // Generate JWT token
-        const token = generateToken({ id: user._id, username: user.username, email: user.email });
-        res.json({
-            message: "Login Success",
+        generateTokens({ id: user._id, username: user.username, email: user.email, role: role}, res);
+        res.status(201).json({
+            message: "User Login Success",
             data: {
-                token,
-                username,
-                imageUrl,
+                role: user.role
             }
         })
     } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : CREATE_USER_ERROR_MSG;
+        const errorMessage = error instanceof Error ? error.message : USER.MESSAGES.ERROR.CREATE_USER_ERROR_MSG;
         res.status(500).json({ message: errorMessage });
     }
 };
@@ -61,7 +55,7 @@ export const requestResendOtp = async (req: Request, res: Response): Promise<voi
         await resendOtp(email);
         res.status(201).json({ message: 'OTP sent to email. Please verify to complete signup.' });
     } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : ERROR_SENDING_OTP;
+        const errorMessage = error instanceof Error ? error.message : USER.MESSAGES.ERROR.ERROR_SENDING_OTP;
         res.status(500).json({ message: errorMessage });
     }
 };
@@ -74,10 +68,10 @@ export const getUser = async (req: Request, res: Response): Promise<void> => {
         if (user) {
             res.status(200).json(user);
         } else {
-            res.status(404).json({ message: USER_NOT_FOUND_MSG });
+            res.status(404).json({ message: USER.MESSAGES.ERROR.USER_NOT_FOUND_MSG });
         }
     } catch (error: unknown) {
-        const errorMessage = error instanceof Error ? error.message : FETCH_USER_ERROR_MSG;
+        const errorMessage = error instanceof Error ? error.message : USER.MESSAGES.ERROR.FETCH_USER_ERROR_MSG;
         res.status(500).json({ message: errorMessage });
     }
 };
@@ -90,24 +84,23 @@ export const getUserByUsernameController = async (req: Request, res: Response): 
         if (user) {
             res.status(200).json(user);
         } else {
-            res.status(404).json({ message: USER_NOT_FOUND_MSG });
+            res.status(404).json({ message: USER.MESSAGES.ERROR.USER_NOT_FOUND_MSG });
         }
     } catch (error: unknown) {
-        const errorMessage = error instanceof Error ? error.message : FETCH_USER_ERROR_MSG;
+        const errorMessage = error instanceof Error ? error.message : USER.MESSAGES.ERROR.FETCH_USER_ERROR_MSG;
         res.status(500).json({ message: errorMessage });
     }
 };
 
 // Controller function to login a user
 export const userLogin = async (req: Request, res: Response): Promise<void> => {
-    console.log("HELLO");
 
     try {
         const { email, password } = req.body;
         const user = await loginUser(email, password);
         if (!user) {
             console.log("not a user")
-            res.status(401).json({ message: INVALID_CREDENTIALS_MSG });
+            res.status(401).json({ message: USER.MESSAGES.ERROR.INVALID_CREDENTIALS_MSG });
             return;
         }
         function capitalizeFirstLetter(str: string): string {
@@ -115,19 +108,18 @@ export const userLogin = async (req: Request, res: Response): Promise<void> => {
             return str.charAt(0).toUpperCase() + str.slice(1);
         }
         const username = capitalizeFirstLetter(user.username)
-        const imageUrl = user.profilePictureUrl || ""
+
+        const role = UserRole.USER
         // Generate JWT token
-        const token = generateToken({ id: user._id, username: username, email: user.email });
-        res.json({
-            message: "Login Success",
+        generateTokens({ id: user._id, username: username, email: user.email, role: role}, res);
+        res.status(201).json({
+            message: "User Login Success",
             data: {
-                token,
-                username,
-                imageUrl,
+                role: role
             }
         })
     } catch (error: unknown) {
-        const errorMessage = error instanceof Error ? error.message : LOGIN_ERROR_MSG;
+        const errorMessage = error instanceof Error ? error.message : USER.MESSAGES.ERROR.LOGIN_ERROR_MSG;
         console.log("error", errorMessage);
 
         res.status(500).json({ message: errorMessage });
@@ -135,7 +127,7 @@ export const userLogin = async (req: Request, res: Response): Promise<void> => {
 };
 
 export const signinFailed = async (req: Request, res: Response): Promise<void> => {
-    res.status(404).json({ error: true, message: LOGIN_ERROR_MSG })
+    res.status(404).json({ error: true, message: USER.MESSAGES.ERROR.LOGIN_ERROR_MSG })
 };
 
 export const googleCallbackController = (req: Request, res: Response) => {
@@ -146,8 +138,9 @@ export const googleCallbackController = (req: Request, res: Response) => {
         const firstName = user.username.split(' ')[0]; // Get only the first name
         const imageUrl = user.profilePictureUrl;
 
+        const role = UserRole.USER        
         // Generate JWT token
-        const token = generateToken({ id: user._id, username: user.username, email: user.email });
+        generateTokens({ id: user._id, username: user.username, email: user.email, role: role}, res);
         // Redirect to frontend with token, username, and image URL as query parameters
         res.redirect(`${process.env.CLIENT_URL}/home`);
         //?token=${token}&username=${firstName}&imageUrl=${imageUrl}
@@ -157,7 +150,23 @@ export const googleCallbackController = (req: Request, res: Response) => {
 };
 
 export const logout = (req: Request, res: Response) => {
-    res.clearCookie('token'); // Clears cookie if JWT is stored in cookies
+    const token = req.cookies?.accessToken;
+    console.log("FROM LOGOUT TOKEN", token);
+    console.log("Cookies before clear:", req.cookies);
+
+    res.clearCookie("accessToken", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV !== "development",
+        sameSite: "strict",
+        path: "/", // optional, but good to include if your cookie had it
+    });
+
+    res.clearCookie("refreshToken", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV !== "development",
+        sameSite: "strict",
+        path: "/",
+    });
     res.status(200).json({ message: 'Logged out successfully' });
 };
 
@@ -178,7 +187,7 @@ export const getHomeData = async (req: Request, res: Response) => {
             // Fetch user data based on `userId`
             const tokenUser = await getUserById(id);
             if (!tokenUser) {
-                res.status(404).json({ message: USER_NOT_FOUND_MSG });
+                res.status(404).json({ message: USER.MESSAGES.ERROR.USER_NOT_FOUND_MSG });
             }
 
             function capitalizeFirstLetter(str: string | undefined): string {
@@ -187,11 +196,12 @@ export const getHomeData = async (req: Request, res: Response) => {
             }
 
             // Send the data needed for the home page
-            res.json({
+            res.status(201).json({
                 message: 'Home Data',
                 data: {
                     username: capitalizeFirstLetter(tokenUser?.username),
                     imageUrl: tokenUser?.profilePictureUrl,
+                    role: tokenUser?.role,
                     // Add any other relevant data here, such as recent activities or stats
                 },
             });
@@ -212,7 +222,7 @@ export const getProfileData = async (req: Request, res: Response) => {
             // Fetch user data based on `userId`
             const tokenUser = await getUserById(id);
             if (!tokenUser) {
-                res.status(404).json({ message: USER_NOT_FOUND_MSG });
+                res.status(404).json({ message: USER.MESSAGES.ERROR.USER_NOT_FOUND_MSG });
             }
 
             function capitalizeFirstLetter(str: string | undefined): string {
@@ -230,7 +240,7 @@ export const getProfileData = async (req: Request, res: Response) => {
 
 
             // Send the data needed for the profile page
-            res.json({
+            res.status(201).json({
                 message: 'Profile Data',
                 data: {
                     username: capitalizeFirstLetter(tokenUser?.username),
@@ -257,12 +267,12 @@ export const updat_UserProfile = async (req: Request, res: Response): Promise<vo
     try {
         console.log(req.body);
         // const serverAddress = `${req.protocol}://${req.get('host')}`;
-        const {email, username, age, gender, height, weight, place } = req.body;
-        
+        const { email, username, age, gender, height, weight, place } = req.body;
+
         await updateUserProfile(email, username, age, gender, height, weight, place);
         res.status(201).json({ message: 'User Profile updated succssfully' });
     } catch (error: unknown) {
-        const errorMessage = error instanceof Error ? error.message : UPDATE_USER_PROFILE_ERROR_MSG;
+        const errorMessage = error instanceof Error ? error.message : USER.MESSAGES.ERROR.UPDATE_USER_PROFILE_ERROR_MSG;
         res.status(500).json({ message: errorMessage });
     }
 };

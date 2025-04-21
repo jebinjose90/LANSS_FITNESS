@@ -1,6 +1,7 @@
 import React from 'react'
 import AuthenticationUISkin from '../../common/AuthenticationUISkin'
 import Signup from '../../user/components/signup/Signup'
+import userCRM from '../../../core/constants/route/userCRM'
 
 const UserSignup: React.FC = () => {
     return (
@@ -9,7 +10,7 @@ const UserSignup: React.FC = () => {
             heading="Sign Up"
             showUserSignin={true}
             userSiginText='Already User?'
-            userSigninHref='/userSignin'>
+            userSigninHref={`/${userCRM.UserLogin}`}>
             <Signup/>
         </AuthenticationUISkin>
     )

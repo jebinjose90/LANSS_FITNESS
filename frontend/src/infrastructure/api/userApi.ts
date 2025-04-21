@@ -8,22 +8,12 @@ const apiUrl = import.meta.env.VITE_BACKEND_URL;
 // Create an axios instance
 const apiClient = axios.create({
   baseURL: apiUrl,
-});
-
-// Add a request interceptor to attach the token
-apiClient.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
+  withCredentials: true,
 });
 
 export const userApi = {
-  login: async (email: string, password: string) => {
-    const response = await axios.post(`${apiUrl}${userEndUrls.login}`, { email, password });
-    return response.data
-  },
+  login: (email: string, password: string) => 
+    apiClient.post(userEndUrls.login, { email, password }),
   loginWithGoogle: async () => {
     window.location.href = `${apiUrl}${userEndUrls.loginWithGoogle}`; // Adjust path based on user module
   },
@@ -50,7 +40,6 @@ export const userApi = {
     const response = await axios.post(`${apiUrl}${userEndUrls.verifyEmail}`, { token });
     return response.data;
   },
-  // Example of an authenticated request
   homeData: async () => {
     const response = await apiClient.post(`${apiUrl}${userEndUrls.homeData}`);
     return response.data;

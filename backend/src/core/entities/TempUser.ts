@@ -11,4 +11,5 @@ export interface TempUser extends Document {  // Extend Document to include Mong
     otp: string,
     otpExpiresAt: Date
     profilePictureUrl: String,
+    role: String,
 }

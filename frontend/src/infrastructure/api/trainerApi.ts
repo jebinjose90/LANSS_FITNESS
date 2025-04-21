@@ -7,15 +7,7 @@ const apiUrl = import.meta.env.VITE_BACKEND_URL;
 // Create an axios instance
 const apiClient = axios.create({
   baseURL: apiUrl,
-});
-
-// Add a request interceptor to attach the token
-apiClient.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
+  withCredentials: true
 });
 
 export const trainerApi = {
@@ -49,14 +41,13 @@ export const trainerApi = {
     const response = await axios.post(`${apiUrl}/trainer/verify-email`, { token });
     return response.data;
   },
-  // Example of an authenticated request
   profileData: async () => {
-    const response = await apiClient.post(`${apiUrl}/trainer/profile`);
+    const response = await axios.post(`${apiUrl}/trainer/profile`);
     return response.data;
   },
 
   usersListData: async () => {
-    const response = await apiClient.post(`${apiUrl}/trainer/usersList`);
+    const response = await axios.post(`${apiUrl}/trainer/usersList`);
     return response.data;
   }
 };

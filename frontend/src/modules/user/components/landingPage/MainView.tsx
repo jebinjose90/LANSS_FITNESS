@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { useTheme } from "../../../common/hooks/useTheme";
 import CompanyName from "../../../common/CompanyName"
 import Logo from "../../../common/Logo"
+import userCRM from "../../../../core/constants/route/userCRM";
+import trainerCRM from "../../../../core/constants/route/trainerCRM";
 
 
 const MainView: React.FC = () => {
@@ -10,11 +12,11 @@ const MainView: React.FC = () => {
 
 
     function usersignin(): void {
-        navigate('/userSignin')
+        navigate(`/${userCRM.UserLogin}`)
     }
 
     function trainerSignin(): void {
-        navigate('trainer/trainerSignin')
+        navigate(`/${trainerCRM.TrainerLogin}`)
     }
 
     if (!theme) {

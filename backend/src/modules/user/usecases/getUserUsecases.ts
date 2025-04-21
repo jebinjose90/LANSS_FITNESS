@@ -10,7 +10,7 @@ import mongoose from 'mongoose';
 
 
 // Function to login user
-export const findExistingUser = async (username: string, email: string, hashedPassword: string, phone: number, imageUrl: string): Promise<void> => {
+export const findExistingUser = async (username: string, email: string, hashedPassword: string, phone: number, imageUrl: string, role: string): Promise<void> => {
     try {
         console.log("email", email, "password", hashedPassword, "username", username);
 
@@ -25,7 +25,7 @@ export const findExistingUser = async (username: string, email: string, hashedPa
         const otp = generateOtp();
         console.log(otp);
 
-        await TempUserModel.create({ email, password, username, phone, otp, profilePictureUrl, otpExpiresAt: new Date(Date.now() + 10 * 60 * 1000) }); // OTP expires in 10 minutes
+        await TempUserModel.create({ email, password, username, phone, otp, profilePictureUrl, role ,otpExpiresAt: new Date(Date.now() + 10 * 60 * 1000) }); // OTP expires in 10 minutes
 
         // Send OTP email
         await sendOtpEmail(email, otp);

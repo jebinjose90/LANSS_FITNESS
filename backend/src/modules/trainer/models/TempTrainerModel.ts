@@ -12,7 +12,8 @@ const tempTrainerSchema = new Schema<TempTrainer>({
     otp: { type: String, required: true },
     otpExpiresAt: { type: Date, required: true },
     profilePictureUrl: { type: String, required: false }, // Optional
-    certificatePdfUrl: {type: String, required: true}
+    certificatePdfUrl: {type: String, required: true},
+    role: { type: String, required: true },
 });
 // Create a User model
 const TempTrainerModel = model<TempTrainer>('TempTrainer', tempTrainerSchema, "temp-trainer");

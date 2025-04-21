@@ -13,7 +13,8 @@ const trainerSchema = new Schema<Trainer>({
     googleId: { type: String, required: false, unique: true }, // Required
     isGoogleAuth: { type: Boolean, required: true }, // Required
     profilePictureUrl: { type: String, required: false }, // Optional
-    certificatePdfUrl: {type: String, required: true}
+    certificatePdfUrl: {type: String, required: true},
+    role: { type: String, required: false },
 }, {
     timestamps: true // Automatically manage createdAt and updatedAt fields
 });

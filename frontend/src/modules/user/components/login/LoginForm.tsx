@@ -1,20 +1,23 @@
 //LANSS_FITNESS\frontend\src\modules\user\components\login\LoginForm.tsx
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useLogin } from '../../hooks/userLogin';
 import { LoginRequest } from '../../../../core/models/Userr/userAuthModel';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState,AppDispatch } from '../../../../interface-adapters/redux/store';
-import { loginUser } from '../../../../usecases/user/loginUser';
-import toast from 'react-hot-toast';
+import { userLoginThunk } from '../../../../usecases/thunks/user/userThunks';
+import { loginUser } from '../../../../usecases/thunks/user/loginUser';
+
 import useValidation from '../../../../usecases/validation/useValidation';
+import { debounce } from 'lodash';
+import { useNavigate } from 'react-router-dom';
+import userCRM from '../../../../core/constants/route/userCRM';
 
 const LoginForm: React.FC = () => {
   // const { handleLogin, loading, error } = useLogin();
-
+  const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const { loading, error, data } = useSelector((state: RootState) => state.user);
-
+  const { loading, error, userData: authUser} = useSelector((state: RootState) => state.user);
 
   const [formData, setFormData] = useState<LoginRequest>({
     email: '',
@@ -29,11 +32,29 @@ const LoginForm: React.FC = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const debouncedSubmit = useCallback(
+    debounce(async (data: typeof formData & { allErrors: string[] }) => {
+      try {
+        const result = await dispatch(userLoginThunk(data)).unwrap();
+        if (result) {
+          console.log("RESULT");
+          navigate(`/${userCRM.Home}`, { replace: true });
+        }
+      } catch (err) {
+        console.error('Login failed:', err);
+        // Toast already handled inside thunk
+      }
+    }, 800),
+    [dispatch, navigate]
+  );
 
+  
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(loginUser({...formData, allErrors}));
+    debouncedSubmit({...formData, allErrors});
   };
+
+
 
   return (
     <form onSubmit={handleSubmit}>
@@ -57,7 +78,7 @@ const LoginForm: React.FC = () => {
         {loading ? 'Logging in...' : 'Login'}
       </button>
       {error && <p className="error">{error}</p>}
-      {data && <div className="text-green-500">Welcome, {data.username}</div>}
+      {authUser && <div className="text-green-500">Welcome, {authUser.username}</div>}
     </form>
   );
 };

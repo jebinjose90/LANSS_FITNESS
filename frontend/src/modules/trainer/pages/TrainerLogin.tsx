@@ -1,6 +1,7 @@
 import React from 'react'
 import AuthenticationUISkin from '../../common/AuthenticationUISkin';
 import Login from '../../trainer/components/login/Login';
+import trainerCRM from '../../../core/constants/route/trainerCRM';
 
 
 const TrainerLogin: React.FC = () => {
@@ -10,7 +11,7 @@ const TrainerLogin: React.FC = () => {
             heading="Trainer!"
             showUserSignup={true}
             userSigupText='New Trainer?'
-            userSignupHref='/trainer/trainerSignup'>
+            userSignupHref={`/${trainerCRM.TrainerSignUp}`}>
             <Login />
         </AuthenticationUISkin>
     )

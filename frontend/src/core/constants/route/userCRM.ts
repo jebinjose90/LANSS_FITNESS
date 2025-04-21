@@ -2,17 +2,17 @@
 // Centralized Route Management or Route Constants Management
 const userCRM = {
     Landing  :"/",
-    Home  :"home",
-    Trainers  :"trainers",
-    Profile  :"profile",
-    Courses  :"courses",
-    DietPlans  :"dietPlans",
-    Reports  :"reports",
-    UserLogin  :"userSignin",
-    UserOTP  :"userOtp",
-    UserResetPassword  :"userResetPassword",
-    UserSignup  :"userSignup",
-    UserVerifyEmail  :"userVerifyEmail",
+    Home  :"user/home",
+    Trainers  :"user/trainers",
+    Profile  :"user/profile",
+    Courses  :"user/courses",
+    DietPlans  :"user/dietPlans",
+    Reports  :"user/reports",
+    UserLogin  :"user/signin",
+    UserOTP  :"user/otp",
+    UserResetPassword  :"user/resetPassword",
+    UserSignup  :"user/signup",
+    UserVerifyEmail  :"user/verifyEmail",
 };
 
 export default userCRM;

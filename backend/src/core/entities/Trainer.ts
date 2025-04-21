@@ -12,4 +12,5 @@ export interface Trainer extends Document {
     isGoogleAuth: boolean; // Indicates if the user authenticated via Google
     profilePictureUrl?: string; // Optional for Google-auth users
     certificatePdfUrl: string;
+    role: string;
 }

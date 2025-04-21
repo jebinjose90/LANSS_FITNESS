@@ -3,7 +3,8 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import { createTrainer, findExistingTrainer, getTrainerById, getTrainerByTrainername, loginTrainer, resendOtp } from '../usecases/getTrainerUsecases';
-import { generateToken } from '../../../infrastructure/security/jwtService';
+import { generateTokens } from '../../../infrastructure/security/jwtService';
+import { UserRole } from '../../../core/constants/general/roles';
 
 
 // Constants for error and success messages
@@ -22,7 +23,8 @@ export const trainerSignupRequestOtp = async (req: Request, res: Response): Prom
         // const serverAddress = `${req.protocol}://${req.get('host')}`;
         const { trainername, email, phone, password, imageUrl ,certificatePdfUrl} = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
-        await findExistingTrainer(trainername, email, hashedPassword, phone, imageUrl,certificatePdfUrl);
+        const role = UserRole.TRAINER
+        await findExistingTrainer(trainername, email, hashedPassword, phone, imageUrl, certificatePdfUrl, role);
         res.status(201).json({ message: 'OTP sent to email. Please verify to complete signup.'});
     } catch (error: unknown) {
         const errorMessage = error instanceof Error ? error.message : CREATE_USER_ERROR_MSG;
@@ -38,12 +40,12 @@ export const trainerSignupVerifyOtp = async (req: Request, res: Response): Promi
         const trainername = trainer.trainername
         const imageUrl = trainer.profilePictureUrl || ""
 
+        const role = UserRole.TRAINER
         // Generate JWT token
-        const token = generateToken({ id: trainer._id, trainername: trainer.trainername, email: trainer.email });
+        generateTokens({ id: trainer._id, trainername: trainer.trainername, email: trainer.email , role: role},res);
         res.json({
             message: "Login Success",
             data: {
-                token,
                 trainername,
                 imageUrl,
             }
@@ -115,14 +117,14 @@ export const trainerLogin = async (req: Request, res: Response): Promise<void> =
         }
         const trainername = capitalizeFirstLetter(trainer.trainername)
         const imageUrl = trainer.profilePictureUrl || ""
+
+        const role = UserRole.TRAINER
         // Generate JWT token
-        const token = generateToken({ id: trainer._id, trainername: trainername, email: trainer.email });
+        generateTokens({ id: trainer._id, trainername: trainername, email: trainer.email , role: role},res);
         res.json({
             message: "Login Success",
             data: {
-                token,
-                trainername,
-                imageUrl,
+                role: role
             }
         })
     } catch (error: unknown) {
@@ -145,13 +147,14 @@ export const googleCallbackController = (req: Request, res: Response) => {
         const firstName = trainer.trainername.split(' ')[0]; // Get only the first name
         const imageUrl = trainer.profilePictureUrl;
 
+        const role = UserRole.TRAINER
         // Generate JWT token
-        const token = generateToken({ id: trainer._id, trainername: trainer.trainername, email: trainer.email });
+        generateTokens({ id: trainer._id, trainername: trainer.trainername, email: trainer.email , role: role},res);
         // Redirect to frontend with token, username, and image URL as query parameters
         res.redirect(`${process.env.CLIENT_URL}/trainer/profile`);
         //?token=${token}&username=${firstName}&imageUrl=${imageUrl}
     } else {
-        res.redirect(`${process.env.CLIENT_URL}/trainer/TrainerSignin`);
+        res.redirect(`${process.env.CLIENT_URL}/trainer/signin`);
     }
 };
 

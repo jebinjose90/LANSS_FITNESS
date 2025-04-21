@@ -49,8 +49,6 @@ const CommonLogin: React.FC<LoginModel> = ({handleSubmit,gioLoc,formValues,setFo
                 <span className="pl-3">Sign in with Google</span>
             </button>
         </>
-
-
     );
 };
 

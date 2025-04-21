@@ -7,16 +7,9 @@ const apiUrl = import.meta.env.VITE_BACKEND_URL;
 // Create an axios instance
 const apiClient = axios.create({
   baseURL: apiUrl,
+  withCredentials: true,
 });
 
-// Add a request interceptor to attach the token
-apiClient.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
 
 // Define the response type for image upload
 interface UploadImageResponse {

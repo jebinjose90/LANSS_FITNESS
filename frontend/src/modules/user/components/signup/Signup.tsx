@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import useValidation from "../../../../usecases/validation/useValidation";
 import useCustomAlert from "../../../common/hooks/useCustomAlert";
 import { uploadImage } from "../../../../infrastructure/api/fileApi";
+import userCRM from "../../../../core/constants/route/userCRM";
 
 interface FormValues {trainername:string; username: string; email: string; password: string; phone: string; imageUrl: string; pdfUrl: string; description: string;}
 
@@ -37,7 +38,7 @@ const Signup = () => {
             try {
                 // Attempt signup and navigate on success
                 await userSignup(formValues.username, formValues.email, formValues.password, Number(formValues.phone), imageUrl);
-                navigate(`/userOtp?email=${encodeURIComponent(formValues.email)}`); // Pass email as a URL parameter;
+                navigate(`/${userCRM.UserOTP}?email=${encodeURIComponent(formValues.email)}`); // Pass email as a URL parameter;
             } catch (signUpError) {
                 console.error(signUpError);
             }
