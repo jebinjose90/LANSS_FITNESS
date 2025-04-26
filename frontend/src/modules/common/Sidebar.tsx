@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom'; // Import Link and useLocation
 import { useTheme } from './hooks/useTheme';
+import IsLoading from './components/IsLoading';
 
 const Sidebar: React.FC = () => {
   const theme = useTheme();
@@ -8,7 +9,9 @@ const Sidebar: React.FC = () => {
   const location = useLocation(); // Get current location
 
   if (!theme) {
-    return <div>Loading...</div>;
+    return (
+      <IsLoading/>
+    );
   }
 
   const toggleSidebar = () => {

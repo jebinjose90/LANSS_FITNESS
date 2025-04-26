@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { userApi } from '../../../infrastructure/api/userApi';
+import { userApi } from '../../../infrastructure/api/userApi/userApi';
 const apiUrl:String = import.meta.env.VITE_BACKEND_URL;
 
 export const userProfile = () => {

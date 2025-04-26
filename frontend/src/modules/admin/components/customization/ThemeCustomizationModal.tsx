@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import InputFieldWithoutIcon from '../../../common/InputFieldWithoutIcon';
 import ColorPicker from '../../../common/ColorPicker';
 import { useTheme } from '../../../common/hooks/useTheme';
+import IsLoading from '../../../common/components/IsLoading';
 
 interface ThemeCustomizationModalProps {
   isOpen: boolean;
@@ -51,7 +52,9 @@ const ThemeCustomizationModal: React.FC<ThemeCustomizationModalProps> = ({ isOpe
 
   if (!isOpen) return null;
   if (!theme) {
-    return <div>Loading...</div>;
+    return (
+      <IsLoading/>
+    );
   }
   return (
     <div aria-hidden="true" className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none text-color3 focus:outline-none bg-black bg-opacity-50 backdrop-blur-sm">

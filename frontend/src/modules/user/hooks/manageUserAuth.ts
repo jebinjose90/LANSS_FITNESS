@@ -1,7 +1,7 @@
 // frontend\src\modules\user\hooks\manageUserAuth.ts
 
 import { useCallback, useState } from 'react';
-import { userApi } from '../../../infrastructure/api/userrApi/userApi';
+import { userApi } from '../../../infrastructure/api/userApi/userApi';
 import { useNavigate } from 'react-router-dom';
 import userCRM from '../../../core/constants/route/userCRM';
 
@@ -13,46 +13,46 @@ export const useUserAuth = () => {
   const navigate = useNavigate();
   const apiUrl:String = import.meta.env.VITE_BACKEND_URL;
 
-  const userLogin = async (email: string, password: string) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await userApi.login(email, password);
-      // Access token, username, and imageUrl from response data
-      const { username, imageUrl } = data.data;
-      // Save username, and imageUrl to localStorage
-      localStorage.setItem('username', username);
-      localStorage.setItem('userImageUrl', `${apiUrl}${imageUrl}`);
-      console.log("HOME");
-      navigate(`/${userCRM.Home}`);
-    }
-    catch (err) {
-      setError('Login failed. Please check your credentials.');
-    }
-    finally {
-      setLoading(false);
-    }
-  };
+  // const userLogin = async (email: string, password: string) => {
+  //   setLoading(true);
+  //   setError(null);
+  //   try {
+  //     const data = await userApi.login(email, password);
+  //     // Access token, username, and imageUrl from response data
+  //     const { username, imageUrl } = data.data;
+  //     // Save username, and imageUrl to localStorage
+  //     localStorage.setItem('username', username);
+  //     localStorage.setItem('userImageUrl', `${apiUrl}${imageUrl}`);
+  //     console.log("HOME");
+  //     navigate(`/${userCRM.Home}`);
+  //   }
+  //   catch (err) {
+  //     setError('Login failed. Please check your credentials.');
+  //   }
+  //   finally {
+  //     setLoading(false);
+  //   }
+  // };
 
-  const home = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await userApi.homeData();
-      // Access token, username, and imageUrl from response data
-      const { username, imageUrl } = data.data;
+  // const home = async () => {
+  //   setLoading(true);
+  //   setError(null);
+  //   try {
+  //     const data = await userApi.homeData();
+  //     // Access token, username, and imageUrl from response data
+  //     const { username, imageUrl } = data.data;
       
-      // Save token, username, and imageUrl to localStorage
-      localStorage.setItem('username', username);
-      localStorage.setItem('userImageUrl', `${apiUrl}${imageUrl}`);
-    }
-    catch (err) {
-      setError('Home data fetching failed. Please check your credentials.');
-    }
-    finally {
-      setLoading(false);
-    }
-  };
+  //     // Save token, username, and imageUrl to localStorage
+  //     localStorage.setItem('username', username);
+  //     localStorage.setItem('userImageUrl', `${apiUrl}${imageUrl}`);
+  //   }
+  //   catch (err) {
+  //     setError('Home data fetching failed. Please check your credentials.');
+  //   }
+  //   finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   const profile = async () => {
     setLoading(true);
@@ -157,5 +157,7 @@ export const useUserAuth = () => {
     await userApi.loginWithGoogle(); // Calls the loginWithGoogle method from userApi
   };
 
-  return { loading, error, userData, userLogin, userSignup, userSigninWithGoogle, userVerifyOtp, userResendOtp, userLogout, home, profile, updateUserProfile};
+  return { loading, error, userData, userSignup, userSigninWithGoogle, userVerifyOtp, userResendOtp, userLogout,profile, updateUserProfile};
+    // , home, 
+    // userLogin, 
 };

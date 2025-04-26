@@ -12,12 +12,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../interface-adapters/redux/store";
 import userCRM from "../../core/constants/route/userCRM";
 import trainerCRM from "../../core/constants/route/trainerCRM";
+import { trainerLogoutThunk } from "../../usecases/thunks/trainer/trainerThunks";
+import IsLoading from "./components/IsLoading";
 
 
 const Navbar: React.FC<{ role: 'user' | 'trainer' }> = ({ role }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>();
-  const { userData} = useSelector((state: RootState) => state.user);
+  const { userData } = useSelector((state: RootState) => state.user);
   const [isOpen, setIsOpen] = useState(false);
   const theme = useTheme();
   const { trainerLogout } = useTrainerAuth();
@@ -25,14 +27,21 @@ const Navbar: React.FC<{ role: 'user' | 'trainer' }> = ({ role }) => {
 
   const logout = async () => {
     if (role === 'user') {
+      localStorage.removeItem("isUserLoggedIn");
       const result = await dispatch(userLogoutThunk());
-    if (userLogoutThunk.fulfilled.match(result)) {
-      navigate(`/${userCRM.UserLogin}`); 
+      if (userLogoutThunk.fulfilled.match(result)) {
+        navigate(`/${userCRM.UserLogin}`);
+      } else {
+        console.error("Logout failed");
+      }
     } else {
-      console.error("Logout failed");
-    }
-    }else{
-      trainerLogout()
+      localStorage.removeItem("isTrainerLoggedIn");
+      const result = await dispatch(trainerLogoutThunk());
+      if (trainerLogoutThunk.fulfilled.match(result)) {
+        navigate(`/${userCRM.UserLogin}`);
+      } else {
+        console.error("Logout failed");
+      }
     }
   }
 
@@ -40,34 +49,19 @@ const Navbar: React.FC<{ role: 'user' | 'trainer' }> = ({ role }) => {
   const [userImageUrl, setUserImageUrl] = useState<string | null>(null);
 
   useEffect(() => {
+    console.log("NAVE ROLE", role)
     if (role === "user") {
       // if (!localStorage.getItem("token")) {
       //   logout()
       // }
 
       dispatch(fetchHomeDataThunk()).unwrap()
-
-      // // Fetch username, and image URL from localStorage
-      // const storedUsername = localStorage.getItem("username");
-      // const storedImageUrl = localStorage.getItem("userImageUrl");
-
-      
-
-      setUsername(userData.username);
-      setUserImageUrl(userData.imageUrl);
     } else {
       // if (!localStorage.getItem("token")) {
       //   logout()
       // }
 
       // Fetch username, and image URL from localStorage
-      const storedUsername = localStorage.getItem("trainername");
-      const storedImageUrl = localStorage.getItem("trainerImageUrl");
-
-      console.log("IMGSSS",storedImageUrl,storedUsername);
-      
-      setUsername(storedUsername);
-      setUserImageUrl(storedImageUrl);
     }
 
   }, [dispatch]);
@@ -92,7 +86,9 @@ const Navbar: React.FC<{ role: 'user' | 'trainer' }> = ({ role }) => {
     ];
 
   if (!theme) {
-    return <div>Loading...</div>;
+    return (
+      <IsLoading/>
+    );
   }
 
   return (
@@ -117,13 +113,13 @@ const Navbar: React.FC<{ role: 'user' | 'trainer' }> = ({ role }) => {
             </div>
             {role === "user" ? (
               <div className="flex flex-col items-center justify-center text-color3 text-sm">
-                {userImageUrl && userImageUrl.trim() ? (
-                  <img className="rounded-full" src={userImageUrl} width="30" height="30" alt="User" />
+                {userData?.imageUrl && userData?.imageUrl.trim() ? (
+                  <img className="rounded-full" src={userData?.imageUrl} width="30" height="30" alt="User" />
                 ) : (
                   <Icon svgName="user-icon" width="23" height="23" className="text-color3 m-0" />
                 )}
-                {username ? (
-                  <p className="text-xs">{username}</p>
+                {userData?.username ? (
+                  <p className="text-xs">{userData?.username}</p>
                 ) : (
                   <p className="text-xs">USER</p>
                 )}

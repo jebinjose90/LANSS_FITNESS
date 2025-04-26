@@ -1,6 +1,6 @@
 // frontend/src/modules/user/hooks/useBMI.ts
 import { useState } from 'react';
-import { userApi } from '../../../infrastructure/api/userApi';
+import { userApi } from '../../../infrastructure/api/userApi/userApi';
 
 export const useBMI = () => {
   const [loading, setLoading] = useState(false);

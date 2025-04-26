@@ -4,6 +4,7 @@ import AppRouter from './router/AppRouter';
 import { useEffect } from 'react';
 
 const App = () => {
+
   useEffect(() => {
     // Retrieve values from local storage
     const iconUrl = localStorage.getItem('favicon') || '/vite.svg';
@@ -23,10 +24,12 @@ const App = () => {
     // Update the document title dynamically
     document.title = title;
   }, []);
+
+
   return (
     <>
-      <AppRouter/>
-      <Toaster/>
+      <AppRouter />
+      <Toaster />
     </>
   );
 };

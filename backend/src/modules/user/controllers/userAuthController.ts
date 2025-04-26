@@ -8,6 +8,7 @@ const refreshSecretKey = process.env.JWT_REFRESH_SECRET || 'your-refresh-secret-
 
 export const userRefreshAccessToken = (req: Request, res: Response) => {
   const refreshToken = req.cookies?.refreshToken;
+console.log("TOKEEEN",refreshToken);
 
   if (!refreshToken) {
      res.status(401).json({ message: "Refresh token not found" });

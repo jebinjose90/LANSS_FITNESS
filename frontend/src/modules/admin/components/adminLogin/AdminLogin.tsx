@@ -1,5 +1,6 @@
 import { useTheme } from "../../../common/hooks/useTheme";
 import InputField from "../../../common/InputField";
+import IsLoading from "../../../common/components/IsLoading";
 
 const AdminLogin = () => {
   const theme = useTheme()
@@ -9,7 +10,9 @@ const AdminLogin = () => {
   }
 
   if (!theme) {
-    return <div>Loading...</div>;
+    return (
+      <IsLoading/>
+    );
   }
   return (
     <div>

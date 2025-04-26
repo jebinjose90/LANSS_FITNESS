@@ -3,12 +3,15 @@ import { useTheme } from '../../../common/hooks/useTheme'
 import Logo from '../../../common/Logo'
 import CompanyName from '../../../common/CompanyName'
 import Icon from '../../../common/Icon'
+import IsLoading from '../../../common/components/IsLoading'
 
 const LandingPageFooter: React.FC = () => {
     const theme = useTheme()
 
     if (!theme) {
-        return <div>Loading...</div>;
+        return (
+            <IsLoading/>
+          );
       }
     return (
         <>

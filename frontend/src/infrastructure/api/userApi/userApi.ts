@@ -1,13 +1,8 @@
 // \frontend\src\infrastructure\api\userApi.ts
-import axios from 'axios';
 import userEndUrls from '../../../core/constants/endUrl/userEndUrls';
+import apiClient from '../baseUrl';
 
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
-
-const apiClient = axios.create({
-  baseURL: apiUrl,
-  withCredentials: true,
-});
 
 export const userApi = {
   login: (email: string, password: string) => 

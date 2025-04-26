@@ -4,6 +4,7 @@ import CompanyName from "../../../common/CompanyName"
 import Logo from "../../../common/Logo"
 import userCRM from "../../../../core/constants/route/userCRM";
 import trainerCRM from "../../../../core/constants/route/trainerCRM";
+import IsLoading from "../../../common/components/IsLoading";
 
 
 const MainView: React.FC = () => {
@@ -20,7 +21,9 @@ const MainView: React.FC = () => {
     }
 
     if (!theme) {
-        return <div>Loading...</div>;
+        return (
+            <IsLoading/>
+          );
     }
     return (
         <>

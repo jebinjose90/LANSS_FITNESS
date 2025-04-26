@@ -6,15 +6,14 @@ const JWT_REFRESH_SECRET = process.env.JWT_REFREST_SECRET!;
 
 export const handleRefreshToken = (req: Request, res: Response) => {
   try {
-    console.log("TOKEN", req.cookies.refreshToken);
+    const refresh_token = req.cookies?.refreshToken;
+    console.log("REFRESH TOKEN", refresh_token);
 
-    const token = req.cookies.refreshToken;
-
-    if (!token) {
-      res.status(401).json({ message: 'No refresh token provided' });
+    if (!refresh_token) {
+      res.status(401).json({ message: 'Token Expired' });
       return
     }
-    const decoded = jwt.verify(token, JWT_REFRESH_SECRET) as { id: string; username: string; email: string; role: string; };
+    const decoded = jwt.verify(refresh_token, JWT_REFRESH_SECRET) as { id: string; username: string; email: string; role: string; };
     const payload = { id: decoded.id, username: decoded.username, email: decoded.email, role: decoded.role };
     const { accessToken, refreshToken } = generateTokens(payload, res);
 
@@ -37,7 +36,7 @@ export const handleRefreshToken = (req: Request, res: Response) => {
       message: "Token Generated"
     })
     return
-    
+
   } catch (error) {
     console.error('Refresh token error:', error);
     console.log('Refresh token error:', error);

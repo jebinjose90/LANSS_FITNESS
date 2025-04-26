@@ -1,6 +1,6 @@
 // frontend/src/modules/user/hooks/updateProfile.ts
 import { useState } from 'react';
-import { userApi } from '../../../infrastructure/api/userApi';
+import { userApi } from '../../../infrastructure/api/userApi/userApi';
 
 export const updateProfile = () => {
   const [loading, setLoading] = useState(false);

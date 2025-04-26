@@ -1,17 +1,9 @@
 // frontend\src\modules\trainer\hooks\managetrainerAuth.ts
 
 import { useCallback, useState } from 'react';
-import { trainerApi } from '../../../infrastructure/api/trainerApi';
+import { trainerApi } from '../../../infrastructure/api/trainerApi/trainerApi';
 import { useNavigate } from 'react-router-dom';
 import trainerCRM from '../../../core/constants/route/trainerCRM';
-
-interface UserDetails {
-  id: string;
-  image: string;
-  email: string;
-  name: string;
-  subscriptionPlan: string;
-}
 
 
 export const useTrainerAuth = () => {

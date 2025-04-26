@@ -1,7 +1,7 @@
 ///backend/src/modules/user/routes/userRoutes.ts
 
 import { Router } from 'express';
-import { getUser, getUserByUsernameController, userSignupRequestOtp, userSignupVerifyOtp, userLogin, googleCallbackController, signinFailed, logout, getHomeData, getProfileData, requestResendOtp, updat_UserProfile } from '../controllers/userController';
+import { getUser, getUserByUsernameController, userSignupRequestOtp, userSignupVerifyOtp, userLogin, googleCallbackController, signinFailed, logout, getHomeData, getProfileData, requestResendOtp, updat_UserProfile, getUserProfile } from '../controllers/userController';
 import passport from 'passport';
 import { uploadImage } from '../controllers/imageController';
 import multer from "multer";
@@ -22,6 +22,7 @@ router.post('/request-resend-otp', requestResendOtp)
 router.post('/signin', userLogin);
 router.post('/home', authenticateToken, getHomeData);
 router.post('/profile', authenticateToken, getProfileData);
+router.get('/me', authenticateToken, getUserProfile);
 router.post('/updateUserProfile', authenticateToken, updat_UserProfile);
 router.get('/refresh-token', userRefreshAccessToken);
 router.post('/logout', logout);
@@ -31,7 +32,7 @@ router.get('/signin/failed', signinFailed)
 router.get('/auth/user/google', passport.authenticate('user-google', { scope: ['profile', 'email'] }));
 router.get('/auth/user/google/callback', passport.authenticate('user-google',
     { failureRedirect: '/signin/failed' }), googleCallbackController);
-router.use('/refresh-token', refreshToken);
+router.get('/refresh-token', refreshToken);
 router.post('/upload-image', upload.single("file"), uploadImage);
 router.post('/calculate-bmi', calculateBMIHandler);
 export default router;

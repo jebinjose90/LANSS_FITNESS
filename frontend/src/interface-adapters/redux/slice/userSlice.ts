@@ -1,7 +1,7 @@
 // frontend/src/modules/user/redux/userSlice.ts
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { userLoginThunk, userSignupThunk, userVerifyOtpThunk, resendOtpThunk, fetchHomeDataThunk, fetchProfileThunk, updateUserProfileThunk, userLogoutThunk} from '../../../usecases/thunks/user/userThunks';
+import { userLoginThunk, userSignupThunk, userVerifyOtpThunk, resendOtpThunk, fetchHomeDataThunk, fetchProfileThunk, updateUserProfileThunk, userLogoutThunk } from '../../../usecases/thunks/user/userThunks';
 import { UserState } from '../../../core/interfaces/slice.interfaces/UserState';
 
 const initialState: UserState = {
@@ -11,6 +11,7 @@ const initialState: UserState = {
   loading: false,
   error: null,
   userData: null,
+  isUserAuthenticated: localStorage.getItem('isUserLoggedIn') === 'true',
 };
 
 const userSlice = createSlice({
@@ -27,14 +28,22 @@ const userSlice = createSlice({
       .addCase(userLoginThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
+        state.isUserAuthenticated = false;
+        localStorage.setItem('isUserLoggedIn', 'false');
       })
+
       .addCase(userLoginThunk.fulfilled, (state, action) => {
         state.loading = false;
         state.userData = action.payload;
+        state.isUserAuthenticated = true;
+        localStorage.setItem('isUserLoggedIn', 'true');
       })
+
       .addCase(userLoginThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+        state.isUserAuthenticated = false;
+        localStorage.setItem('isUserLoggedIn', 'false');
       })
 
       // Signup
@@ -48,7 +57,7 @@ const userSlice = createSlice({
       })
       .addCase(userSignupThunk.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload as string;
+        state.error = action.error as string;
       })
 
       // OTP Verification
@@ -124,6 +133,8 @@ const userSlice = createSlice({
       // Logout
       .addCase(userLogoutThunk.fulfilled, (state) => {
         state.userData = null;
+        state.isUserAuthenticated = false;
+        localStorage.removeItem('isUserLoggedIn'); // ✅ Clear on logout
       });
   },
 });

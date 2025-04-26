@@ -1,12 +1,10 @@
 //LANSS_FITNESS\frontend\src\modules\user\components\login\LoginForm.tsx
 import React, { useCallback, useState } from 'react';
-import { useLogin } from '../../hooks/userLogin';
 import { LoginRequest } from '../../../../core/models/Userr/userAuthModel';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState,AppDispatch } from '../../../../interface-adapters/redux/store';
 import { userLoginThunk } from '../../../../usecases/thunks/user/userThunks';
-import { loginUser } from '../../../../usecases/thunks/user/loginUser';
 
 import useValidation from '../../../../usecases/validation/useValidation';
 import { debounce } from 'lodash';
@@ -17,7 +15,7 @@ const LoginForm: React.FC = () => {
   // const { handleLogin, loading, error } = useLogin();
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const { loading, error, userData: authUser} = useSelector((state: RootState) => state.user);
+  const { loading, userData: authUser} = useSelector((state: RootState) => state.user);
 
   const [formData, setFormData] = useState<LoginRequest>({
     email: '',
@@ -77,7 +75,6 @@ const LoginForm: React.FC = () => {
       <button type="submit" disabled={loading}>
         {loading ? 'Logging in...' : 'Login'}
       </button>
-      {error && <p className="error">{error}</p>}
       {authUser && <div className="text-green-500">Welcome, {authUser.username}</div>}
     </form>
   );

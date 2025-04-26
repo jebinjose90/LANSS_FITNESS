@@ -4,6 +4,7 @@ import { useTheme } from './hooks/useTheme';
 import Logo from './Logo';
 import CompanyName from './CompanyName';
 import { Link } from 'react-router-dom';
+import IsLoading from './components/IsLoading';
 
 
 interface UserType {
@@ -26,7 +27,9 @@ const AuthenticationUISkin: React.FC<UserType> =
         const theme = useTheme()
 
         if (!theme) {
-            return <div>Loading...</div>;
+            return (
+                <IsLoading/>
+              );
         }
         return (
             <div className=" h-screen bg-color1">

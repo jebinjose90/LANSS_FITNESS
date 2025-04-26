@@ -1,9 +1,8 @@
-import axios from 'axios';
-const apiUrl = import.meta.env.VITE_BACKEND_URL;
+import apiClient from './baseUrl';
 
 export const getTheme = async () => {
   try {
-    const response = await axios.get(`${apiUrl}/api/theme`);
+    const response = await apiClient.get(`/api/theme`)
 
     // Check if response data is empty or invalid
     if (!response.data || Object.keys(response.data).length === 0) {

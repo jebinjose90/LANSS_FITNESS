@@ -41,10 +41,19 @@ export const generateTokens = (payload: object, res: Response) => {
 };
 
 
-// Verify Token (General)
-export const verifyToken = (token: string): any => {
+// Verify Token (Access Token)
+export const verifyAccessToken = (token: string): any => {
   try {
     return jwt.verify(token, accessSecretKey);
+  } catch (error) {
+    throw new Error('Invalid token');
+  }
+};
+
+// Verify Token (Refresh Token)
+export const verifyRefreshToken = (token: string): any => {
+  try {
+    return jwt.verify(token, refreshSecretKey);
   } catch (error) {
     throw new Error('Invalid token');
   }

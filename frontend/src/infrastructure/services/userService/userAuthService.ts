@@ -1,5 +1,5 @@
 //LANSS_FITNESS\frontend\src\infrastructure\services\userService\userAuthService.ts
-import { loginApi } from '../../api/userrApi/userAuthApi';
+import { loginApi } from '../../api/userApi/userAuthApi';
 import { LoginRequest, LoginResponse } from '../../../core/models/Userr/userAuthModel';
 import { TokenService } from './userTokenService';
 import userCRM from '../../../core/constants/route/userCRM';

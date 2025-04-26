@@ -6,6 +6,18 @@ import { UserRole } from '../../../core/constants/general/roles';
 import { loginAdmin } from '../usecases/getAdminUsecases';
 import { generateTokens } from '../../../infrastructure/security/jwtService';
 import { ADMIN, COMMON } from '../../../core/constants/general/messages';
+import { CustomRequest } from '@core/types/customRequest';
+
+
+// Constants for error and success messages
+const USER_NOT_FOUND_MSG = 'User not found';
+const INVALID_CREDENTIALS_MSG = 'Invalid credentials';
+const CREATE_USER_ERROR_MSG = 'Error creating user';
+const FETCH_USER_ERROR_MSG = 'Error fetching user';
+const ERROR_SENDING_OTP = "Error sending otp"
+const LOGIN_ERROR_MSG = 'Error logging in';
+const AUTH_ERROR_MSG = 'Not Authorized';
+
 
 export const adminSignup = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -86,9 +98,9 @@ export const adminSignin = async (req: Request, res: Response): Promise<void> =>
     }
     const username = capitalizeFirstLetter(admin.username)
 
-    const role = UserRole.ADMIN; 
+    const role = UserRole.ADMIN;
     // Generate JWT token
-    generateTokens({ id: admin._id, username: username, email: admin.email, role: role}, res);
+    generateTokens({ id: admin._id, username: username, email: admin.email, role: role }, res);
     res.status(201).json({
       message: ADMIN.MESSAGES.SUCCESS.LOGIN_SUCCESS,
       data: {
@@ -98,6 +110,27 @@ export const adminSignin = async (req: Request, res: Response): Promise<void> =>
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : ADMIN.MESSAGES.ERROR.LOGIN_ERROR_MSG;
     console.log("error", errorMessage);
+    res.status(500).json({ message: errorMessage });
+  }
+};
+
+export const getAdminProfile = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { user } = req as CustomRequest;
+
+    if (!user) {
+      res.status(401).json({ message: 'Unauthorized' });
+      return 
+    }
+
+    res.status(200).json({
+      role: user.role,
+      id: user.id,
+      email: user.email,
+    });
+
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : FETCH_USER_ERROR_MSG;
     res.status(500).json({ message: errorMessage });
   }
 };

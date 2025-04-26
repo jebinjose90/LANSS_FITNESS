@@ -6,8 +6,7 @@ import { createUser, findExistingUser, getUserById, getUserByUsername, loginUser
 import { generateTokens } from '../../../infrastructure/security/jwtService';
 import { USER } from '../../../core/constants/general/messages';
 import { UserRole } from '../../../core/constants/general/roles';
-
-
+import { CustomRequest } from '@core/types/customRequest';
 
 
 // Controller function to create a new user
@@ -36,7 +35,7 @@ export const userSignupVerifyOtp = async (req: Request, res: Response): Promise<
 
         const role = UserRole.USER
         // Generate JWT token
-        generateTokens({ id: user._id, username: user.username, email: user.email, role: role}, res);
+        generateTokens({ id: user._id, username: user.username, email: user.email, role: role }, res);
         res.status(201).json({
             message: "User Login Success",
             data: {
@@ -70,6 +69,27 @@ export const getUser = async (req: Request, res: Response): Promise<void> => {
         } else {
             res.status(404).json({ message: USER.MESSAGES.ERROR.USER_NOT_FOUND_MSG });
         }
+    } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : USER.MESSAGES.ERROR.FETCH_USER_ERROR_MSG;
+        res.status(500).json({ message: errorMessage });
+    }
+};
+
+export const getUserProfile = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { user } = req as CustomRequest;
+
+        if (!user) {
+            res.status(401).json({ message: 'Unauthorized' });
+            return 
+        }
+
+        res.status(200).json({
+            role: user.role,
+            id: user.id,
+            email: user.email,
+        });
+
     } catch (error: unknown) {
         const errorMessage = error instanceof Error ? error.message : USER.MESSAGES.ERROR.FETCH_USER_ERROR_MSG;
         res.status(500).json({ message: errorMessage });
@@ -111,7 +131,7 @@ export const userLogin = async (req: Request, res: Response): Promise<void> => {
 
         const role = UserRole.USER
         // Generate JWT token
-        generateTokens({ id: user._id, username: username, email: user.email, role: role}, res);
+        generateTokens({ id: user._id, username: username, email: user.email, role: role }, res);
         res.status(201).json({
             message: "User Login Success",
             data: {
@@ -138,9 +158,9 @@ export const googleCallbackController = (req: Request, res: Response) => {
         const firstName = user.username.split(' ')[0]; // Get only the first name
         const imageUrl = user.profilePictureUrl;
 
-        const role = UserRole.USER        
+        const role = UserRole.USER
         // Generate JWT token
-        generateTokens({ id: user._id, username: user.username, email: user.email, role: role}, res);
+        generateTokens({ id: user._id, username: user.username, email: user.email, role: role }, res);
         // Redirect to frontend with token, username, and image URL as query parameters
         res.redirect(`${process.env.CLIENT_URL}/home`);
         //?token=${token}&username=${firstName}&imageUrl=${imageUrl}

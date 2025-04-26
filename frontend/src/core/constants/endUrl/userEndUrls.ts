@@ -1,3 +1,5 @@
+//frontend/src/core/constants/endUrl/userEndUrls.ts
+
 const userEndUrls = {
     login: `/signin`,
     loginWithGoogle: `/auth/user/google`,
