@@ -7,6 +7,7 @@ export interface FormValues {
   weight: string;
   height: string;
   age: string;
+  place: string;
   gender: string;
   certificateUrl: string;
 }

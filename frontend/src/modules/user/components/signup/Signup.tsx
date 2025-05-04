@@ -9,6 +9,8 @@ import { userSignupThunk } from "../../../../usecases/thunks/user/userThunks";
 import { debounce } from "lodash";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../interface-adapters/redux/store";
+import { showCustomToast } from "../../../../usecases/toast/showCustomToast";
+import toastTypeConstants from "../../../../core/constants/toastTypeConstants";
 
 interface FormValues { trainername: string; username: string; email: string; password: string; phone: string; imageUrl: string; pdfUrl: string; description: string; }
 
@@ -22,15 +24,20 @@ const Signup = () => {
     const { validateAll } = useValidation();
 
     // Get all errors as an array
-    const allErrors = validateAll({ username: formValues.username, email: formValues.email, password: formValues.password, phone: formValues.phone, certificateUrl: formValues.pdfUrl });
+
 
     const debouncedSubmit = useCallback(
-        debounce(async (data: typeof formValues & { allErrors: string[] }) => {
+        debounce(async (data: typeof formValues) => {
             try {
+                const allErrors = validateAll({ username: data.username, email: data.email, password: data.password, phone: data.phone, certificateUrl: data.pdfUrl });
+                if (allErrors.length > 0) {
+                    showCustomToast(allErrors[0], toastTypeConstants.error);
+                    return;
+                }
                 const result = await dispatch(userSignupThunk(data)).unwrap();
                 if (result) {
-                    console.log("RESULT",result);
-                    navigate(`/${userCRM.UserOTP}?email=${encodeURIComponent(formValues.email)}`, { replace: true }); 
+                    localStorage.setItem('email', result.email);
+                    navigate(`/${userCRM.UserOTP}`, { replace: true });
                 }
             } catch (err) {
                 console.error('Signup failed:', err);
@@ -42,15 +49,15 @@ const Signup = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        
-            if (!formValues.imageUrl) {
-                setFormValues((prevState) => ({
-                    ...prevState,
-                    imageUrl: avatarUrl.current
-                }));
-            }
-            // Attempt signup and navigate on success
-            debouncedSubmit({ ...formValues, allErrors })
+
+        if (!formValues.imageUrl) {
+            setFormValues((prevState) => ({
+                ...prevState,
+                imageUrl: avatarUrl.current
+            }));
+        }
+        // Attempt signup and navigate on success
+        debouncedSubmit({ ...formValues })
     };
 
     const avatarUrl = useRef(

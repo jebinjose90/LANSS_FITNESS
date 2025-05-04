@@ -61,7 +61,7 @@ const CommonSignup: React.FC<SignupModel> = ({ trainerFormNeeds = false, avatarU
                     <InputField svgName="login-user-icon" svgWidth="23" svgHeight="23" placeholder={namePlaceholder} name="username" inputValue={formValues.username} onChange={handleInputChange} />}
 
                 <InputField svgName="login-email-icon" svgWidth="30" svgHeight="23" placeholder="ENTER YOUR EMAIL" name="email" inputValue={formValues.email} onChange={handleInputChange} />
-                <InputField svgName="login-phone-icon" svgWidth="30" svgHeight="30" placeholder="ENTER PHONE" name="phone" inputValue={formValues.phone} onChange={handleInputChange} type='tel' />
+                <InputField svgName="login-phone-icon" svgWidth="30" svgHeight="30" placeholder="ENTER PHONE" name="phone" inputValue={formValues.phone} onChange={handleInputChange} type='number' />
                 <InputField svgName="login-password-icon" svgWidth="28" svgHeight="24" placeholder="ENTER PASSWORD" name="password" inputValue={formValues.password} onChange={handleInputChange} type='password' />
                 {trainerFormNeeds &&
                     <InputParagraph svgName="description-icon" svgWidth="20" svgHeight="24" placeholder='ENTER DESIGNATION' name='dwscription' inputValue={formValues.description} onChange={handleInputChange} />}

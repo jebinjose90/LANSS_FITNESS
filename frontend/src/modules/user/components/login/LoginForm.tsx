@@ -3,7 +3,7 @@ import React, { useCallback, useState } from 'react';
 import { LoginRequest } from '../../../../core/models/Userr/userAuthModel';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState,AppDispatch } from '../../../../interface-adapters/redux/store';
+import { RootState, AppDispatch } from '../../../../interface-adapters/redux/store';
 import { userLoginThunk } from '../../../../usecases/thunks/user/userThunks';
 
 import useValidation from '../../../../usecases/validation/useValidation';
@@ -15,7 +15,7 @@ const LoginForm: React.FC = () => {
   // const { handleLogin, loading, error } = useLogin();
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const { loading, userData: authUser} = useSelector((state: RootState) => state.user);
+  const { loading, userData: authUser } = useSelector((state: RootState) => state.user);
 
   const [formData, setFormData] = useState<LoginRequest>({
     email: '',
@@ -23,7 +23,7 @@ const LoginForm: React.FC = () => {
   });
   const { validateAll } = useValidation();
   // Get all errors as an array
-  const allErrors = validateAll({ email: formData.email, password: formData.password});
+  const allErrors = validateAll({ email: formData.email, password: formData.password });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -46,10 +46,10 @@ const LoginForm: React.FC = () => {
     [dispatch, navigate]
   );
 
-  
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    debouncedSubmit({...formData, allErrors});
+    debouncedSubmit({ ...formData, allErrors });
   };
 
 

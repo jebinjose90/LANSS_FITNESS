@@ -1,12 +1,11 @@
 // backend/src/modules/user/usecases/getUserUsecase.ts
 
-import { User } from '@core/entities/User';  // Import your User interface
 import { generateOtp } from '../../../utils/verification/otpGenerator';
 import { sendOtpEmail } from '../../../utils/verification/emailService';
-import UserModel from '../models/UserModel';
-import bcrypt from 'bcryptjs'; // Import bcrypt for password comparison
-import TempUserModel from '../models/TempUserModel';
-import mongoose from 'mongoose';
+import { userProfileRepository } from '../repositories/userProfileRepository';
+import { tempUserProfileRepository } from '../repositories/tempUserProfileRepository';
+import { UserInterface } from '@core/entities/apiResponseInterface/UserAPIInterface/UserInterface';
+import { User } from '@core/entities/User';
 
 
 // Function to login user
@@ -17,15 +16,12 @@ export const findExistingUser = async (username: string, email: string, hashedPa
         let password = hashedPassword
         let profilePictureUrl = imageUrl
         // Check if email or username already exists in the User database
-        const existingUser = await UserModel.findOne({ $or: [{ email }, { username }] });
-        if (existingUser) {
-            throw new Error('Email or username already in use.');
-        }
+        await userProfileRepository.findUserWithEmailOrUsername(email, username)
         // Generate OTP and save user info temporarily
         const otp = generateOtp();
         console.log(otp);
 
-        await TempUserModel.create({ email, password, username, phone, otp, profilePictureUrl, role ,otpExpiresAt: new Date(Date.now() + 10 * 60 * 1000) }); // OTP expires in 10 minutes
+        await tempUserProfileRepository.createUserWithProfile({ email, password, username, role, profileData: { phone, otp, profilePictureUrl, otpExpiresAt: new Date(Date.now() + 10 * 60 * 1000) } }) // OTP expires in 10 minutes
 
         // Send OTP email
         await sendOtpEmail(email, otp);
@@ -37,26 +33,12 @@ export const findExistingUser = async (username: string, email: string, hashedPa
 };
 
 // Function to create a new user
-export const createUser = async (email: string, otp: string): Promise<User> => {
+export const createUser = async (email: string, otp: string): Promise<UserInterface> => {
     try {
-        const tempUser = await TempUserModel.findOne({ email, otp });
-        // Find the TempUser record
-        if (!tempUser) {
-            throw new Error('Invalid OTP or email.');
-        }
-        // Check OTP expiration
-        if (tempUser.otpExpiresAt < new Date()) {
-            await TempUserModel.deleteOne({ email });
-            throw new Error('OTP expired. Please request a new one.');
-        }
-        // Create the User and delete the TempUser
-        const { username, password, phone, profilePictureUrl } = tempUser;
-        const isGoogleAuth = false
-        const { v4: uuidv4 } = require('uuid');
-        const newUser = await UserModel.create({ email, googleId: uuidv4(), username, password, phone, isGoogleAuth, profilePictureUrl });
-        console.log("NEW USER", newUser);
-        await TempUserModel.deleteOne({ email });
-        return newUser; // Return the created user object
+        console.log("EMAIL-----", email);
+        
+        const createdUser = await userProfileRepository.createUserByVerifyingOtp(email, otp);
+        return createdUser; // Return the created user object
 
     } catch (error: any) {  // Type the error as 'any'
         console.log(error);
@@ -68,32 +50,19 @@ export const createUser = async (email: string, otp: string): Promise<User> => {
 export const resendOtp = async (email: string): Promise<void> => {
     try {
 
-        // find email in the TempUserModel data base
-        const existingEmail = await TempUserModel.findOne({ $or: [{ email }] })
-        if (existingEmail) {
-            const otp = generateOtp();
-            console.log(otp);
-
-            await TempUserModel.updateOne({ email: email }, { $set: { otp: otp, otpExpiresAt: new Date(Date.now() + 10 * 60 * 1000) } })
-
-            // Send OTP email
-            await sendOtpEmail(email, otp);
-
-        } else {
-            throw new Error('Email not found');
-        }
+        await tempUserProfileRepository.findUserAndSendOtp(email)
 
     } catch (error: any) {  // Type the error as 'any'
-        console.log("ERROR", error.message);
 
+        console.log("ERROR", error.message);
         throw new Error(`Error sending OTP: ${error.message}`);
     }
 };
 
 // Function to get a user by ID
-export const getUserById = async (userId: string): Promise<User | null> => {
+export const getUserById = async (userId: string): Promise<UserInterface | null> => {
     try {
-        const user = await UserModel.findById(userId);
+        const user = await userProfileRepository.findUserWithId(userId);
         return user; // Returns the user object or null if not found
     } catch (error: any) {  // Type the error as 'any'
         throw new Error(`Error fetching user: ${error.message}`);
@@ -101,9 +70,9 @@ export const getUserById = async (userId: string): Promise<User | null> => {
 };
 
 // Function to get a user by username
-export const getUserByUsername = async (username: string): Promise<User | null> => {
+export const getUserByUsername = async (username: string): Promise<UserInterface | null> => {
     try {
-        const user = await UserModel.findOne({ username });
+        const user = await userProfileRepository.findUserWithUsername(username);
         return user; // Returns the user object or null if not found
     } catch (error: any) {  // Type the error as 'any'
         throw new Error(`Error fetching user: ${error.message}`);
@@ -113,41 +82,17 @@ export const getUserByUsername = async (username: string): Promise<User | null> 
 // Function to login user
 export const loginUser = async (email: string, password: string): Promise<User> => {
     try {
-        console.log("email", email);
-        const user = await UserModel.findOne({ email });
-        console.log("USER", user);
-
-        if (!user) {
-            throw new Error("User not found");
-        }
-
-        if (!user.password) {
-            throw new Error("Password is not set for this user");
-        }
-
-        // Compare password
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            throw new Error("Incorrect password");
-        }
-
-        return user; // Return user object if credentials are valid
+        const user = userProfileRepository.userLogin(email, password)
+        return user
     } catch (error: any) {  // Type the error as 'any'
         throw new Error(`Login failed: ${error.message}`);
     }
 };
 
-export const calculateBMI = async (weight: number, heightCm: number, age: number, gender: string): Promise<void> => {
+export const updateUserProfile = async (email: string, username: string, age: string, gender: string, height: string, weight: string, place: string): Promise<UserInterface> => {
     try {
-
-    } catch (error: any) {
-        throw new Error(`Failed to calculate BMI, please try again.`)
-    }
-}
-
-export const updateUserProfile = async (email: string ,username: string, age: string, gender: string, height: string, weight: string, place: string): Promise<void> => {
-    try {
-        await UserModel.updateOne({ email: email }, { $set: { username: username, age: age, gender: gender, height: height, weight: weight, place: place } })
+        const user = userProfileRepository.updateUserProfile(email, username, age, gender, height, weight, place)
+        return user
     } catch (error: any) {
         throw new Error(`Failed to update User Profile, please try again`)
     }

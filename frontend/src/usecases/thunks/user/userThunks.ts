@@ -9,19 +9,19 @@ const apiUrl: String = import.meta.env.VITE_BACKEND_URL;
 
 export const userLoginThunk = createAsyncThunk(
   `${userEndUrls.login}`,
-  async ({ email, password, allErrors }: { email: string; password: string; allErrors: string[] }, thunkAPI) => {
+  async ({ email, password }: { email: string; password: string; }, thunkAPI) => {
     try {
-      if (allErrors.length > 0) {
-        showCustomToast(allErrors[0] || 'Login failed', toastTypeConstants.error)
-      } else {
-        const response = await userApi.login(email, password);
-        console.log("DATA RESP", response.data.data.role);
-        showCustomToast("You have been succesfuuly logged in.", toastTypeConstants.success)
-        localStorage.setItem('role', response.data.data.role)
-        return response.data.data;
-      }
+
+      const response = await userApi.login(email, password);
+      console.log("DATA RESP", response.data.data.role);
+      showCustomToast("You have been succesfuuly logged in.", toastTypeConstants.success)
+      localStorage.setItem('role', response.data.data.role)
+      return response.data.data;
+
     } catch (error: any) {
       showCustomToast(error.response?.data?.message, toastTypeConstants.error)
+      console.log(error.response?.data?.message);
+
       return thunkAPI.rejectWithValue(error.response?.data?.message || 'Login failed');
     }
   }
@@ -29,14 +29,10 @@ export const userLoginThunk = createAsyncThunk(
 
 export const userSignupThunk = createAsyncThunk(
   userEndUrls.signup,
-  async ({ username, email, password, phone, imageUrl, allErrors }: { username: string; email: string; password: string; phone: string; imageUrl: string; allErrors: string[] }, thunkAPI) => {
+  async ({ username, email, password, phone, imageUrl}: { username: string; email: string; password: string; phone: string; imageUrl: string;}, thunkAPI) => {
     try {
-      if (allErrors.length > 0) {
-        showCustomToast(allErrors[0] || 'Signup failed', toastTypeConstants.error)
-      } else {
         const response = await userApi.signup(username, email, password, Number(phone), imageUrl);
-        return response.data;
-      }
+        return response.data?.data;
     } catch (error: any) {
       showCustomToast(error.response?.data?.message, toastTypeConstants.error)
       return thunkAPI.rejectWithValue(error.response?.data || 'Signup failed');
@@ -80,6 +76,7 @@ export const fetchHomeDataThunk = createAsyncThunk(
       localStorage.setItem('userImageUrl', `${apiUrl}${response.data.imageUrl}`);
       return response.data.data;
     } catch (error: any) {
+      showCustomToast(error.response?.data?.message, toastTypeConstants.error)
       return thunkAPI.rejectWithValue(error.response?.data || 'Home data fetch failed');
     }
   }
@@ -89,9 +86,13 @@ export const fetchProfileThunk = createAsyncThunk(
   userEndUrls.profileData,
   async (_, thunkAPI) => {
     try {
+      console.log("PROFILE");
+
       const response = await userApi.profileData();
-      return response.data;
+      console.log("profile data", response.data);
+      return response.data?.data;
     } catch (error: any) {
+      showCustomToast(error.response?.data?.message, toastTypeConstants.error)
       return thunkAPI.rejectWithValue(error.response?.data || 'Profile data fetch failed');
     }
   }
@@ -99,19 +100,32 @@ export const fetchProfileThunk = createAsyncThunk(
 
 export const updateUserProfileThunk = createAsyncThunk(
   userEndUrls.updateUserProfile,
-  async (payload: { email: string; username: string; age: string; gender: string; height: string; weight: string; place: string }, thunkAPI) => {
+  async (
+    payload: {
+      editProfileData: { email: string; username: string; age: string; gender: string; height: string; weight: string; place: string; };
+      allErrors: string[]; // or type it as needed
+    },
+    thunkAPI) => {
     try {
-      const response = await userApi.updateProfile(
-        payload.email,
-        payload.username,
-        payload.age,
-        payload.gender,
-        payload.height,
-        payload.weight,
-        payload.place
-      );
-      return response.data;
+      const { editProfileData, allErrors } = payload;
+
+      if (allErrors.length > 0) {
+        showCustomToast(allErrors[0] || 'Profile Update failed', toastTypeConstants.error)
+      } else {
+        const response = await userApi.updateProfile(
+          editProfileData.email,
+          editProfileData.username,
+          editProfileData.age,
+          editProfileData.gender,
+          editProfileData.height,
+          editProfileData.weight,
+          editProfileData.place
+        );
+        showCustomToast("Profile Updated successfully.", toastTypeConstants.success)
+        return response.data;
+      }
     } catch (error: any) {
+      showCustomToast(error.response?.data?.message, toastTypeConstants.error)
       return thunkAPI.rejectWithValue(error.response?.data || 'Update failed');
     }
   }

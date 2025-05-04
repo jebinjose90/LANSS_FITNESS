@@ -1,18 +1,10 @@
-// src/domain/entities/Message.ts
-import { Schema, model } from 'mongoose';
+// backend/src/core/entities/Message.ts
+import mongoose, { Document, Types } from 'mongoose';
 
-export interface IMessage {
-  senderId: string;
-  receiverId: string;
+export interface Message extends Document {
+  senderId: mongoose.Schema.Types.ObjectId;
+  receiverId: mongoose.Schema.Types.ObjectId;
   message: string;
   timestamp: Date;
+  image: string;
 }
-
-const MessageSchema = new Schema<IMessage>({
-  senderId: { type: String, required: true },
-  receiverId: { type: String, required: true },
-  message: { type: String, required: true },
-  timestamp: { type: Date, default: Date.now },
-});
-
-export const Message = model<IMessage>('Message', MessageSchema);

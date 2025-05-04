@@ -1,4 +1,5 @@
-import React, { useCallback, useState } from 'react';
+//frontend/src/modules/user/components/login/Login.tsx
+import React, { useCallback, useEffect, useState } from 'react';
 import CommonLogin from '../../../common/authenticationComponents/CommonLogin';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../../../interface-adapters/redux/store';
@@ -7,6 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import userCRM from '../../../../core/constants/route/userCRM';
 import { debounce } from 'lodash';
 import useValidation from '../../../../usecases/validation/useValidation';
+import { showCustomToast } from '../../../../usecases/toast/showCustomToast';
+import toastTypeConstants from '../../../../core/constants/toastTypeConstants';
 
 const Login = () => {
 
@@ -16,7 +19,7 @@ const Login = () => {
 
     const { validateAll } = useValidation();
     // Get all errors as an array
-    const allErrors = validateAll({ email: formValues.email, password: formValues.password });
+
 
     const gioLoc = () => {
         navigator.geolocation.getCurrentPosition((position) => {
@@ -26,13 +29,15 @@ const Login = () => {
     }
 
     const debouncedSubmit = useCallback(
-        debounce(async (data: typeof formValues & { allErrors: string[] }) => {
+        debounce(async (data: typeof formValues) => {
+            const allErrors = validateAll({ email: data.email, password: data.password });
+            if (allErrors.length > 0) {
+                showCustomToast(allErrors[0], toastTypeConstants.error);
+                return;
+            }
             try {
-                const result = await dispatch(userLoginThunk(data)).unwrap();
-                if (result) {
-                    console.log("RESULT",result);
-                    navigate(`/${userCRM.Home}`, { replace: true });
-                }
+                await dispatch(userLoginThunk(data)).unwrap();
+                
             } catch (err) {
                 console.error('Login failed:', err);
                 // Toast already handled inside thunk
@@ -41,10 +46,15 @@ const Login = () => {
         [dispatch, navigate]
     );
 
+    useEffect(() => {
+        return () => {
+            debouncedSubmit.cancel();
+        };
+    }, [debouncedSubmit]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        debouncedSubmit({ ...formValues, allErrors });
+        debouncedSubmit({ ...formValues });
     };
 
     return (

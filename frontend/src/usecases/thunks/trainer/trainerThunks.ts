@@ -9,16 +9,12 @@ import { trainerApi } from "../../../infrastructure/api/trainerApi/trainerApi";
 
 export const trainerLoginThunk = createAsyncThunk(
   `${trainerEndUrls.login}`,
-  async ({ email, password, allErrors }: { email: string; password: string; allErrors: string[] }, thunkAPI) => {
+  async ({ email, password}: { email: string; password: string;}, thunkAPI) => {
     try {
-      if (allErrors.length > 0) {
-        showCustomToast(allErrors[0] || 'Login failed', toastTypeConstants.error)
-      } else {
-        const response = await trainerApi.login(email, password);
-        showCustomToast("You have been succesfuuly logged in.", toastTypeConstants.success)
-        localStorage.setItem('role', response.data.data.role)
-        return response.data.data;
-      }
+      const response = await trainerApi.login(email, password);
+      showCustomToast("You have been succesfuuly logged in.", toastTypeConstants.success)
+      localStorage.setItem('role', response.data.data.role)
+      return response.data.data;
     } catch (err: any) {
       showCustomToast(err.response?.data?.message, toastTypeConstants.error)
       return thunkAPI.rejectWithValue(err.response?.data?.message || 'Login failed');
@@ -28,9 +24,9 @@ export const trainerLoginThunk = createAsyncThunk(
 
 export const trainerSignupThunk = createAsyncThunk(
   trainerEndUrls.signup,
-  async ({ trainername, email, password, phone, imageUrl, certificatePdfUrl }: { trainername: string, email: string, password: string, phone: number, imageUrl: string, certificatePdfUrl: string }, thunkAPI) => {
+  async ({ username, email, password, phone, imageUrl, certificatePdfUrl }: { username: string, email: string, password: string, phone: number, imageUrl: string, certificatePdfUrl: string }, thunkAPI) => {
     try {
-      const response = await trainerApi.signup(trainername, email, password, phone, imageUrl, certificatePdfUrl);
+      const response = await trainerApi.signup(username, email, password, phone, imageUrl, certificatePdfUrl);
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response?.data || 'Signup failed');

@@ -18,7 +18,10 @@ export const userSignupRequestOtp = async (req: Request, res: Response): Promise
         const hashedPassword = await bcrypt.hash(password, 10);
         const role = UserRole.USER
         await findExistingUser(username, email, hashedPassword, phone, imageUrl, role);
-        res.status(201).json({ message: 'OTP sent to email. Please verify to complete signup.' });
+        res.status(201).json({ message: 'OTP sent to email. Please verify to complete signup.' ,
+            data: {
+                email: email
+            }});
     } catch (error: unknown) {
         const errorMessage = error instanceof Error ? error.message : USER.MESSAGES.ERROR.CREATE_USER_ERROR_MSG;
         res.status(500).json({ message: errorMessage });
@@ -114,7 +117,6 @@ export const getUserByUsernameController = async (req: Request, res: Response): 
 
 // Controller function to login a user
 export const userLogin = async (req: Request, res: Response): Promise<void> => {
-
     try {
         const { email, password } = req.body;
         const user = await loginUser(email, password);
@@ -128,7 +130,6 @@ export const userLogin = async (req: Request, res: Response): Promise<void> => {
             return str.charAt(0).toUpperCase() + str.slice(1);
         }
         const username = capitalizeFirstLetter(user.username)
-
         const role = UserRole.USER
         // Generate JWT token
         generateTokens({ id: user._id, username: username, email: user.email, role: role }, res);
@@ -141,7 +142,6 @@ export const userLogin = async (req: Request, res: Response): Promise<void> => {
     } catch (error: unknown) {
         const errorMessage = error instanceof Error ? error.message : USER.MESSAGES.ERROR.LOGIN_ERROR_MSG;
         console.log("error", errorMessage);
-
         res.status(500).json({ message: errorMessage });
     }
 };
@@ -200,15 +200,20 @@ export const uploadProfileImage = (req: Request, res: Response): void => {
 
 export const getHomeData = async (req: Request, res: Response) => {
     try {
-        // `req.user` contains decoded token data if token verification was successful
         const user = req.user; // Assuming `id` was part of the token payload
         if (user) {
+            
             const { id } = user as { id: string; }; // Cast to expected structure
+            console.log("USER ID",id)
             // Fetch user data based on `userId`
             const tokenUser = await getUserById(id);
             if (!tokenUser) {
+                console.log("ERR");
+                
                 res.status(404).json({ message: USER.MESSAGES.ERROR.USER_NOT_FOUND_MSG });
             }
+
+            
 
             function capitalizeFirstLetter(str: string | undefined): string {
                 if (!str) return ''; // Handle empty strings

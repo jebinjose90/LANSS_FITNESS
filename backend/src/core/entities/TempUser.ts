@@ -1,15 +1,12 @@
 // backend/src/core/entities/TempUser.ts
 
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
-export interface TempUser extends Document {  // Extend Document to include Mongoose properties
-
-    email: string,
-    password: string,
-    phone: number,
-    username: string,
-    otp: string,
-    otpExpiresAt: Date
-    profilePictureUrl: String,
-    role: String,
+export interface TempUser extends Document {
+  username: string,
+  email: string,
+  password: string,
+  role: string,
 }
+
+

@@ -6,4 +6,5 @@ export interface UserState {
   error: string | null;
   userData: any;
   isUserAuthenticated: boolean;
+  profileUpdateSuccess: boolean;
 }

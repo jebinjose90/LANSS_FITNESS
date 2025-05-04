@@ -1,21 +1,28 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Icon from "../../../common/Icon";
 import InputFieldWithoutIcon from "../../../common/InputFieldWithoutIcon";
-import { userProfile } from "../../hooks/userProfile";
-import { updateProfile } from "../../hooks/updateProfile";
 import Dropdown from "../../../common/Dropdown";
+import { useDispatch } from "react-redux";
+import { AppDispatch, RootState } from "../../../../interface-adapters/redux/store";
+import { useSelector } from "react-redux";
+import IsLoading from "../../../common/components/IsLoading";
+import { updateUserProfileThunk } from "../../../../usecases/thunks/user/userThunks";
+import useValidation from "../../../../usecases/validation/useValidation";
+import { resetProfileUpdateSuccess } from "../../../../interface-adapters/redux/slice/userSlice";
 
 interface EditProfileComponentProps {
     onClose: () => void; // Callback to close the child
 }
 
 const EditProfileModal: React.FC<EditProfileComponentProps> = ({ onClose }) => {
-
-    const { profile} = userProfile();
-    const { updateUserProfile } = updateProfile()
     const [editProfileData, setEditProfileData] = useState({ email: '', username: '', age: '', gender: '', height: '', weight: '', place: '' });
-    
-    
+    const dispatch = useDispatch<AppDispatch>();
+    const { profile, loading, profileUpdateSuccess} = useSelector((state: RootState) => state.user)
+
+    const { validateAll } = useValidation();
+    // Get all errors as an array
+    const allErrors = validateAll({ username: editProfileData.email, age: editProfileData.age, gender: editProfileData.gender, height: editProfileData.height, weight: editProfileData.weight, place: editProfileData.place });
+
 
     useEffect(() => {
         if (profile) {
@@ -29,15 +36,22 @@ const EditProfileModal: React.FC<EditProfileComponentProps> = ({ onClose }) => {
                 place: profile.place || ''
             });
         }
-    }, [profile]); // Runs when profile changes
+    }, []); // Runs when profile changes
+
+    useEffect(() => {
+        if (profileUpdateSuccess) {
+            onClose(); // Close the modal
+            dispatch(resetProfileUpdateSuccess()); // Reset success flag for future updates
+        }
+    }, [profileUpdateSuccess]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-            const { name, value } = e.target;
-            setEditProfileData((prevData) => ({
-                ...prevData,
-                [name]: value,
-            }));
-        };
+        const { name, value } = e.target;
+        setEditProfileData((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }));
+    };
 
     // Callback function to handle the selection from Dropdown
     const handleGenderSelection = (option: string) => {
@@ -48,10 +62,14 @@ const EditProfileModal: React.FC<EditProfileComponentProps> = ({ onClose }) => {
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
-            e.preventDefault();
-            updateUserProfile(editProfileData.email, editProfileData.username, editProfileData.age, editProfileData.gender, editProfileData.height, editProfileData.weight, editProfileData.place)
-        }
-    
+        e.preventDefault();
+        dispatch(updateUserProfileThunk({ editProfileData, allErrors }))
+    }
+
+
+    if (loading) {
+        return <IsLoading />
+    }
     return (
         <>
             <div aria-hidden="true" className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none bg-black bg-opacity-50 backdrop-blur-sm">
@@ -66,11 +84,11 @@ const EditProfileModal: React.FC<EditProfileComponentProps> = ({ onClose }) => {
                         </div>
 
                         {/* Form */}
-                        <form onClick={handleSubmit} className="space-y-3 bg-transparent py-10">
+                        <form onSubmit={handleSubmit} className="space-y-3 bg-transparent py-10">
                             <div className="grid gap-6 mb-6 md:grid-cols-2">
                                 <div className="space-y-1">
                                     <label htmlFor="user_name" className="block text-sm font-medium text-color-3 ">Username</label>
-                                    <InputFieldWithoutIcon inputValue={editProfileData.username} onChange={handleInputChange} placeholder="Username" name="username"/>
+                                    <InputFieldWithoutIcon inputValue={editProfileData.username} onChange={handleInputChange} placeholder="Username" name="username" />
                                 </div>
                                 <div className="space-y-1">
                                     <label htmlFor="user_name" className="block text-sm font-medium text-color-3 ">Age</label>

@@ -13,10 +13,10 @@ interface InputFieldProps {
 }
 
 
-const InputField: React.FC<InputFieldProps> = ({ svgName, svgWidth, svgHeight, placeholder, type = "text", name, inputValue, onChange }) => (
+const InputField: React.FC<InputFieldProps> = ({ svgName, svgWidth, svgHeight, placeholder, type , name, inputValue, onChange }) => (
     <div className="flex items-center space-x-6 bg-transparent border-2 border-color3 text-color3 px-4 w-full">
         <Icon svgName={svgName} width={svgWidth} height={svgHeight} className="custom-class" />
-        <input type={type} name={name} id={name} className="bg-transparent placeholder-color3 font-sans h-10 w-full focus:outline-none" placeholder={placeholder} value={inputValue} onChange={onChange} autoComplete='off' />
+        <input type={type} name={name} id={name} className="bg-transparent placeholder-color3 font-sans h-10 w-full focus:outline-none" placeholder={placeholder} value={inputValue} onChange={onChange} onKeyDown={(e) => {if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {e.preventDefault();}}} autoComplete='off' />
     </div>
 );
 export default InputField;

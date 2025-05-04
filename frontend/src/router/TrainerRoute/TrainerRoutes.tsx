@@ -17,7 +17,7 @@ import { RootState } from '../../interface-adapters/redux/store'
 
 
 const TrainerRoutes = () => {
-    const { isTrainerAuthenticated } = useSelector((state: RootState) => state.user);
+    const { isTrainerAuthenticated } = useSelector((state: RootState) => state.trainer);
     console.log('Trainer Authenticated:', isTrainerAuthenticated); // 👈 Log added here
     return (
         <Routes>

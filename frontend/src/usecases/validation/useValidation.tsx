@@ -109,6 +109,18 @@ const useValidation = () => {
     return errors;
   };
 
+  const validatePlace = (place: string): string[] => {
+    const errors: string[] = [];
+    if (place !== "*") {
+      if (!place.trim()) {
+        errors.push("Place is required.");
+      } else if (place.length < 2 || place.length > 50) {
+        errors.push("Place must be between 2 and 50 characters.");
+      }
+    }
+    return errors;
+  };
+
   const validateGender = (gender: string): string[] => {
     const errors: string[] = [];
     if (!gender) {
@@ -138,6 +150,7 @@ const useValidation = () => {
     if ('weight' in fields) errors.push(...validateWeight(fields.weight!));
     if ('height' in fields) errors.push(...validateHeight(fields.height!));
     if ('age' in fields) errors.push(...validateAge(fields.age!));
+    if ('place' in fields) errors.push(...validatePlace(fields.place!));
     if ('gender' in fields) errors.push(...validateGender(fields.gender!));
     if ('certificateUrl' in fields) errors.push(...validateCertificate(fields.certificateUrl!));
 
@@ -155,6 +168,7 @@ const useValidation = () => {
       weight: validateWeight,
       height: validateHeight,
       age: validateAge,
+      place: validatePlace,
       gender: validateGender,
       certificateUrl: validateCertificate,
     },

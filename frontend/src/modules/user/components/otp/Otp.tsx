@@ -1,9 +1,17 @@
 
 
 import { useEffect, useRef, useState } from "react";
-import { useLocation } from 'react-router-dom';
+// import { useLocation } from 'react-router-dom';
 import { useUserAuth } from "../../../user/hooks/manageUserAuth";
 import { CommonOtp } from "../../../common/authenticationComponents/CommonOtp"
+import { useDispatch } from "react-redux";
+import { AppDispatch, RootState } from "../../../../interface-adapters/redux/store";
+import { useSelector } from "react-redux";
+import IsLoading from "../../../common/components/IsLoading";
+import { userVerifyOtpThunk } from "../../../../usecases/thunks/user/userThunks";
+import { useNavigate } from "react-router-dom";
+import userCRM from "../../../../core/constants/route/userCRM";
+
 
 interface OtpState {
     digitOne: string;
@@ -13,10 +21,13 @@ interface OtpState {
 }
 
 const Otp = () => {
-    const location = useLocation();
-    const params = new URLSearchParams(location.search);
-    const email = params.get('email')
-    const { userVerifyOtp , userResendOtp} = useUserAuth();
+    const dispatch = useDispatch<AppDispatch>();
+    
+    // const location = useLocation();
+    // const params = new URLSearchParams(location.search);
+    // const email = params.get('email')
+    const email = localStorage.getItem("email")
+    const { userVerifyOtp, userResendOtp } = useUserAuth();
     const inputRef = useRef<(HTMLInputElement | null)[]>([]);
     const [otp, setOtp] = useState<OtpState>({
         digitOne: "",
@@ -24,6 +35,8 @@ const Otp = () => {
         digitThree: "",
         digitFour: ""
     });
+
+    const navigate = useNavigate()
 
     const [timer, setTimer] = useState<number>(59); // Countdown starts at 59 seconds
     const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);
@@ -92,7 +105,10 @@ const Otp = () => {
         // Concatenate the OTP digits into a single string
         const otpValue = `${otp.digitOne}${otp.digitTwo}${otp.digitThree}${otp.digitFour}`;
         try {
-            await userVerifyOtp(email!, otpValue);
+            let result = await dispatch(userVerifyOtpThunk({ email, otp: otpValue }))
+            if (result) {
+                navigate(`/${userCRM.Home}`)
+            }
         } catch (error) {
             console.error("OTP verification failed", error);
         }
@@ -116,7 +132,7 @@ const Otp = () => {
         };
     }, [timer, isButtonDisabled]);
 
-    const handleResendOtp = async() => {
+    const handleResendOtp = async () => {
         if (email) {
             setTimer(59); // Reset the timer
             setIsButtonDisabled(true); // Disable the button again
@@ -124,11 +140,12 @@ const Otp = () => {
             return;
         }
     };
-  return (
-    <>
-        <CommonOtp handleResendOtp={handleResendOtp} handleSubmit={handleSubmit} isButtonDisabled={isButtonDisabled} renderInput={renderInput} timer={timer}/>
-    </>
-  )
+
+    return (
+        <>
+            <CommonOtp handleResendOtp={handleResendOtp} handleSubmit={handleSubmit} isButtonDisabled={isButtonDisabled} renderInput={renderInput} timer={timer} />
+        </>
+    )
 }
 
 export default Otp

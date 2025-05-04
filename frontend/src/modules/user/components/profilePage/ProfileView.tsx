@@ -4,8 +4,16 @@ import Icon from '../../../common/Icon';
 import { userProfile } from '../../hooks/userProfile';
 import EditProfileModal from './EditProfileModal'
 import EditImageModal from './EditImageModal';
+import IsLoading from '../../../common/components/IsLoading';
+import { useDispatch } from 'react-redux';
+import { AppDispatch, RootState } from '../../../../interface-adapters/redux/store';
+import { useSelector } from 'react-redux';
+import { fetchProfileThunk } from '../../../../usecases/thunks/user/userThunks';
 
 const ProfileView = () => {
+
+  const dispatch = useDispatch<AppDispatch>();
+  const { profile, loading } = useSelector((state: RootState) => state.user)
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
   const [showEditImageModal, setShowEditImageModal] = useState<boolean>(false);
   function editProfile() {
@@ -34,10 +42,12 @@ const ProfileView = () => {
     };
   }, [showEditModal, showEditImageModal]);
 
-  const { profile, loading, error } = userProfile();
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  useEffect(() => {
+    dispatch(fetchProfileThunk())
+  },[])
 
+  
+  if (loading) return <IsLoading/>
   return (
     <>
       <div className='flex flex-col justify-center items-center bg-color2 text-color3 w-full py-8 px-5'>

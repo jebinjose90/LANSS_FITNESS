@@ -64,10 +64,15 @@ app.use('/api', themeRoutes);
 
 // Connect to MongoDB
 // Connect to the database and start the server
-connectToDatabase() // Call the connection function
+connectToDatabase()
   .then(() => {
-    app.listen(PORT, () => {
-      console.log(`Server running on http://localhost:${PORT}`);
+    server.listen(PORT, () => {
+      const addr = server.address();
+      if (addr && typeof addr === 'object') {
+        console.log('Express server started on port %s at %s', addr.port, addr.address);
+      } else {
+        console.log(`Server running on http://localhost:${PORT}`);
+      }
     });
   })
   .catch((error) => {

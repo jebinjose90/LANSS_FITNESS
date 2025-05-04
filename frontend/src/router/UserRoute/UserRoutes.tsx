@@ -1,5 +1,4 @@
 // frontend\src\router\UserRoutes.tsx
-
 import { Navigate, Route, Routes } from 'react-router-dom'
 import Home from '../../modules/user/pages/Home'
 import Trainers from '../../modules/user/pages/Trainers'
@@ -18,7 +17,6 @@ import UserProtectedRoute from '../ProtectedRoute/UserProtectedRoute'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../interface-adapters/redux/store'
 import NotFound from '../../modules/common/components/NotFound'
-
 
 const UserRoutes = () => {
     const { isUserAuthenticated } = useSelector((state: RootState) => state.user);

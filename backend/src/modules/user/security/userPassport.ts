@@ -2,7 +2,7 @@
 
 import passport from 'passport';
 import { Strategy as GoogleStrategy, Profile } from 'passport-google-oauth20';
-import UserModel from '../models/UserModel';
+import UserModel from '../../common/models/UserModel';
 
 passport.serializeUser((user, done) => {
   done(null, (user as any)._id); // Store only the user ID in the session
